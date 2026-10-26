@@ -1,0 +1,40 @@
+/* Campana de notificaciones (js/CampanaEnfermeria.js): se pinta dentro de .user-info del encabezado. */
+.campana { position: relative; display: inline-flex; margin-right: 8px; }
+.campana-btn {
+    position: relative; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-primary); font-size: 16px;
+}
+.campana-btn:hover { border-color: var(--accent-color); }
+.campana-n {
+    position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px;
+    background: var(--danger-color); color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center;
+}
+.campana-panel {
+    position: absolute; right: 0; top: 48px; width: 340px; max-width: calc(100vw - 24px); max-height: 70vh; overflow: auto; z-index: 3000;
+    background: var(--modal-bg); color: var(--text-primary); border: 1px solid var(--card-border); border-radius: 10px; box-shadow: 0 8px 24px var(--shadow-color);
+}
+.campana-cab { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--card-border); }
+.campana-todas { background: none; border: 0; color: var(--accent-color); cursor: pointer; font-size: 12px; }
+.campana-vacio { padding: 18px 12px; color: var(--text-secondary); text-align: center; margin: 0; }
+.campana-lista { list-style: none; margin: 0; padding: 0; }
+.campana-item {
+    display: flex; gap: 10px; width: 100%; text-align: left; padding: 10px 12px; cursor: pointer;
+    background: none; border: 0; border-bottom: 1px solid var(--card-border); color: inherit; font: inherit; font-size: 13px;
+}
+.campana-item:hover { background: var(--table-row-hover); }
+.campana-item.nueva { background: rgba(0, 131, 113, .08); font-weight: 600; }
+.campana-item.alta i { color: var(--warning-color); }
+.campana-item i { margin-top: 3px; color: var(--accent-color); }
+.campana-txt small { display: block; font-weight: 400; color: var(--text-secondary); font-size: 11px; margin-top: 2px; }
+
+/* Móvil: el botón queda en medio del encabezado, así que el panel se ancla a la pantalla (no al botón) y ocupa casi todo el ancho. */
+.campana-item { overflow-wrap: anywhere; }
+.campana-txt { min-width: 0; }
+@media (max-width: 600px) {
+    .campana-panel {
+        position: fixed; left: 12px; right: 12px; top: 72px; width: auto; max-width: none;
+        max-height: calc(100vh - 96px); max-height: calc(100dvh - 96px);
+    }
+    .campana-item { padding: 12px; font-size: 14px; }
+    .campana-cab { position: sticky; top: 0; background: var(--modal-bg); z-index: 1; }
+}

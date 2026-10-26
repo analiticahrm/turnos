@@ -1,0 +1,22 @@
+/* Barra del cuadro de turnos (js/CuadroTurnos.js), dentro de la sección de Asignación de Turnos. */
+.at-cuadro { margin: 10px 0; }
+.cu-barra {
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px; flex-wrap: wrap;
+    border: 1px solid var(--card-border); border-radius: 10px; background: var(--card-bg); color: var(--text-primary);
+}
+.cu-barra > i { font-size: 20px; flex: 0 0 auto; }
+.cu-texto { flex: 1; min-width: 220px; }
+.cu-texto small { display: block; color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
+.cu-acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+.cu-borrador { border-left: 4px solid var(--warning-color); }
+.cu-borrador > i { color: var(--warning-color); }
+.cu-confirmado { border-left: 4px solid var(--success-color); }
+.cu-confirmado > i { color: var(--success-color); }
+.cu-neutro { color: var(--text-secondary); }
+.cu-boton {
+    padding: 7px 12px; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px;
+    border: 1px solid var(--card-border); background: transparent; color: var(--text-primary);
+}
+.cu-boton:hover { border-color: var(--accent-color); }
+.cu-primario { background: var(--accent-color); border-color: var(--accent-color); color: #fff; }
+.cu-primario:hover { filter: brightness(1.08); }

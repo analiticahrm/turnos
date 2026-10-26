@@ -1,0 +1,315 @@
+@font-face {
+  font-family: 'Estilo Montserrat';
+  src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  /* Si tienes otros formatos de fuente (otf, woff, etc.), puedes agregarlos aquí */
+}
+
+
+body {
+  height: 100vh;
+  background-color: #000;
+  background-image: url("https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1517&q=80");
+  background-size: cover;
+  background-position: center;
+  margin: 0; /* Added to reset default margin */
+  font-family: 'Estilo Montserrat', sans-serif;
+}
+
+li {
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+}
+
+a:hover {
+  color: #012c2a;
+}
+
+header{
+  position: relative;
+  padding: 0 2rem;
+}
+
+.navbar{
+  width: 100%;
+  height: 60px;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar .logo a{
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar .logoi a{
+  background-image: url('../css/Imagen2.png'); /* Ruta de tu imagen de logo */
+  background-size: contain; /* Ajusta el tamaño de la imagen */
+  background-repeat: no-repeat; /* Evita que se repita la imagen */
+  width: 70px; /* Ancho deseado para tu logo */
+  height: 100px; /* Altura deseada para tu logo */
+  display: inline-block; /* Para que el div se comporte como un bloque en línea */
+}
+
+.navbar .logo-link a{
+  display: block; /* Para que el enlace ocupe todo el espacio del div */
+  height: 100%;
+  text-indent: -9999px; /* Oculta el texto del enlace */
+}
+
+.navbar .logo a{
+  
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar .links{
+  display: flex;
+  gap: 2rem;
+  height: 3px;
+}
+.container2 {
+  display: flex;
+  width: 473px; /* ajusta el ancho según sea necesario */
+  height: 30px; /* ajusta la altura según sea necesario */
+}
+
+.navbar .toggle_btn{
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: none;
+}
+
+.action_btn {
+  background-color: #012c2a;
+  color: #fff;
+  padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+}
+
+.action_btn2 {
+  background-color: #06070700;
+  color: #fff;
+  padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  border: 2px solid #000000ce; 
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+
+}
+
+
+.action_btn:hover {
+  transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+  color: #fff;
+}
+.action_btn3:hover {
+  transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+  color: #fff;
+}
+.action_btn:active {
+  transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+}
+
+.action_btn2:active {
+  transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+}
+/* DROPDOWN MENU */
+.dropdown_menu {
+  display: none;
+  position: absolute;
+  right: 2rem;
+  top: 60px;
+  height: 0;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: -1;
+}
+
+.dropdown_menu.open {
+  height: 400px;
+  z-index: 1;
+}
+
+.dropdown_menu li {
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown_menu .action_btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown_menu .action_btn,
+.dropdown_menu .action_btn2 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* HERO */
+section#hero {
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+}
+
+#hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 1300px) {
+  .navbar .links,
+  .navbar .action_btn {
+    display: none;
+  }
+  .navbar .action_btn2 {
+    display: none;
+  }
+  .navbar .toggle_btn {
+    display: block;
+  }
+  .navbar .toggle_btn2 {
+    display: block;
+  }
+.logo span {
+  font-size: 1rem; /* Ajusta el tamaño del texto */
+  font-weight: bold;
+}
+
+  .dropdown_menu {
+    display: block;
+  }
+}
+
+@media (max-width: 576px) {
+    
+  .dropdown_menu {
+    left: 2rem;
+    width: unset;
+  }
+  .logo span {
+  font-size: 1rem; /* Ajusta el tamaño del texto */
+  font-weight: bold;
+}
+  
+}
+
+
+
+
+.navbar:hover .dropdown_menu {
+  display: block; /* Muestra el menú */
+  opacity: 1; /* Hace visible el menú */
+  transform: translateY(0); /* Devuelve a la posición original */
+}
+
+/* SUBMENU */
+.navbar li {
+  position: relative;
+}
+
+.navbar li .submenu {
+  display: none; /* Oculta el submenú por defecto */
+  position: absolute;
+  top: 100%; /* Posición debajo del elemento principal */
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  padding: 0.5rem 0;
+  list-style: none;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.navbar li .submenu li {
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+.navbar li .submenu li a {
+  color: #fff;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.navbar li .submenu li a:hover {
+  color: #012c2a;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+/* Hover para mostrar el submenu */
+.navbar li:hover .submenu {
+  display: block;
+}
+
+
+/* Submenú base */
+.dropdown_menu .more-options .submenu {
+  display: none; /* Oculto por defecto */
+  padding: 0;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin-top: 0.5rem;
+}
+
+.dropdown_menu .more-options .submenu li {
+  padding: 0.5rem 1rem;
+}
+
+.dropdown_menu .more-options .submenu li a {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.dropdown_menu .more-options .submenu li a:hover {
+  color: #012c2a;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+/* Mostrar submenú cuando se activa */
+.dropdown_menu .more-options.open .submenu {
+  display: block;
+}
+
+
+
+
+

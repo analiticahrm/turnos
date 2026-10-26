@@ -1,0 +1,546 @@
+@font-face {
+    font-family: 'Estilo Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    /* Si tienes otros formatos de fuente (otf, woff, etc.), puedes agregarlos aquí */
+  }
+
+  .main-container {
+    flex: 1;
+    padding: 20px;
+  }
+.FondoTabla {
+    font-family: 'Estilo Montserrat', sans-serif;
+    background: rgba(48, 48, 48, 0.26);
+    backdrop-filter: blur(15px);
+    width: 100%;
+    color: #ffffff;
+
+}
+.table_id{
+    font-family: 'Estilo Montserrat', sans-serif;
+
+}
+
+.IconEstado{
+  width: 35px;
+  height: 35px;
+}
+
+.action_btn22 {
+    margin-left: 0.5cm;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5cm;
+    background-color: #ffffff00;
+    color: #f5f5f5;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    border: 2px solid #f5f5f5; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+    text-align: center;
+  }
+
+  .action_btn22:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .action_btn22:hover {
+    background-color: #012c2a;
+    border: 2px solid #012c2a;
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #f1f1f1e3; 
+  }
+  
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .delete_btn:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .delete_btn:hover {
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #012c2a;
+  }
+
+footer {
+  font-family: 'Estilo Montserrat', sans-serif;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #012c2a;
+  color: #ffffff;
+}
+  
+body {
+font-family: 'Estilo Montserrat', sans-serif;
+height: 600px;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.8); /* Más oscuro */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque */
+}
+
+/* Contenedor del modal */
+
+  .modal-dialog {
+    position: relative;
+    margin: auto;
+    top: 0%;
+    width: 95%;
+    /* max-width: 1099px; */
+    background: rgba(30, 30, 30, 0.95); /* Fondo oscuro translúcido */
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Sombra más fuerte */
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+  }
+
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea tenue */
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffffff; /* Texto blanco */
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaaaaa; /* Icono claro */
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  color: #ffffff; /* Más visible al pasar el cursor */
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  padding: 1.5rem;
+  color: #dddddd; /* Texto claro */
+}
+
+.modal-body label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff; /* Etiquetas blancas */
+}
+
+.modal-body .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(50, 50, 50, 0.9); /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  box-sizing: border-box;
+}
+
+.modal-body .form-control:focus {
+  border-color: #20b571;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.8); /* Verde brillante */
+}
+
+/* Botones del modal */
+button {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-primary {
+  background-color: #20b571; /* Verde brillante */
+  color: white;
+  margin-right: 0.5rem;
+}
+
+button.btn-primary:hover {
+  background-color: #20b571;
+}
+
+button.btn-secondary {
+  background-color: #333333; /* Gris oscuro */
+  color: white;
+}
+
+button.btn-secondary:hover {
+  background-color: #444444; /* Gris más claro */
+}
+
+#main-container2 {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se ajusten en varias filas */
+  gap: 7px; /* Espacio entre los botones */
+  justify-content: flex-start; /* Alinea los botones al inicio */
+}
+
+#calendar {
+  max-width: 800px; /* Ancho máximo */
+  margin: 0 auto; /* Centrar horizontalmente */
+  padding: 20px; /* Espaciado interno */
+  background-color: #f9f9f9; /* Fondo claro */
+  border: 1px solid #ddd; /* Borde */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Ajustar el texto dentro del calendario */
+#calendar .fc-toolbar h2 {
+  font-size: 1.5rem; /* Tamaño de fuente del título */
+  color: #333; /* Color del texto */
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 24px;
+  color: #000; /* Color del texto */
+  float: right; /* Alinea a la derecha */
+}
+
+.responsive-div {
+  padding: 1%;       /* Aún menos padding en pantallas muy pequeñas */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #0000008c;
+}
+
+.btn-danger {
+  background-color: #550101;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background-color: #700303;
+}
+@media (max-width: 480px) {
+
+  .FondoTabla {
+    font-size: 10px;
+}
+
+.IconEstado{
+  width: 25px;
+  height: 25px;
+}
+
+
+  .responsive-div {
+      padding: 0%;       /* Aún menos padding en pantallas muy pequeñas */
+  }
+  table.dataTable tbody th,
+  table.dataTable tbody td {
+    padding: 3px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+
+  .action_btn22 {
+    margin-left: 0cm;
+    display: flex;
+    align-items: center;
+    margin-top: 0cm;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    text-align: center;
+  }
+
+
+}
+
+/* Estilo para el contenedor de cada turno */
+.turno-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0px;
+  position: relative;
+  padding-left: 12px; /* Espacio para la raya vertical */
+  font-family: 'Montserrat', sans-serif; /* Corregí el nombre de la fuente */
+}
+
+/* Raya vertical verde */
+.turno-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background-color: #058876; /* Color de la raya */
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif; /* Corregí el nombre de la fuente */
+}
+
+
+
+
+/* Estilo para el rango de horas */
+.rango-horas {
+  margin-left: 10px;
+  color: #9a9393;
+  font-size: 13px;
+  font-family: 'Estilo Montserrat';
+}
+
+.turno-container {
+  gap: 10px; /* Espaciado entre columnas */
+  font-family: 'Montserrat', sans-serif; /* Corregí el nombre de la fuente */
+}
+
+.hora-inicio {
+
+  font-weight: bold;
+  text-align: center;
+  margin-right: 0px;
+  font-family: 'Estilo Montserrat';
+}
+
+
+.nombre-actividad {
+  font-family: 'Estilo Montserrat';
+  font-weight: 700; /* Negrita */
+  font-size: 16px;
+}
+
+.turno-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* SELEC 2 */
+
+.select2-container--default .select2-selection--single {
+  height: 38px !important;
+  padding: 5px !important;
+  border: 1px solid #ccc !important;
+
+  font-size: 16px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+  color: #000000 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #ffffff !important;
+}
+
+
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 36px !important;
+  right: 8px !important; /* Ajusta la posición de la flecha */
+}
+
+
+
+.select2-container--default .select2-selection--single .select2-selection__clear:hover {
+  color: #ffffff !important; /* Cambia el color al pasar el mouse */
+}
+
+/* Estilos para el dropdown */
+.select2-dropdown {
+  border: 1px solid #f8f8f8 !important;
+  border-radius: 18px !important;
+  background-color: rgba(241, 241, 241, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+}
+
+.select2-results__option {
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el desbordamiento */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos si el texto es demasiado largo */
+  color: #ffffff;
+}
+
+.select2-results__option--highlighted {
+  background-color: #0a8f4c !important; /* Color amarillo al seleccionar */
+  color: #000000 !important;
+}
+
+.select2-container--open {
+  z-index: 9999 !important; /* Asegura que el dropdown esté por encima del modal */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  cursor: pointer !important;
+  float: right !important;
+  font-weight: bold !important;
+  height: 16px !important;
+  margin-right: 20px !important;
+  padding-right: 17px !important;
+  padding-left: 7px !important;
+  margin-left: 57px !important;
+  width: 0% !important;
+  top: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  color: #000000 !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  color: #ffffff !important;
+  line-height: 27px !important;
+  padding-left: 8px !important;
+  display: block!important;
+  padding-right: 20px !important;
+  overflow: visible !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap
+}
+
+.custom-select {
+  padding: 8px !important;
+  border-radius: 5px !important;
+  border: 1px solid #20894a !important;
+  background-color: #232323 !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  outline: none !important;
+  transition: border-color 0.3s ease-in-out !important;
+}
+
+.custom-select:focus {
+  border-color: #089c7c8e !important;
+}
+
+.select2-container--default .select2-results__option--selected {
+  background-color: #004b44!important;
+}
+
+button.btn-secondaryClear {
+  background-color: #333333; /* Gris oscuro */
+  color: white;
+  border: 2px solid #20894a !important;
+}
+
+.btn-secondaryClear:hover {
+  background-color: #012c2a;
+  border: 2px solid #012c2a;
+  transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+  color: #f1f1f1e3; 
+}
+.modal-custom .modal-body .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(50, 50, 50, 0.9); /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  box-sizing: border-box;
+}
+
+.modal-custom .modal-body .form-control:focus {
+  border-color: #20b571;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.8); /* Verde brillante */
+}
+.select2-container--default .select2-selection--multiple {
+    background-color: #353535!important;
+    border: 1px solid #aaa!important;
+    border-radius: 4px!important;
+    cursor: text!important;
+    padding-bottom: 5px!important;
+    padding-right: 5px!important;
+    position: relative!important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #00392f!important;
+    border: 1px solid #aaa!important;
+    border-radius: 4px!important;
+    box-sizing: border-box!important;
+    display: inline-block!important;
+    margin-left: 5px!important;
+    margin-top: 5px!important;
+    padding: 0!important;
+    padding-left: 20px!important;
+    position: relative!important;
+    max-width: 100%!important;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    vertical-align: bottom!important;
+    white-space: nowrap!important;
+}

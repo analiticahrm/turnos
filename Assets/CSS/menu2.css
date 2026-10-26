@@ -1,0 +1,14 @@
+.imagen-redondeada {
+    border-radius: 50%; /* Esto crea un borde circular */
+    width: 150px; /* Ajusta el ancho de la imagen según tus necesidades */
+    height: 150px; /* Ajusta la altura de la imagen según tus necesidades */
+  }
+  .custom-file-input {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,797 @@
+@font-face {
+    font-family: 'Estilo Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    /* Si tienes otros formatos de fuente (otf, woff, etc.), puedes agregarlos aquí */
+  }
+
+  .main-container {
+    flex: 1;
+    padding: 20px;
+  }
+
+  * {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box!important;
+}
+.action_btn {
+    background-color: #012c2a;
+    color: #fff;
+    padding: 0.5rem 1rem !important; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    font-size: 0.8rem !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+    /* width: 49px; */
+    margin-top: 14px; /* Ajusta según sea necesario */
+    vertical-align: middle; /* Refuerzo para la alineación */
+    text-align: center;
+    /* margin-left: 38px; */ /* Espacio entre "Turno" y "Cerrar sesión" */
+    width: 83px!important; /* Ajusta según sea necesario */
+  }
+  
+
+footer {
+  font-family: 'Estilo Montserrat', sans-serif;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #012c2a;
+  color: #ffffff;
+}
+  
+body {
+font-family: 'Estilo Montserrat', sans-serif;
+height: 600px;
+}
+
+
+h1 {
+  text-align: center;
+  color: #ffffff;;
+}
+
+/* Estilos generales del formulario */
+#formFiltro {
+  max-width: 616px;
+  margin: 8px auto;
+  padding: 11px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+input[type="date"],
+select,
+
+.Limpiar {
+    width: 97%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    color: #000000;
+}
+
+.btn-mostrar-filtro {
+  margin: 10px 0;
+  display: none; /* Inicialmente oculto */
+  width: 99%;
+}
+
+.filtro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.form-control option {
+  background: rgb(58, 58, 58);
+  color: #ffffff;
+  font-family: 'Estilo Montserrat', sans-serif;
+}
+
+/* Esto puede no funcionar en todos los navegadores */
+.form-control option:hover {
+  background: #00583e; /* Cambia esto al color que prefieras */
+  color: #ffffff;
+  cursor: pointer;
+}
+
+
+select.form-control option:hover {
+  background-color: #0a8f4c !important; /* Color amarillo */
+  color: black; /* Cambia el color del texto si es necesario */
+}
+
+button {
+  background-color: #012c2a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+button:hover {
+  background-color: #01534f;
+}
+
+#resultados {
+  max-width: 1631px;
+  margin: 0px auto;
+  padding: 0px;
+  background: #00000000;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.FondoTabla {
+    font-family: 'Estilo Montserrat', sans-serif;
+    background: rgba(48, 48, 48, 0.26);
+    backdrop-filter: blur(15px);
+    width: 100%;
+    color: blanchedalmond;
+}
+  /* Estilos para las columnas de TURNO */
+  .th-turno, .td-turno {
+    background-color: #00aeff4f; /* Azul claro */
+}
+
+/* Estilos para las columnas de DISPONIBILIDAD */
+.th-disponibilidad, .td-disponibilidad {
+    background-color: #ff7b003d; /* Naranja claro */
+}
+
+/* Estilos para las columnas de CONSULTA EXTERNA */
+.th-consulta, .td-consulta {
+    background-color: #00ff003a; /* Verde claro */
+}
+
+/* Estilos para las columnas de JORNADA CX */
+.th-jornada, .td-jornada {
+    background-color: #c300ff44; /* Morado claro */
+}
+
+.th-administrativo {
+  background-color: #ff000042;
+}
+
+.th-honorarios {
+  background-color: #00000056;
+}
+
+.th-interconsulta {
+  background-color: #d0ff0048;
+}
+
+.th-dhc {
+  background-color: #00ffff48;
+}
+
+.th-gpc {
+  background-color: #00ff4c48;
+}
+
+/* Estilo para el encabezado de grupo */
+.th-group {
+    text-align: center !important;
+    font-weight: bold !important;
+}
+/* Personalización del scrollbar */
+.FondoTabla::-webkit-scrollbar {
+  height: 12px !important; /* Altura del scrollbar horizontal */
+}
+
+.FondoTabla::-webkit-scrollbar-track {
+  background: #f1f1f1!important; 
+  border-radius: 10px!important;
+}
+
+.FondoTabla::-webkit-scrollbar-thumb {
+  background: #888!important; 
+  border-radius: 10px!important;
+}
+
+.FondoTabla::-webkit-scrollbar-thumb:hover {
+  background: #555!important; 
+}
+
+.table_id{
+    font-family: 'Estilo Montserrat', sans-serif;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #aaa !important;
+    border-radius: 3px !important;
+    padding: 5px !important;
+    background-color: rgb(48, 48, 48) !important;
+    color: inherit !important;
+    padding: 4px !important;
+    width: 21% !important;
+  }
+
+/* Estilo para los totales */
+.total-row {
+    font-weight: bold;
+    background-color: #e9ecef !important;
+}
+
+/* Estilo para valores monetarios */
+.monetary {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+}
+
+.select2-container--default .select2-selection--single {
+  height: 38px !important;
+  padding: 5px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  font-size: 16px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+  color: #000000 !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #000000 !important;
+}
+
+.custom-select:focus {
+  border-color: #089c7c8e !important;
+}
+
+.select2-container--default .select2-results__option--selected {
+  background-color: #004b44!important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 36px !important;
+  right: 8px !important; /* Ajusta la posición de la flecha */
+}
+
+
+
+.select2-container--default .select2-selection--single .select2-selection__clear:hover {
+  color: #ffffff !important; /* Cambia el color al pasar el mouse */
+}
+
+/* Estilos para el dropdown */
+.select2-dropdown {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(15px) !important;
+
+}
+.select2-results__option {
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta el desbordamiento */
+  text-overflow: ellipsis; /* Muestra puntos suspensivos si el texto es demasiado largo */
+}
+
+
+.select2-results__option--highlighted {
+  background-color: #0a8f4c !important; /* Color amarillo al seleccionar */
+  color: #000000 !important;
+}
+
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  cursor: pointer !important;
+  float: right !important;
+  font-weight: bold !important;
+  height: 7px !important;
+  margin-right: 20px !important;
+  padding-right: 17px !important;
+  padding-left: 7px !important;
+  margin-left: 57px !important;
+  width: 0% !important;
+  top: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  color: #000000 !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  color: #000000 !important;
+  line-height: 27px !important;
+  padding-left: 8px !important;
+  display: block!important;
+  padding-right: 20px !important;
+  overflow: visible !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap
+}
+
+
+#calendar {
+  max-width: 90%; /* Ajustar el ancho máximo al 90% del contenedor */
+  width: 100%; /* Ancho total del contenedor */
+  margin: 20px auto; /* Centrado horizontal */
+  padding: 20px; /* Espaciado interno */
+  background: rgb(255 251 251 / 26%);
+  backdrop-filter: blur(15px);
+  border: 1px solid #ddd; /* Borde */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.calendar-container {
+  display: none; /* Oculta el calendario inicialmente */
+}
+
+#calendar .fc-toolbar h2 {
+  font-size: 1.5rem; /* Tamaño del título */
+  color: #333;
+}
+
+
+/* Cambiar el color de fondo de los eventos */
+.fc-event {
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+}
+
+/* Cambiar el color de la cabecera */
+.fc-dayGridMonth-button {
+  background-color: #20b571;
+  color: white;
+}
+
+/* Estilo para el día actual */
+.fc-day-today {
+  background-color: #f8d7da;
+}
+
+/* Cambiar el color del punto para todos los eventos */
+.fc-event-dot {
+  background-color: #ff5733 !important;  /* Cambiar el color del punto */
+}
+
+/* Cambiar el color del punto de eventos con clase específica */
+.fc-event-dot.mi-clase {
+  background-color: #00ff00 !important;  /* Cambiar el color del punto para eventos específicos */
+}
+
+:root {
+  --fc-event-bg-color: #023a33b5; /* Color de fondo del evento */
+  --fc-event-border-color: #0b2e30; /* Color del borde del evento */
+  --fc-event-text-color: #000000; /* Color del texto del evento */
+}
+
+.fc-daygrid-day-number {
+  color: #000000; /* Cambia el color de la letra a negro */
+}
+.fc-col-header-cell-cushion {
+  color: #000000; /* Cambia el color de la letra a rojo */
+}
+.fc-daygrid-event-dot {
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid #20b571;
+  box-sizing: content-box;
+  height: 0;
+  margin: 0 4px;
+  width: 0;
+}
+
+/* Botones del calendario */
+#calendar .fc-toolbar button {
+  font-size: 1rem; /* Tamaño base */
+  padding: 5px 10px; /* Espaciado interno */
+  border-radius: 5px;
+}
+
+.fc-direction-ltr .fc-toolbar>*>:not(:first-child) {
+  margin-left: 0.75em !important;
+  width: 34% !important;
+}
+
+/************************************************************************/
+
+.card-header {
+    background-color:rgb(0, 121, 101);
+    color: white;
+    font-weight: bold;
+}
+.table-responsive {
+    margin-top: 20px;
+}
+.badge-tiempo {
+    font-size: 0.9em;
+    padding: 5px 8px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.loading-spinner {
+    display: none;
+    width: 2rem;
+    height: 2rem;
+}
+.summary-card {
+    transition: all 0.3s ease;
+}
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.py-4 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+    width: 99% !important;
+}
+
+.card-body {
+    flex: 1 1 auto!important;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x)!important;
+    color: var(--bs-card-color)!important;
+}
+
+    
+footer {
+    font-family: 'Estilo Montserrat', sans-serif;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #012c2a;
+    color: #ffffff;
+  }
+
+  ol,
+    ul {
+    padding-left: 0rem !important;
+    }
+
+
+    .card {
+
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+
+        background-color: rgba(255, 255, 255, 0.212)!important;
+        backdrop-filter: blur(15px)!important;
+
+    }
+
+    .form-control {
+        display: block;
+        width: 100%!important;
+        padding: 0.5rem!important;
+        margin-bottom: 1rem!important;
+        font-size: 1rem!important;
+        border: 1px solid rgba(255, 255, 255, 0.2)!important;
+        border-radius: 4px!important;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box!important;
+        color: #000000;
+    }
+
+    .form-control:focus {
+        border-color: #20b571!important; /* Verde brillante */
+        outline: none!important;
+        box-shadow: 0 0 6px rgba(76, 175, 80, 0.8)!important; /* Verde brillante */
+      }
+
+    .form-select {
+        display: block;
+        width: 90%!important;
+        padding: 0.5rem!important;
+        margin-bottom: 1rem!important;
+        font-size: 1rem!important;
+        border: 1px solid rgba(255, 255, 255, 0.2)!important;
+        border-radius: 4px!important;
+        background: rgba(50, 50, 50, 0.9)!important;
+        color: #ffffff!important;
+        box-sizing: border-box!important;
+    }
+
+    
+
+    .form-select:focus {
+        border-color: #20b571!important; /* Verde brillante */
+        outline: none!important;
+        box-shadow: 0 0 6px rgba(76, 175, 80, 0.8)!important; /* Verde brillante */
+      }
+
+      .form-label {
+        margin-bottom: .5rem!important;
+        color: #ffffff!important;
+    }
+
+    @media (min-width: 768px) {
+        .col-md-3 {
+            flex: 0 0 auto !important;
+            width: 15% !important;
+        }
+        .col-md-4 {
+            flex: 0 0 auto!important;
+            width: 30.333333%!important;
+        }
+    }
+
+
+    .align-items-end {
+        align-items: flex-end !important;
+        padding: 18px!important;
+    }
+
+    button.btn-primary {
+      width: 97%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: #012c2a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      }
+
+      .btn-primary {
+        --bs-btn-hover-bg: #01534f;
+    }
+    
+    .textable {
+        color: #ffffff!important;
+
+        background-color: #00000036!important; /* Verde brillante */
+    }
+
+    table {
+        --bs-table-color-type: initial;
+        --bs-table-bg-type: initial;
+        --bs-table-color-state: initial;
+        --bs-table-bg-state: initial;
+        --bs-table-color: rgb(255, 255, 255)!important;
+        --bs-table-bg: rgba(0, 0, 0, 0.308)!important;
+        --bs-table-border-color: var(--bs-border-color);
+        --bs-table-accent-bg: transparent;
+        --bs-table-striped-color: var(--bs-body-color);
+        --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+        --bs-table-active-color: var(--bs-body-color);
+        --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+        --bs-table-hover-color: rgba(2, 253, 23, 0.973)!important;
+        --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+        width: 100%;
+        margin-bottom: 1rem;
+        vertical-align: top;
+        border-color: var(--bs-table-border-color);
+        color: #ffffff!important;
+    }
+
+    .table-light {
+        --bs-table-color: #ffffff;
+        --bs-table-bg: #00634d!important;
+        --bs-table-border-color: #dfe0e1;
+        --bs-table-striped-bg: #ecedee;
+        --bs-table-striped-color: #000;
+        --bs-table-active-bg: #dfe0e1;
+        --bs-table-active-color: #000;
+        --bs-table-hover-bg: #e5e6e7;
+        --bs-table-hover-color: #000;
+        color: var(--bs-table-color);
+        border-color: var(--bs-table-border-color);
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd)>* {
+        --bs-table-color-type: #ffffff!important;
+
+    }
+
+.btn-outline-primary {
+    --bs-btn-color: #1de286;
+    --bs-btn-border-color: #1de286;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #1de286;
+    --bs-btn-hover-border-color: #1de286;
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #1de286;
+    --bs-btn-active-border-color: #1de286;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #1de286;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #1de286;
+    --bs-gradient: none;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #dd0c52;
+    --bs-btn-border-color: #dd0c52;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #dd0c52;
+    --bs-btn-hover-border-color: #dd0c52;
+    --bs-btn-focus-shadow-rgb: 108, 117, 125;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #dd0c52;
+    --bs-btn-active-border-color: #dd0c52;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #dd0c52;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #dd0c52;
+    --bs-gradient: none;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1055;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0); /* Más oscuro */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque */
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+.modal-content {
+    position: relative;
+    display: flex
+;
+    flex-direction: column;
+    width: 100%;
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.808);;
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    color: #ffffff; /* Texto claro */
+  }
+  
+  .text-muted {
+    --bs-text-opacity: 1;
+    color: rgb(255, 255, 255) !important;
+}
+
+.card-body {
+    flex: 1 1 auto !important;
+    padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgb(45, 99, 0) !important;
+}
+
+.bg-success2{
+  --bs-bg-opacity: 1;
+  background-color: rgb(148, 108, 0) !important;
+}
+
+.text-primary {
+    --bs-text-opacity: 1;
+    color: rgb(0 99 77) !important;
+}
+
+.border-primary {
+    --bs-border-opacity: 1;
+    border-color: rgb(20 138 87) !important;
+}
+
+.border-success {
+    --bs-border-opacity: 1;
+    border-color: rgb(148, 108, 0) !important;
+}
+
+.text-success {
+    --bs-text-opacity: 1;
+    color: rgb(148, 108, 0) !important;
+}
+
+.border-info {
+    --bs-border-opacity: 1;
+    border-color: rgb(240 13 121) !important;
+}
+
+.text-info {
+    --bs-text-opacity: 1;
+    color: rgb(240 13 121) !important;
+}
+
+.bg-info {
+    --bs-bg-opacity: 1;
+    background-color: rgb(221 12 82) !important;
+}
+
+.estado-actual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 52px; /* o el tamaño que desees */
+}
+
+
+/* Estilos específicos para medicoModal */
+#medicoModal {
+  display: none;
+  position: fixed;
+  z-index: 1055;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0); /* Fondo transparente */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque */
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+#medicoModal .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--bs-modal-color);
+  pointer-events: auto;
+  background-color: rgba(0, 0, 0, 0.808); /* Fondo oscuro semi-transparente */
+  background-clip: padding-box;
+  border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+  border-radius: 10px; /* Bordes redondeados */
+  border: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Sombra */
+  outline: 0;
+}
+
+#medicoModal .modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+}
+
+#medicoModal .modal-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #dddddd; /* Texto claro */
+}
+
+#medicoModal .modal-body {
+  padding: 1.5rem;
+  color: #dddddd; /* Texto claro */
+}
+
+#medicoModal .modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+}

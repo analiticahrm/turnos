@@ -1,0 +1,1319 @@
+/* Asignación de Turnos de Enfermería: barra, tabla, calendario y panel del día.
+   Usa los tokens de CoordinacionEnfermeria.css (--accent-color, --card-bg, --modal-bg, ...) para respetar
+   modo claro/oscuro (.dark-mode en <body>). Clases con prefijo at- (pantalla) y cal- (panel del día) para no chocar
+   con reglas globales de esa hoja (.modal, .btn, .form-control, .turno-item, th/td, ...). */
+
+#asignacion-turnos-content [hidden],
+.cal-modal [hidden] {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------ barra */
+.at-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 18px;
+  margin-bottom: 12px;
+}
+.at-periodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.at-icono,
+.at-hoy,
+.at-periodo-titulo {
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-color);
+  background: transparent;
+  color: var(--accent-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.at-icono {
+  width: 38px;
+}
+.at-hoy {
+  padding: 0 14px;
+}
+.at-periodo-titulo {
+    min-width: 190px;
+    padding: 0 14px;
+    border-color: var(--card-border);
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.at-icono:hover,
+.at-hoy:hover,
+.at-periodo-titulo:hover {
+  background: rgba(0, 131, 113, 0.08);
+}
+.at-campo {
+  display: flex;
+  flex-direction: column;
+  min-width: 210px;
+}
+.at-campo label {
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.at-campo .form-control {
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  height: 38px;
+}
+.at-buscar {
+  min-width: 230px;
+}
+
+.at-grupo-botones {
+  display: inline-flex;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 38px;
+}
+.at-grupo-botones button {
+  border: none;
+  background: transparent;
+  color: var(--accent-color);
+  padding: 0 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.at-grupo-botones button + button {
+  border-left: 1px solid var(--accent-color);
+}
+.at-grupo-botones button:hover {
+  background: rgba(0, 131, 113, 0.08);
+}
+.at-grupo-botones button.activo {
+  background: var(--accent-color);
+  color: #fff;
+}
+.at-grupo-botones button i {
+  margin-right: 6px;
+}
+
+#at-generar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.at-perfiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 6px;
+}
+.at-perfiles:empty {
+  display: none;
+}
+.at-perfiles-tit {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 2px;
+}
+.at-chip-filtro {
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.at-chip-filtro:hover {
+  border-color: var(--accent-color);
+}
+.at-chip-filtro.activo {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+.at-cuenta {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(120, 130, 140, 0.2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+.at-chip-filtro.activo .at-cuenta {
+  background: rgba(255, 255, 255, 0.25);
+}
+.at-cuenta.deficit {
+  background: rgba(211, 47, 47, 0.18);
+  color: var(--danger-color);
+}
+
+.at-ayuda {
+  margin: 8px 0 12px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.at-alerta {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border-left: 4px solid var(--warning-color);
+  background: rgba(245, 124, 0, 0.1);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+.at-alerta i {
+  color: var(--warning-color);
+  margin-top: 2px;
+}
+
+.at-cuerpo {
+  position: relative;
+  min-height: 80px;
+}
+.at-cuerpo.cargando {
+  opacity: 0.55;
+  pointer-events: none;
+}
+.at-error {
+  padding: 24px;
+  text-align: center;
+  color: var(--danger-color);
+}
+.at-error button {
+  margin-top: 12px;
+}
+.at-vacio {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--text-secondary);
+}
+.at-vacio i {
+  font-size: 2.2rem;
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+.at-vacio p {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* ------------------------------------------------------------ tabla */
+#asignacion-turnos-content .at-tabla-wrap {
+  max-height: 72vh;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+}
+#asignacion-turnos-content table.grilla-turnos {
+  width: auto;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12px;
+  background: var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos th,
+#asignacion-turnos-content .grilla-turnos td {
+  padding: 3px 4px;
+  text-align: center;
+  white-space: nowrap;
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  color: var(--text-primary);
+  text-transform: none;
+  letter-spacing: 0;
+}
+#asignacion-turnos-content .grilla-turnos thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  font-size: 0.8rem;
+  background:
+    linear-gradient(var(--table-header-bg), var(--table-header-bg)),
+    var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos th.at-dia small {
+  display: block;
+  font-weight: 500;
+  opacity: 0.7;
+}
+#asignacion-turnos-content .grilla-turnos td.nombre,
+#asignacion-turnos-content .grilla-turnos th.nombre {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 230px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding-left: 10px;
+  background: var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos thead th.nombre {
+  z-index: 4;
+}
+#asignacion-turnos-content .grilla-turnos td.nombre strong {
+  display: block;
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#asignacion-turnos-content .grilla-turnos td.nombre small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* fines de semana, festivos y hoy */
+#asignacion-turnos-content .grilla-turnos td.finde {
+  background-color: rgba(120, 130, 140, 0.1);
+}
+#asignacion-turnos-content .grilla-turnos thead th.finde {
+  background:
+    linear-gradient(rgba(120, 130, 140, 0.16), rgba(120, 130, 140, 0.16)),
+    var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos td.festivo {
+  background-color: rgba(211, 47, 47, 0.08);
+}
+#asignacion-turnos-content .grilla-turnos thead th.festivo {
+  background:
+    linear-gradient(rgba(211, 47, 47, 0.16), rgba(211, 47, 47, 0.16)),
+    var(--modal-bg);
+  color: var(--danger-color);
+}
+#asignacion-turnos-content .grilla-turnos td.hoy {
+  background-color: rgba(245, 197, 24, 0.12);
+}
+#asignacion-turnos-content .grilla-turnos thead th.hoy {
+  box-shadow: inset 0 -3px 0 var(--accent-color);
+  color: var(--accent-color);
+}
+
+#asignacion-turnos-content .celda-turno {
+  cursor: pointer;
+  min-width: 36px;
+  height: 32px;
+  position: relative;
+}
+#asignacion-turnos-content .celda-turno:hover {
+  background-color: rgba(0, 131, 113, 0.14);
+}
+#asignacion-turnos-content .celda-turno.seleccionada {
+  outline: 2px solid var(--accent-color);
+  outline-offset: -2px;
+  background-color: rgba(0, 131, 113, 0.16);
+}
+#asignacion-turnos-content .celda-turno.guardando {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.at-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--tc, #94a3b8);
+  color: var(--tx, #fff);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+.at-chip-quitar {
+  background: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+/* Sello de novedad: el turno se quitó de un cuadro ya confirmado (IN, CM, CA, AB, RE). Gris, con las 2 letras del motivo. */
+.at-chip.at-sello {
+  --tc: #cbd5e1;
+  --tx: #475569;
+  border: 1px dashed #94a3b8;
+  cursor: help;
+  letter-spacing: 0.02em;
+}
+body.dark-mode .at-chip.at-sello {
+  --tc: #475569;
+  --tx: #e2e8f0;
+  border-color: #94a3b8;
+}
+/* Marca de cobertura: el turno lo trabaja un apoyo que reemplaza a un compañero con novedad. */
+.at-cobertura {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  font-size: 9px;
+  line-height: 1;
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: #fff;
+  border: 1.5px solid var(--modal-bg);
+}
+.pt-sello {
+  opacity: 0.85;
+}
+/* Cambio de turno aprobado: insignia ⇄ en la esquina del chip y anillo punteado en el punto del calendario. */
+.at-cambio {
+    position: absolute;
+    top: -5px;
+    right: 16px;
+    font-style: normal;
+    font-size: 8px;
+    line-height: 1;
+    width: 13px;
+    height: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #2ad0cb;
+    color: #fff;
+    border: 1.5px solid var(--modal-bg);
+}
+.at-en-otro .at-cambio,
+.pt-cambio .at-cambio {
+  position: static;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.at-punto.at-punto-cambio {
+  outline: 2px dotted #7c3aed;
+  outline-offset: 1px;
+}
+#asignacion-turnos-content .celda-turno.at-celda-cambio {
+  background-image: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(124, 58, 237, 0) 60%
+  );
+}
+#asignacion-turnos-content .at-modo-real .celda-turno:hover {
+  background-color: transparent;
+}
+#asignacion-turnos-content .at-modo-real .celda-turno {
+  cursor: default;
+}
+#at-cuerpo.at-modo-real {
+  box-shadow: inset 0 0 0 2px rgba(124, 58, 237, 0.35);
+  border-radius: 8px;
+}
+.cal-fila.cambiado .at-en-otro {
+  color: #6d28d9;
+}
+/* Sello sin cobertura: punto ámbar en la esquina. Clic en la celda abre el detalle de la novedad. */
+.at-sin-cobertura {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  border: 1.5px solid var(--modal-bg);
+}
+#asignacion-turnos-content .celda-turno.at-celda-sello {
+  cursor: pointer;
+}
+.at-mini-sello {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.cal-novedad h4 i {
+  color: #64748b;
+  margin-right: 6px;
+}
+/* Arrastrar y soltar turnos */
+#asignacion-turnos-content .celda-turno[draggable="true"] {
+  cursor: grab;
+}
+#asignacion-turnos-content .celda-turno.arrastrando {
+  opacity: 0.35;
+}
+#asignacion-turnos-content .celda-turno.destino-ok {
+  outline: 2px dashed var(--accent-color);
+  outline-offset: -2px;
+  background-color: rgba(0, 131, 113, 0.18);
+}
+#asignacion-turnos-content .celda-turno.destino-no {
+  outline: 2px dashed var(--danger-color);
+  outline-offset: -2px;
+  cursor: not-allowed;
+}
+#asignacion-turnos-content .celda-turno.mover-origen {
+  outline: 2px solid var(--warning-color);
+  outline-offset: -2px;
+}
+.at-mover-aviso {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--warning-color);
+  background: rgba(245, 124, 0, 0.1);
+}
+.at-mover-aviso button {
+  margin-left: auto;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+/* marca de "editado a mano" (no lo pisa la generación automática) */
+.at-manual {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--danger-color);
+  border: 1.5px solid var(--modal-bg);
+}
+
+/* grupos servicio / perfil */
+#asignacion-turnos-content .grilla-turnos tr.at-grupo td {
+  padding: 0;
+  text-align: left;
+  font-weight: 700;
+  background:
+    linear-gradient(var(--table-header-bg), var(--table-header-bg)),
+    var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos tr.at-grupo-s td {
+  color: var(--primary-color);
+  font-size: 0.85rem;
+}
+#asignacion-turnos-content .grilla-turnos tr.at-grupo-p td {
+  font-weight: 600;
+}
+.at-grupo-in {
+  position: sticky;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+}
+.at-plegar {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.at-plegar:hover {
+  background: rgba(120, 130, 140, 0.2);
+}
+.at-plegar i {
+  transition: transform 0.15s;
+}
+.at-plegar.plegado i {
+  transform: rotate(-90deg);
+}
+
+/* pie de cobertura */
+#asignacion-turnos-content .grilla-turnos tr.at-pie td,
+#asignacion-turnos-content .grilla-turnos tr.at-pie th {
+  font-weight: 600;
+  background-color: var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos tr.at-pie th.nombre small {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+#asignacion-turnos-content .grilla-turnos tr.at-pie td.at-deficit {
+  background-color: rgba(211, 47, 47, 0.18);
+  color: var(--danger-color);
+}
+#asignacion-turnos-content .grilla-turnos tr.at-pie td.at-cero {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* ------------------------------------------------------------ selector de turno y selector de período */
+.at-selector,
+.at-picker {
+  position: fixed;
+  z-index: 2500;
+  background: var(--modal-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  color: var(--text-primary);
+}
+.at-selector {
+  min-width: 230px;
+  padding: 6px;
+}
+.at-selector-cab {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 8px 8px;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 4px;
+}
+.at-selector-cab strong {
+  font-size: 0.85rem;
+}
+.at-selector-cab small {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+.at-selector-vacio {
+  padding: 10px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  max-width: 220px;
+}
+.at-op {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+.at-op:hover,
+.at-op:focus {
+  background: rgba(0, 131, 113, 0.12);
+  outline: none;
+}
+.at-op.actual {
+  background: rgba(0, 131, 113, 0.08);
+}
+.at-op-txt {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  line-height: 1.25;
+}
+.at-op-txt b {
+  font-size: 0.85rem;
+}
+.at-op-txt small {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.at-op .fa-check {
+  color: var(--accent-color);
+}
+.at-op.quitar {
+  margin-top: 4px;
+  border-top: 1px solid var(--card-border);
+  border-radius: 0 0 8px 8px;
+}
+
+.at-picker {
+  padding: 10px;
+  width: 250px;
+}
+.at-picker-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.at-picker-cab button {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.at-picker-meses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.at-picker-meses button {
+  padding: 8px 0;
+  border-radius: 6px;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.at-picker-meses button:hover {
+  border-color: var(--accent-color);
+}
+.at-picker-meses button.activo {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #fff;
+}
+
+#at-toasts {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2800;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 380px;
+}
+.at-toast {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--modal-bg);
+  color: var(--text-primary);
+  border-left: 4px solid var(--accent-color);
+  box-shadow: 0 6px 20px var(--shadow-color);
+  font-size: 0.85rem;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.at-toast.error {
+  border-left-color: var(--danger-color);
+}
+.at-toast.saliendo {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+/* ------------------------------------------------------------ puntos (un punto por enfermero; la forma es el turno) */
+.at-punto {
+  --l: 45%;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--h, 200) 65% var(--l));
+  background: hsl(var(--h, 200) 65% var(--l));
+}
+.at-punto.v0 {
+  --l: 40%;
+}
+.at-punto.v1 {
+  --l: 52%;
+}
+.at-punto.v2 {
+  --l: 64%;
+}
+.dark-mode .at-punto {
+  --l: 62%;
+}
+.dark-mode .at-punto.v0 {
+  --l: 56%;
+}
+.dark-mode .at-punto.v1 {
+  --l: 66%;
+}
+.dark-mode .at-punto.v2 {
+  --l: 76%;
+}
+.at-punto.f1 {
+  background: transparent;
+} /* anillo: p. ej. noche */
+.at-punto.f2 {
+  border-radius: 2px;
+} /* cuadrado */
+.at-punto.f3 {
+  border-radius: 2px;
+  background: transparent;
+} /* cuadrado hueco */
+.at-punto.f4 {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.82);
+} /* rombo */
+.at-punto.f5 {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.82);
+  background: transparent;
+} /* rombo hueco */
+.at-punto.neutro {
+  border-color: var(--text-secondary);
+  background: var(--text-secondary);
+}
+.at-punto.neutro.f1,
+.at-punto.neutro.f3,
+.at-punto.neutro.f5 {
+  background: transparent;
+}
+.at-punto.atenuado {
+  opacity: 0.15;
+}
+.at-mas {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  align-self: center;
+}
+
+/* ------------------------------------------------------------ calendario */
+.at-cal {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.at-cal-principal {
+  flex: 1;
+  min-width: 0;
+}
+
+.at-mes-cab {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--primary-color);
+  padding-bottom: 6px;
+}
+.at-mes-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--card-border);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.at-mes-celda {
+  position: relative;
+  min-height: 104px;
+  padding: 6px 8px;
+  background: var(--modal-bg);
+  cursor: pointer;
+}
+.at-mes-celda:hover {
+  background-color: rgba(0, 131, 113, 0.08);
+}
+.at-mes-celda:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: -2px;
+}
+.at-mes-celda.fuera {
+  opacity: 0.55;
+}
+.at-mes-celda.hoy {
+  background:
+    linear-gradient(rgba(245, 197, 24, 0.16), rgba(245, 197, 24, 0.16)),
+    var(--modal-bg);
+}
+.at-mes-celda.abierto {
+  outline: 2px solid var(--accent-color);
+  outline-offset: -2px;
+}
+.at-mes-num {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.at-mes-celda.festivo .at-mes-num {
+  color: var(--danger-color);
+}
+.at-festivo {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+.at-puntos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding-top: 22px;
+}
+
+.at-leyenda {
+  flex: none;
+  width: 260px;
+  max-height: 72vh;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: var(--modal-bg);
+}
+.at-leyenda h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+.at-ley-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+.at-ley-item:hover {
+  background: rgba(0, 131, 113, 0.1);
+}
+.at-ley-item.activo {
+  background: rgba(0, 131, 113, 0.18);
+  font-weight: 700;
+}
+.at-ley-nom {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.at-ley-item small {
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+.at-ley-formas {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+.at-ley-formas > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* semana */
+.at-semana {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(150px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+}
+.at-sem-col {
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--modal-bg);
+  padding: 8px;
+  min-height: 220px;
+}
+.at-sem-col.hoy {
+  box-shadow: inset 0 0 0 2px var(--accent-color);
+}
+.at-sem-col.festivo .at-sem-cab b {
+  color: var(--danger-color);
+}
+.at-sem-cab {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 6px;
+  background: var(--table-header-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.at-sem-cab span {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.at-sem-cab b {
+  font-size: 1.2rem;
+}
+.at-sem-cab i {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--danger-color);
+  font-style: normal;
+}
+.at-sem-turno {
+  margin-top: 8px;
+  padding-left: 8px;
+  border-left: 3px solid var(--tc, var(--card-border));
+}
+.at-sem-turno-cab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.at-sem-nom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 3px 4px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.74rem;
+}
+.at-sem-nom span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.at-sem-nom:hover,
+.at-sem-nom.seleccionada {
+  background: rgba(0, 131, 113, 0.14);
+}
+
+/* vista día + panel del día */
+.at-dia-vista {
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--modal-bg);
+}
+.at-dia-cab,
+.cal-titulo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.at-dia-cab {
+  margin-bottom: 14px;
+}
+.cal-dia-num {
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-primary);
+}
+.cal-dia-texto {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.cal-dia-texto small {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.cal-modal {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.cal-modal-header {
+  padding-block: 14px;
+}
+.cal-acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cal-mas {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-color);
+  background: transparent;
+  color: var(--accent-color);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.cal-mas:hover {
+  background: rgba(0, 131, 113, 0.12);
+}
+.cal-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 22px;
+}
+
+.cal-filtros {
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.cal-turno {
+  margin-bottom: 14px;
+  border-left: 4px solid var(--tc, var(--card-border));
+  padding-left: 12px;
+}
+.cal-turno h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+.cal-turno h4 small {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.cal-turno h4 .at-cuenta {
+  margin-left: auto;
+}
+.cal-vacio {
+  padding: 6px 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.cal-fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--card-border);
+}
+.cal-fila:last-child {
+  border-bottom: none;
+}
+.cal-barra {
+  align-self: stretch;
+  width: 4px;
+  border-radius: 2px;
+  background: hsl(var(--h, 200) 65% 50%);
+  flex: none;
+}
+.cal-info {
+  flex: 1;
+  min-width: 0;
+}
+.cal-info strong {
+  display: block;
+  font-size: 0.82rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-info small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-chips {
+  display: flex;
+  gap: 4px;
+  flex: none;
+}
+.at-mini {
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1px solid var(--tc, var(--card-border));
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.at-mini:hover {
+  background: rgba(120, 130, 140, 0.15);
+}
+.at-mini.activo {
+  background: var(--tc);
+  color: var(--tx, #fff);
+}
+.at-mini.quitar {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+.cal-sin {
+  margin-top: 6px;
+  border-top: 1px solid var(--card-border);
+  padding-top: 8px;
+}
+.cal-sin-tit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+.cal-sin-tit small {
+  margin-left: auto;
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+.cal-sin-cuerpo {
+  padding-top: 6px;
+}
+.cal-sin-buscar {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+.cal-sin-lista {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+/* ------------------------------------------------------------ pantallas angostas */
+@media (max-width: 1100px) {
+  .at-cal {
+    flex-direction: column;
+  }
+  .at-leyenda {
+    width: 100%;
+    max-height: 260px;
+  }
+}
+@media (max-width: 700px) {
+  .at-campo,
+  .at-buscar {
+    min-width: 100%;
+  }
+  .at-periodo-titulo {
+    min-width: 140px;
+  }
+  .at-mes-celda {
+    min-height: 70px;
+    padding: 4px;
+  }
+}
+
+/* ------------------------------------------------------------ servicios de apoyo / turno en otro servicio */
+/* Celda con el turno que la persona tiene en OTRO servicio: se ve, pero no se edita desde este. */
+#asignacion-turnos-content .celda-turno.at-ajeno {
+  cursor: not-allowed;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 5px,
+    rgba(120, 130, 140, 0.16) 5px 8px
+  );
+}
+#asignacion-turnos-content .celda-turno.at-ajeno:hover {
+  background-color: transparent;
+}
+#asignacion-turnos-content .celda-turno.at-ajeno .at-chip {
+  opacity: 0.6;
+}
+.at-candado {
+  font-size: 0.6rem;
+  margin-left: 4px;
+  opacity: 0.85;
+}
+.cal-fila.ajena {
+  opacity: 0.75;
+}
+.at-en-otro {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.cal-en-otro h4 {
+  color: var(--text-secondary);
+}
+.cal-en-otro h4 i {
+  margin-right: 6px;
+}
+
+/* Modal del enfermero: lista de servicios de apoyo (son ~25: en cuadrícula con scroll, no en una sola fila) */
+#servicios-apoyo-disponibles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px 14px;
+  max-height: 190px;
+  overflow-y: auto;
+  padding: 4px 2px;
+}
+#servicios-apoyo-disponibles .form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+#servicios-apoyo-disponibles .form-check label {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.2;
+  cursor: pointer;
+}

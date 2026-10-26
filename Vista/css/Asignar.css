@@ -1,0 +1,281 @@
+table , td, th {
+	border-collapse: collapse;
+}
+td, th {
+	padding: 3px;
+	width: 30px;
+	height: 25px;
+}
+th {
+	background: #f0e6cc;
+}
+.even {
+	background: #fbf8f0;
+}
+.odd {
+	background: #fefcf9;
+}
+
+/* Estilos Generales */
+.contenido-principal {
+    color: #fff;
+
+    padding: 20px;
+}
+
+.container{
+    width: 100%;
+}
+
+/* Estilo de la tabla */
+.contenido-principal table {
+    width: 100%;
+
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: rgba(48, 48, 48, 0.26);
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#medicos-a-asignar li {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between; /* Separa el texto y el botón */
+    align-items: center; /* Centra verticalmente */
+}
+
+#medicos-asignados li {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between; /* Separa el texto y el botón */
+    align-items: center; /* Centra verticalmente */
+}
+
+
+.quitar {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quitar:hover {
+    background-color: #cc0000;
+}
+
+.contenido-principal th, .contenido-principal td {
+    border-bottom: 2px solid rgba(255, 255, 255, 0);
+    padding-left: 26px;
+    padding-right: 26px;
+}
+
+.contenido-principal th {
+    background: rgba(255, 255, 255, 0.2);
+    font-size: 18px;
+}
+
+/* Estilos para Selects */
+.contenido-principal select {
+    width: 97%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.contenido-principal select:hover {
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Botones */
+.contenido-principal button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.contenido-principal .btn-primary {
+    background: #0a8066;
+    color: white;
+}
+
+.contenido-principal .btn-primary:hover {
+    background: #0da584;
+    box-shadow: 0px 0px 10px rgba(28, 212, 172, 0.8);
+}
+
+.contenido-principal .btn-success {
+    background: #004b44;
+    color: white;
+}
+
+.contenido-principal .btn-success:hover {
+    background: #003530;
+    box-shadow: 0px 0px 10px rgba(1, 150, 105, 0.8);
+}
+
+/* Listas de médicos */
+.contenido-principal ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contenido-principal ul li {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    margin: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.contenido-principal ul li:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Estilo para los botones de eliminar dentro de la lista */
+.contenido-principal .eliminar {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contenido-principal .eliminar:hover {
+    background: #c82333;
+    box-shadow: 0px 0px 10px rgba(220, 53, 69, 0.8);
+}
+
+.contenido-principal .quitar {
+    background: #dd0c52;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contenido-principal .quitar:hover {
+    background: rgb(131, 22, 64);
+    box-shadow: 0px 0px 10px rgba(220, 53, 137, 0.8);
+}
+
+.agremedi {
+    display: flex;
+    align-items: center;
+}
+.agremedi select {
+    margin-right: 10px;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 38px !important;
+    padding: 5px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    font-size: 16px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+    color: #000000 !important;
+  }
+  
+  .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #ffffff !important;
+  }
+  
+  
+  
+  .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+    right: 8px !important; /* Ajusta la posición de la flecha */
+  }
+  
+  
+  
+  .select2-container--default .select2-selection--single .select2-selection__clear:hover {
+    color: #ffffff !important; /* Cambia el color al pasar el mouse */
+  }
+  
+  /* Estilos para el dropdown */
+  .select2-dropdown {
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(15px) !important;
+  
+  }
+  .select2-results__option {
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos si el texto es demasiado largo */
+  }
+  
+  
+  .select2-results__option--highlighted {
+    background-color: #0e484d !important; /* Color amarillo al seleccionar */
+    color: #ffffff !important;
+  }
+  
+  
+  .select2-container--default .select2-selection--single .select2-selection__clear {
+    cursor: pointer !important;
+    float: right !important;
+    font-weight: bold !important;
+    height: 7px !important;
+    margin-right: 20px !important;
+    padding-right: 17px !important;
+    padding-left: 7px !important;
+    margin-left: 57px !important;
+    width: 0% !important;
+    top: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    color: #000000 !important;
+  }
+
+  .custom-select:focus {
+    border-color: #089c7c8e !important;
+  }
+  
+  .select2-container--default .select2-results__option--selected {
+    background-color: #004b44!important;
+  }
+  
+  .select2-container .select2-selection--single .select2-selection__rendered {
+    color: #ffffff !important;
+    line-height: 27px !important;
+    padding-left: 8px !important;
+    display: block!important;
+    padding-right: 20px !important;
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap
+  }
+  
+  .resultados{
+    color: #ffffff;
+    text-align: center;
+  }

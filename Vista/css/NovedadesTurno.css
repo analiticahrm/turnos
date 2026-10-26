@@ -1,0 +1,20 @@
+/* Diálogos de novedades de turno (js/NovedadesTurno.js). Los colores salen de los tokens de la consola. */
+.nv-wrap { text-align: left; font-size: 14px; }
+.nv-ctx { margin: 0 0 10px; padding: 8px 10px; border-radius: 8px; background: rgba(0, 131, 113, .08); }
+.nv-motivos, .nv-cands { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; max-height: 300px; overflow: auto; }
+.nv-motivo, .nv-cand {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; cursor: pointer;
+    border: 1px solid rgba(128, 128, 128, .35); border-radius: 8px;
+}
+.nv-motivo:hover, .nv-cand:hover { border-color: #008371; }
+.nv-motivo:has(input:checked), .nv-cand:has(input:checked) { border-color: #008371; background: rgba(0, 131, 113, .1); }
+.nv-motivo small, .nv-cand small { display: block; font-size: 12px; opacity: .75; }
+.nv-no { opacity: .55; cursor: not-allowed; }
+.nv-razon { color: #b45309; opacity: 1 !important; }
+.nv-vacio { opacity: .75; }
+.nv-wrap .swal2-textarea { width: 100%; margin: 6px 0 0; box-sizing: border-box; font-size: 14px; }
+.nv-detalle { display: flex; gap: 12px; align-items: flex-start; }
+.nv-detalle dl { margin: 0; flex: 1; }
+.nv-detalle dl div { display: flex; gap: 8px; padding: 2px 0; }
+.nv-detalle dt { width: 96px; flex: none; opacity: .7; }
+.nv-detalle dd { margin: 0; }

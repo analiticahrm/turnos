@@ -1,0 +1,424 @@
+/* Portal del enfermero/auxiliar. Reutiliza los tokens y componentes de CoordinacionEnfermeria.css
+   (sidebar, header, tarjetas, modo día/noche con .dark-mode) y del calendario de AsignacionTurnos.css (at-*).
+   Aquí solo va lo propio del portal, con prefijo pt-. */
+
+[hidden] {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------ menú en celulares */
+.pt-menu-btn {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 1100;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+.pt-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 900;
+}
+a.menu-item {
+  text-decoration: none;
+}
+.sidebar-menu .pt-salir {
+  margin-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 992px) {
+  .pt-menu-btn {
+    display: block;
+  }
+  .main-content {
+    padding: 70px 14px 24px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .dashboard-cards {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .card-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* ------------------------------------------------------------ paneles y tablas */
+.pt-seccion {
+  margin-bottom: 2px;
+}
+.pt-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+.pt-panel h3 {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+.pt-panel h3 small {
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 8px;
+  font-size: 0.78rem;
+}
+.pt-nota {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  margin-top: 10px;
+}
+
+.pt-kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px 24px;
+}
+.pt-kv div {
+  min-width: 0;
+}
+.pt-kv dt {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+}
+.pt-kv dd {
+  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+.pt-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pt-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(0, 131, 113, 0.14);
+  color: var(--accent-color);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.pt-tabla-wrap {
+  overflow-x: auto;
+}
+.pt-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.pt-tabla th,
+.pt-tabla td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
+}
+.pt-tabla th {
+  background: var(--table-header-bg);
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.pt-tabla tbody tr:hover {
+  background: var(--table-row-hover);
+}
+.pt-tabla .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.pt-tabla tr.pt-total td {
+  font-weight: 700;
+  border-top: 2px solid var(--card-border);
+}
+.pt-tabla tr.pt-festivo td:first-child {
+  color: var(--danger-color);
+}
+.pt-tabla .pt-sub td {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.pt-tabla .pt-neg {
+  color: var(--danger-color);
+}
+.pt-tabla .pt-nulo {
+  color: var(--text-secondary);
+}
+
+.pt-grande {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-variant-numeric: tabular-nums;
+}
+.pt-resumen-sueldo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.pt-resumen-sueldo .pt-panel {
+  margin-bottom: 0;
+}
+.pt-resumen-sueldo small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+/* ------------------------------------------------------------ calendario */
+.pt-cal .at-mes-celda {
+  min-height: 92px;
+  padding: 6px;
+  cursor: pointer;
+}
+.pt-cal-turnos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 22px;
+}
+.pt-cal-turno {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border-left: 4px solid var(--tc, #94a3b8);
+  background: rgba(120, 130, 140, 0.1);
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+.pt-cal-turno .at-chip {
+  flex: none;
+}
+.pt-cal-turno span.pt-hora {
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pt-cal-turno.pt-otro-servicio {
+  outline: 1px dashed var(--accent-color);
+}
+
+.pt-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 12px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.pt-leyenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pt-dia {
+  margin-top: 16px;
+}
+.pt-dia-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+.pt-dia-item:last-child {
+  border-bottom: none;
+}
+.pt-dia-item strong {
+  display: block;
+}
+.pt-dia-item small {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .pt-cal .at-mes-celda {
+    min-height: 62px;
+    padding: 4px;
+  }
+  .pt-cal-turnos {
+    padding-top: 18px;
+  }
+  .pt-cal-turno {
+    padding: 1px 2px;
+    gap: 3px;
+    border-left-width: 3px;
+  }
+  .pt-cal-turno .pt-hora {
+    display: none;
+  }
+  .at-mes-num {
+    font-size: 0.75rem;
+    right: 4px;
+    top: 3px;
+  }
+  .at-festivo {
+    left: 3px;
+    top: 3px;
+  }
+  .pt-tabla th,
+  .pt-tabla td {
+    padding: 8px 8px;
+    font-size: 0.84rem;
+  }
+  .at-periodo-titulo {
+    min-width: 140px;
+  }
+}
+
+/* ------------------------------------------------------------ formulario de contraseña */
+.pt-clave {
+  max-width: 460px;
+}
+.pt-clave .form-group {
+  margin-bottom: 14px;
+}
+.pt-clave label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+.pt-clave .btn-primary {
+  width: 100%;
+  padding: 11px 16px;
+  cursor: pointer;
+}
+.pt-requisitos {
+  margin: 0 0 14px 18px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+/* Tarjetas del resumen en celulares: el icono no debe pisar el título */
+.card-icon {
+  flex: none;
+}
+@media (max-width: 640px) {
+  .card {
+    padding: 14px;
+  }
+  .card-header {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 0.88rem;
+  }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+  }
+  .card-value {
+    font-size: 1.35rem;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Con el menú abierto, el botón se mueve al borde del panel para no tapar el logo */
+.pt-menu-btn[aria-expanded="true"] {
+  left: 198px;
+  top: 12px;
+  width: 40px;
+  height: 40px;
+}
+
+/* Explicación bajo cada concepto de la tabla de recargos y extras */
+.pt-tabla .pt-explica {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  max-width: 44ch;
+  white-space: normal;
+}
+.pt-tabla tr.pt-nulo .pt-explica {
+  opacity: 0.85;
+}
+
+/* Móvil: el encabezado sube y comparte fila con el botón del menú (el botón queda dentro de la esquina de la tarjeta) */
+@media (max-width: 992px) {
+  .main-content {
+    padding-top: 12px;
+  }
+  .main-content > .header {
+    position: relative;
+    padding: 12px 14px 5px 70px;
+    min-height: 66px;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+  .main-content > .header h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  .main-content > .header small {
+    display: block;
+  }
+  .main-content > .header .user-info {
+    margin-left: -56px;
+    width: calc(100% + 56px);
+  }
+  .pt-menu-btn {
+    top: 24px;
+    left: 26px;
+    width: 40px;
+    height: 40px;
+    box-shadow: none;
+  }
+  .pt-menu-btn[aria-expanded="true"] {
+    left: 210px;
+    top: 20px;
+  }
+}
+
+/* Las tablas largas se desplazan dentro de su tarjeta (barra horizontal) en vez de ensanchar toda la página */
+.main-content { min-width: 0; max-width: 100%; }
+.pt-seccion, .pt-panel { min-width: 0; max-width: 100%; }
+.pt-tabla-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: var(--accent-color) transparent; }
+.pt-tabla-wrap::-webkit-scrollbar { height: 8px; }
+.pt-tabla-wrap::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+@media (max-width: 992px) {
+    body { overflow-x: hidden; }
+    .pt-tabla { min-width: 520px; }
+}

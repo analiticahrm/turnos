@@ -1,0 +1,373 @@
+@font-face {
+    font-family: 'Estilo Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    /* Si tienes otros formatos de fuente (otf, woff, etc.), puedes agregarlos aquí */
+  }
+
+  .main-container {
+    flex: 1;
+    padding: 20px;
+  }
+
+
+  .FondoTabla {
+    font-size: 12px;
+    font-family: 'Estilo Montserrat', sans-serif;
+    background: rgba(48, 48, 48, 0.26);
+    backdrop-filter: blur(15px);
+    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
+    color: #ffffff;
+    overflow-x: auto; /* Permite el desplazamiento horizontal si la tabla es muy grande */
+}
+  #main-container2 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      justify-content: flex-start;
+  }
+/* Asegura que la tabla ocupe el 100% del ancho */
+#tblDatos {
+    width: 100% !important; /* Fuerza a que la tabla ocupe el 100% del ancho */
+    border-collapse: collapse; /* Mejora el aspecto de los bordes */
+}
+
+/* Estilo para las celdas de la tabla */
+#tblDatos th,
+
+td.AccionBoton {
+  white-space: nowrap;
+}
+
+.IconEstado{
+  width: 35px;
+  height: 35px;
+}
+
+.table_id{
+    font-family: 'Estilo Montserrat', sans-serif;
+
+}
+.action_btn22 {
+  margin-left: 0.5cm;
+  display: flex;
+  align-items: center;
+  margin-top: 0.5cm;
+  background-color: #ffffff00;
+  color: #f5f5f5;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  border: 2px solid #f5f5f5; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+  text-align: center;
+}
+
+  .action_btn22:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .action_btn22:hover {
+    background-color: #012c2a;
+    border: 2px solid #012c2a;
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #f1f1f1e3; 
+  }
+  
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .delete_btn:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .delete_btn:hover {
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #012c2a;
+  }
+
+footer {
+  font-family: 'Estilo Montserrat', sans-serif;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #012c2a;
+  color: #ffffff;
+}
+  
+body {
+font-family: 'Estilo Montserrat', sans-serif;
+height: 600px;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.8); /* Más oscuro */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque */
+}
+
+/* Contenedor del modal */
+.modal-dialog {
+  position: relative;
+  margin: auto;
+  top: 0%;
+  width: 90%;
+  max-width: 600px;
+  background: rgba(30, 30, 30, 0.95); /* Fondo oscuro translúcido */
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Sombra más fuerte */
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea tenue */
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffffff; /* Texto blanco */
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaaaaa; /* Icono claro */
+  cursor: pointer;
+  font-family: 'Estilo Montserrat', sans-serif;
+}
+
+.btn-close:hover {
+  color: #ffffff; /* Más visible al pasar el cursor */
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  padding: 1.5rem;
+  color: #dddddd; /* Texto claro */
+}
+
+.modal-body label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff; /* Etiquetas blancas */
+}
+
+.modal-body .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(50, 50, 50, 0.9); /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  box-sizing: border-box;
+}
+
+.modal-body .form-control:focus {
+  border-color: #20b571;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.8); /* Verde brillante */
+}
+
+/* Botones del modal */
+button {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-primary {
+  background-color: #20b571; /* Verde brillante */
+  color: white;
+  margin-right: 0.5rem;
+}
+
+button.btn-primary:hover {
+  background-color: #20b571;
+}
+
+button.btn-secondary {
+  background-color: #333333; /* Gris oscuro */
+  color: white;
+}
+
+button.btn-secondary:hover {
+  background-color: #444444; /* Gris más claro */
+}
+
+
+
+#calendar {
+  max-width: 800px; /* Ancho máximo */
+  margin: 0 auto; /* Centrar horizontalmente */
+  padding: 20px; /* Espaciado interno */
+  background-color: #f9f9f9; /* Fondo claro */
+  border: 1px solid #ddd; /* Borde */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+/* Ajustar el texto dentro del calendario */
+#calendar .fc-toolbar h2 {
+  font-size: 1.5rem; /* Tamaño de fuente del título */
+  color: #333; /* Color del texto */
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 24px;
+  color: #000; /* Color del texto */
+  float: right; /* Alinea a la derecha */
+}
+
+
+/* Media queries para ajustar el modal en diferentes dispositivos */
+@media (max-width: 768px) {
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Una sola columna en móviles */
+    }
+
+    .modal-dialog {
+      width: 95%;
+      max-width: 95%;
+      top: 10%;
+      transform: translateY(-10%);
+    }
+  
+    .modal-body {
+      padding: 1rem;
+    }
+  
+    .modal-title {
+      font-size: 1.25rem;
+    }
+  
+  }
+  
+  @media (max-width: 480px) {
+  
+  }
+
+
+  /* Estilos para el contenedor del grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+    gap: 1rem; /* Espacio entre las columnas */
+}
+
+/* Estilos para cada columna */
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ajustes para los inputs y selects */
+.form-column .form-control {
+    width: 100%; /* Asegura que los inputs ocupen el 100% del ancho */
+    margin-bottom: 1rem; /* Espacio entre los campos */
+}
+.modal-footer {
+    display: flex;
+    /* justify-content: flex-end; */
+    gap: 1rem; /* Espacio entre los botones */
+    /* margin-top: 1rem; */ /* Espacio entre el formulario y los botones */
+    margin: 1rem;
+}
+/* Ajustes para los botones en el footer */
+
+.responsive-div {
+  padding: 1%;       /* Aún menos padding en pantallas muy pequeñas */
+}
+
+.responsive-div {
+  padding: 1%;       /* Aún menos padding en pantallas muy pequeñas */
+}
+
+@media (max-width: 480px) {
+  .responsive-div {
+      padding: 0%;       /* Aún menos padding en pantallas muy pequeñas */
+  }
+  table.dataTable tbody th,
+  table.dataTable tbody td {
+    padding: 3px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.2rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .action_btn22 {
+    margin-left: 0cm;
+    display: flex;
+    align-items: center;
+    margin-top: 0cm;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    text-align: center;
+  }
+}

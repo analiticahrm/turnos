@@ -1,0 +1,528 @@
+[2026-06-25 03:00:05] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 03:00:05] [INFO] Revalidando últimos 30 días
+[2026-06-25 03:00:05] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 03:00:11] [INFO] ✅ OK 2026-06-24 | Total cirugías: 38 | Actualizadas: 38
+[2026-06-25 03:00:11] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 03:00:15] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:00:15] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 03:00:19] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 03:00:19] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 03:00:21] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 03:00:21] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 03:00:21] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:21] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 03:00:21] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:21] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 03:00:23] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:00:23] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 03:00:28] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 03:00:28] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 03:00:28] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:28] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 03:00:28] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:28] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 03:00:28] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:28] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 03:00:28] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:28] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 03:00:45] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:00:45] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 03:00:45] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:45] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 03:00:47] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:00:47] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 03:00:49] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 03:00:49] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 03:00:51] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 03:00:51] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 03:00:51] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:51] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 03:00:53] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 03:00:53] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 03:00:53] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:53] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 03:00:53] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:53] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 03:00:55] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:00:55] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 03:00:55] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:55] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 03:00:57] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 03:00:57] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 03:00:57] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 03:00:57] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 03:00:59] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 03:00:59] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 03:01:02] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 03:01:02] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 03:01:04] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 03:01:04] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 03:01:09] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 03:01:09] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 03:01:12] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 03:01:12] [INFO] ====================================
+[2026-06-25 03:01:12] [INFO] TOTAL GLOBAL CIRUGÍAS: 92
+[2026-06-25 03:01:12] [INFO] ====================================
+[2026-06-25 03:01:12] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 07:00:05] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 07:00:05] [INFO] Revalidando últimos 30 días
+[2026-06-25 07:00:05] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 07:00:05] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:05] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 07:00:11] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:11] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 07:00:14] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 07:00:14] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 07:00:16] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 07:00:16] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 07:00:16] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:16] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 07:00:16] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:16] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 07:00:18] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:18] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 07:00:23] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 07:00:23] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 07:00:23] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:23] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 07:00:23] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:23] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 07:00:23] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:23] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 07:00:23] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:23] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 07:00:26] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:26] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 07:00:26] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:26] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 07:00:31] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:31] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 07:00:33] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 07:00:33] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 07:00:39] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 07:00:39] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 07:00:39] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:39] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 07:00:42] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 07:00:42] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 07:00:42] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:42] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 07:00:42] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:42] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 07:00:44] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:44] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 07:00:44] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:44] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 07:00:45] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 07:00:45] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 07:00:45] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 07:00:45] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 07:00:51] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 07:00:51] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 07:00:53] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 07:00:53] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 07:00:55] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 07:00:55] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 07:00:59] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 07:00:59] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 07:01:01] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 07:01:01] [INFO] ====================================
+[2026-06-25 07:01:01] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 07:01:01] [INFO] ====================================
+[2026-06-25 07:01:01] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 11:00:06] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 11:00:06] [INFO] Revalidando últimos 30 días
+[2026-06-25 11:00:06] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 11:00:06] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:06] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 11:00:16] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:00:16] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 11:00:19] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 11:00:19] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 11:00:22] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 11:00:22] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 11:00:22] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:22] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 11:00:22] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:22] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 11:00:24] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:00:24] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 11:00:32] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 11:00:32] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 11:00:32] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:32] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 11:00:32] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:32] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 11:00:32] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:32] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 11:00:32] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:32] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 11:00:34] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:00:34] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 11:00:34] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:34] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 11:00:38] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:00:38] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 11:00:40] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 11:00:40] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 11:00:42] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 11:00:42] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 11:00:42] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:42] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 11:00:44] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 11:00:44] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 11:00:44] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:44] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 11:00:44] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:44] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 11:00:49] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:00:49] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 11:00:49] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:00:49] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 11:01:49] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 11:01:49] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 11:01:49] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 11:01:49] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 11:02:49] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 11:02:49] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 11:02:52] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 11:02:52] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 11:02:57] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 11:02:57] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 11:03:03] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 11:03:03] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 11:03:06] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 11:03:06] [INFO] ====================================
+[2026-06-25 11:03:06] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 11:03:06] [INFO] ====================================
+[2026-06-25 11:03:06] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 15:00:08] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 15:00:08] [INFO] Revalidando últimos 30 días
+[2026-06-25 15:00:08] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 15:00:08] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:08] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 15:00:14] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:00:14] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 15:00:19] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 15:00:19] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 15:00:27] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 15:00:27] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 15:00:27] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:27] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 15:00:27] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:27] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 15:00:29] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:00:29] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 15:00:35] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 15:00:35] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 15:00:35] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:35] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 15:00:35] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:35] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 15:00:35] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:35] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 15:00:35] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:35] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 15:00:38] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:00:38] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 15:00:38] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:38] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 15:00:44] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:00:44] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 15:00:47] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 15:00:47] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 15:00:50] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 15:00:50] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 15:00:50] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:50] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 15:00:56] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 15:00:56] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 15:00:56] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:56] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 15:00:56] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:00:56] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 15:01:00] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:01:00] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 15:01:00] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:01:00] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 15:01:03] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 15:01:03] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 15:01:03] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 15:01:03] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 15:01:05] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 15:01:05] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 15:01:08] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 15:01:08] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 15:01:10] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 15:01:10] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 15:01:13] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 15:01:13] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 15:01:17] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 15:01:17] [INFO] ====================================
+[2026-06-25 15:01:17] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 15:01:17] [INFO] ====================================
+[2026-06-25 15:01:17] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 19:00:07] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 19:00:07] [INFO] Revalidando últimos 30 días
+[2026-06-25 19:00:07] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 19:00:07] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:07] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 19:00:07] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 19:00:07] [INFO] Revalidando últimos 30 días
+[2026-06-25 19:00:07] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 19:00:07] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:07] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 19:00:10] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:10] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 19:00:12] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:12] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 19:00:14] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 19:00:14] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 19:00:16] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:16] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 19:00:16] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:16] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 19:00:16] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:16] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 19:00:16] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 19:00:16] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 19:00:18] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:18] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 19:00:19] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:19] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 19:00:19] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:19] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 19:00:19] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:19] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 19:00:21] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:21] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 19:00:23] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 19:00:23] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 19:00:23] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:23] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 19:00:23] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:23] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 19:00:23] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:23] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 19:00:23] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:23] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 19:00:25] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 19:00:25] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 19:00:25] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:25] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 19:00:25] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:25] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 19:00:25] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:25] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 19:00:25] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:25] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 19:00:27] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:27] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 19:00:27] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:27] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 19:00:28] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:28] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 19:00:28] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:28] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 19:00:29] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:29] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 19:00:31] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:31] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 19:00:33] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:00:33] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 19:00:35] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 19:00:35] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 19:00:35] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:35] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 19:00:37] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:37] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 19:00:37] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:37] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 19:00:37] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:37] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 19:00:39] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:39] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 19:00:39] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:39] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 19:00:43] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:43] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 19:00:43] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:43] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 19:00:45] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:00:45] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 19:00:46] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:00:46] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 19:00:47] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:47] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 19:00:48] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 19:00:48] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 19:00:48] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:48] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 19:00:50] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 19:00:50] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 19:00:53] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:00:53] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 19:00:55] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:55] [INFO] ====================================
+[2026-06-25 19:00:55] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 19:00:55] [INFO] ====================================
+[2026-06-25 19:00:55] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 19:00:57] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:00:57] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 19:00:57] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:57] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 19:00:57] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:57] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 19:00:59] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:00:59] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 19:00:59] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:00:59] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 19:01:01] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:01:01] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 19:01:01] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 19:01:01] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 19:01:03] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:01:03] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 19:01:06] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 19:01:06] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 19:01:09] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 19:01:09] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 19:01:12] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 19:01:12] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 19:01:15] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 19:01:15] [INFO] ====================================
+[2026-06-25 19:01:15] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 19:01:15] [INFO] ====================================
+[2026-06-25 19:01:15] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 20:00:09] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 20:00:09] [INFO] Revalidando últimos 30 días
+[2026-06-25 20:00:09] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 20:00:09] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:09] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 20:00:15] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:15] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 20:00:18] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 20:00:18] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 20:00:20] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 20:00:20] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 20:00:20] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:20] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 20:00:20] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:20] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 20:00:22] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:22] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 20:00:28] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 20:00:28] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 20:00:28] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:28] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 20:00:28] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:28] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 20:00:28] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:28] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 20:00:28] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:28] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 20:00:31] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:31] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 20:00:31] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:31] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 20:00:33] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:33] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 20:00:39] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 20:00:39] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 20:00:42] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 20:00:42] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 20:00:42] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:42] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 20:00:43] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 20:00:43] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 20:00:43] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:43] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 20:00:43] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:43] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 20:00:46] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:46] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 20:00:46] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:46] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 20:00:48] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 20:00:48] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 20:00:48] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 20:00:48] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 20:00:50] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 20:00:50] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 20:00:52] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 20:00:52] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 20:00:54] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 20:00:54] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 20:00:59] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 20:00:59] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 20:01:01] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 20:01:01] [INFO] ====================================
+[2026-06-25 20:01:01] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 20:01:01] [INFO] ====================================
+[2026-06-25 20:01:01] [INFO] === FIN SINCRONIZACIÓN ===
+[2026-06-25 23:00:06] [INFO] === INICIO SINCRONIZACIÓN (MODO REVALIDACIÓN FUERTE) ===
+[2026-06-25 23:00:06] [INFO] Revalidando últimos 30 días
+[2026-06-25 23:00:06] [INFO] 🔄 Procesando: 2026-06-24
+[2026-06-25 23:00:06] [INFO] ✅ OK 2026-06-24 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:06] [INFO] 🔄 Procesando: 2026-06-23
+[2026-06-25 23:00:11] [INFO] ✅ OK 2026-06-23 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:00:11] [INFO] 🔄 Procesando: 2026-06-22
+[2026-06-25 23:00:16] [INFO] ✅ OK 2026-06-22 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 23:00:16] [INFO] 🔄 Procesando: 2026-06-21
+[2026-06-25 23:00:20] [INFO] ✅ OK 2026-06-21 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 23:00:20] [INFO] 🔄 Procesando: 2026-06-20
+[2026-06-25 23:00:20] [INFO] ✅ OK 2026-06-20 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:20] [INFO] 🔄 Procesando: 2026-06-19
+[2026-06-25 23:00:20] [INFO] ✅ OK 2026-06-19 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:20] [INFO] 🔄 Procesando: 2026-06-18
+[2026-06-25 23:00:22] [INFO] ✅ OK 2026-06-18 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:00:22] [INFO] 🔄 Procesando: 2026-06-17
+[2026-06-25 23:00:27] [INFO] ✅ OK 2026-06-17 | Total cirugías: 7 | Actualizadas: 7
+[2026-06-25 23:00:27] [INFO] 🔄 Procesando: 2026-06-16
+[2026-06-25 23:00:27] [INFO] ✅ OK 2026-06-16 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:27] [INFO] 🔄 Procesando: 2026-06-15
+[2026-06-25 23:00:27] [INFO] ✅ OK 2026-06-15 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:27] [INFO] 🔄 Procesando: 2026-06-14
+[2026-06-25 23:00:27] [INFO] ✅ OK 2026-06-14 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:27] [INFO] 🔄 Procesando: 2026-06-13
+[2026-06-25 23:00:27] [INFO] ✅ OK 2026-06-13 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:27] [INFO] 🔄 Procesando: 2026-06-12
+[2026-06-25 23:00:32] [INFO] ✅ OK 2026-06-12 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:00:32] [INFO] 🔄 Procesando: 2026-06-11
+[2026-06-25 23:00:32] [INFO] ✅ OK 2026-06-11 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:32] [INFO] 🔄 Procesando: 2026-06-10
+[2026-06-25 23:00:36] [INFO] ✅ OK 2026-06-10 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:00:36] [INFO] 🔄 Procesando: 2026-06-09
+[2026-06-25 23:00:39] [INFO] ✅ OK 2026-06-09 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 23:00:39] [INFO] 🔄 Procesando: 2026-06-08
+[2026-06-25 23:00:42] [INFO] ✅ OK 2026-06-08 | Total cirugías: 3 | Actualizadas: 3
+[2026-06-25 23:00:42] [INFO] 🔄 Procesando: 2026-06-07
+[2026-06-25 23:00:42] [INFO] ✅ OK 2026-06-07 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:42] [INFO] 🔄 Procesando: 2026-06-06
+[2026-06-25 23:00:46] [INFO] ✅ OK 2026-06-06 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 23:00:46] [INFO] 🔄 Procesando: 2026-06-05
+[2026-06-25 23:00:46] [INFO] ✅ OK 2026-06-05 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:46] [INFO] 🔄 Procesando: 2026-06-04
+[2026-06-25 23:00:46] [INFO] ✅ OK 2026-06-04 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:46] [INFO] 🔄 Procesando: 2026-06-03
+[2026-06-25 23:00:50] [INFO] ✅ OK 2026-06-03 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:00:50] [INFO] 🔄 Procesando: 2026-06-02
+[2026-06-25 23:00:50] [INFO] ✅ OK 2026-06-02 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:50] [INFO] 🔄 Procesando: 2026-06-01
+[2026-06-25 23:00:51] [INFO] ✅ OK 2026-06-01 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 23:00:51] [INFO] 🔄 Procesando: 2026-05-31
+[2026-06-25 23:00:51] [INFO] ✅ OK 2026-05-31 | Total cirugías: 0 | Actualizadas: 0
+[2026-06-25 23:00:51] [INFO] 🔄 Procesando: 2026-05-30
+[2026-06-25 23:00:55] [INFO] ✅ OK 2026-05-30 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 23:00:55] [INFO] 🔄 Procesando: 2026-05-29
+[2026-06-25 23:01:00] [INFO] ✅ OK 2026-05-29 | Total cirugías: 2 | Actualizadas: 2
+[2026-06-25 23:01:00] [INFO] 🔄 Procesando: 2026-05-28
+[2026-06-25 23:01:03] [INFO] ✅ OK 2026-05-28 | Total cirugías: 5 | Actualizadas: 5
+[2026-06-25 23:01:03] [INFO] 🔄 Procesando: 2026-05-27
+[2026-06-25 23:01:07] [INFO] ✅ OK 2026-05-27 | Total cirugías: 6 | Actualizadas: 6
+[2026-06-25 23:01:07] [INFO] 🔄 Procesando: 2026-05-26
+[2026-06-25 23:01:09] [INFO] ✅ OK 2026-05-26 | Total cirugías: 1 | Actualizadas: 1
+[2026-06-25 23:01:09] [INFO] ====================================
+[2026-06-25 23:01:09] [INFO] TOTAL GLOBAL CIRUGÍAS: 54
+[2026-06-25 23:01:09] [INFO] ====================================
+[2026-06-25 23:01:09] [INFO] === FIN SINCRONIZACIÓN ===

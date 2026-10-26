@@ -1,0 +1,23 @@
+/* Bitácora de cambios de turnos (js/BitacoraTurnos.js). */
+#bitacora-content .bt-filtros { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-bottom: 12px; }
+#bitacora-content .bt-filtros .form-group { margin: 0; min-width: 150px; }
+#bitacora-content .bt-filtros .bt-q { flex: 1; min-width: 220px; }
+#bitacora-content .bt-botones { display: flex; gap: 8px; flex-wrap: wrap; }
+#bitacora-content .bt-resumen { color: var(--text-secondary); margin: 6px 0; font-size: 13px; }
+#bitacora-content .bt-tabla { width: 100%; border-collapse: collapse; font-size: 13px; }
+#bitacora-content .bt-tabla th, #bitacora-content .bt-tabla td { padding: 8px 10px; border-bottom: 1px solid var(--card-border); text-align: left; vertical-align: top; }
+#bitacora-content .bt-tabla tbody tr { cursor: pointer; }
+#bitacora-content .bt-tabla tbody tr:hover { background: var(--table-row-hover); }
+#bitacora-content .bt-accion { font-weight: 600; }
+#bitacora-content .bt-fase { font-size: 11px; padding: 1px 6px; border-radius: 10px; border: 1px solid var(--card-border); color: var(--text-secondary); }
+#bitacora-content .bt-fase.bt-confirmado { border-color: var(--success-color); color: var(--success-color); }
+#bitacora-content .bt-fase.bt-borrador { border-color: var(--warning-color); color: var(--warning-color); }
+#bitacora-content .bt-ver { background: transparent; border: 0; cursor: pointer; color: var(--accent-color); }
+#bitacora-content .bt-paginas { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 12px; }
+.bt-detalle { text-align: left; font-size: 14px; }
+.bt-detalle dl { margin: 0 0 10px; }
+.bt-detalle dl div { display: flex; gap: 8px; padding: 2px 0; }
+.bt-detalle dt { width: 120px; flex: none; opacity: .7; }
+.bt-detalle dd { margin: 0; word-break: break-word; }
+.bt-bloque { border: 1px solid rgba(128, 128, 128, .35); border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+.bt-bloque h4 { margin: 0 0 4px; font-size: 13px; opacity: .75; }

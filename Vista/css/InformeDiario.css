@@ -1,0 +1,355 @@
+:root {
+    --primary-color: #012c2a; /* Verde azulado oscuro */
+    --secondary-color: #1a3c3a; /* Variación más clara */
+    --accent-color: #008371; /* Rojo oscuro */
+    --text-primary: #e0e0e0; /* Texto claro */
+    --text-secondary: #b0b0b0; /* Texto secundario */
+    --success-color: #388e3c; /* Verde oscuro */
+    --warning-color: #f57c00; /* Naranja oscuro */
+    --background-dark: rgba(48, 48, 48, 0.26); /* Fondo con desenfoque */
+    --bs-btn-disabled-color: #fd0d5e;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #fd0d0d;
+}
+#searchInput::placeholder {
+    color: #ffffff; /* Cambia esto al color deseado, por ejemplo, rojo */
+    opacity: 1; /* Asegura que el color sea completamente visible */
+}
+body {
+
+    background-size: cover;
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box!important;
+}
+
+ol,ul {
+padding-left: 0rem !important;
+}
+    
+.action_btn {
+    background-color: #012c2a;
+    color: #fff;
+    padding: 0.5rem 1rem !important; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    font-size: 0.8rem !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+    /* width: 49px; */
+    margin-top: 14px; /* Ajusta según sea necesario */
+    vertical-align: middle; /* Refuerzo para la alineación */
+    text-align: center;
+    /* margin-left: 38px; */ /* Espacio entre "Turno" y "Cerrar sesión" */
+    width: 83px!important; /* Ajusta según sea necesario */
+  }
+
+  .report-button-container {
+    margin-bottom: 1.5rem;
+}
+
+.report-button-container .btn-success {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary {
+
+    --bs-btn-active-color: #fff!important;
+    --bs-btn-active-bg: #0dfdad!important;
+    --bs-btn-active-border-color: #00552a!important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)!important;
+    
+    --bs-gradient: none;
+}
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgb(37 125 95) !important;
+
+}
+.report-button-container .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 576px) {
+    .report-button-container .btn-success {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+.card-area {
+    border-left: 4px solid var(--primary-color);
+    background: var(--background-dark);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-area:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-left-color: var(--accent-color);
+}
+
+.card-header-area {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.card-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.turno-item {
+    border-left: 3px solid var(--secondary-color);
+    padding: 0.5rem;
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.turno-item:hover {
+    background: rgba(50, 50, 50, 0.7);
+    border-left-color: var(--accent-color);
+}
+
+.badge-estado {
+    font-size: 0.65rem;
+    padding: 0.3em 0.6em;
+    background-color: var(--success-color);
+}
+
+.hora-turno {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.nombre-medico {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.tipo-actividad {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.date-picker-container {
+    background: var(--background-dark);
+    backdrop-filter: blur(15px);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.form-control {
+    background: rgba(30, 30, 30, 0.5);
+    border-color: var(--secondary-color);
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    background: rgba(50, 50, 50, 0.7);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+    box-shadow: none;
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn-outline-secondary {
+    border-color: var(--secondary-color);
+    color: var(--text-secondary);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-primary);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-secondary);
+    background: var(--background-dark);
+    backdrop-filter: blur(15px);
+    border-radius: 8px;
+}
+
+.cod-nomenclatura {
+    background: var(--secondary-color);
+    color: var(--text-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+}
+
+.badge {
+    background-color: var(--secondary-color);
+    color: var(--text-primary);
+}
+
+/* Estilos del modal */
+.modal-content {
+    background: var(--background-dark);
+    backdrop-filter: blur(15px);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    background-color: var(--primary-color);
+    border-bottom: 1px solid var(--secondary-color);
+    color: var(--text-primary);
+}
+
+.modal-header .btn-close {
+    filter: invert(1) opacity(0.8);
+}
+
+.modal-header .btn-close:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body .list-group-item {
+    background: rgba(30, 30, 30, 0.5);
+    border: none;
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.modal-body .list-group-item .fw-bold {
+    color: var(--text-primary);
+}
+
+.modal-body .badge {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+.modal-body .card {
+    background: rgba(30, 30, 30, 0.5);
+    border: none;
+    color: var(--text-primary);
+}
+
+.modal-body .card-body {
+    padding: 1rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--secondary-color);
+    background: transparent;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .card-area {
+        height: 300px;
+        margin-bottom: 1rem;
+    }
+
+    .turno-item {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+
+    .card-header-area {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .date-picker-container {
+        padding: 0.75rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-body .list-group-item {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 90%!important;
+    }
+}

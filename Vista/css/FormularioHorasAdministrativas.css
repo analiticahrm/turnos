@@ -1,0 +1,446 @@
+@font-face {
+    font-family: 'Estilo Montserrat';
+    src: url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    /* Si tienes otros formatos de fuente (otf, woff, etc.), puedes agregarlos aquí */
+  }
+
+  .main-container {
+    flex: 1;
+    padding: 20px;
+  }
+  .FondoTabla {
+    font-family: 'Estilo Montserrat', sans-serif;
+    background: rgba(48, 48, 48, 0.26);
+    backdrop-filter: blur(15px);
+    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
+    color: #ffffff;
+    overflow-x: auto; /* Permite el desplazamiento horizontal si la tabla es muy grande */
+}
+.IconEstado{
+  width: 35px;
+  height: 35px;
+}
+/* Asegura que la tabla ocupe el 100% del ancho */
+#tblDatos {
+    width: 100% !important; /* Fuerza a que la tabla ocupe el 100% del ancho */
+    border-collapse: collapse; /* Mejora el aspecto de los bordes */
+}
+
+/* Estilo para las celdas de la tabla */
+#tblDatos th,
+
+
+.table_id{
+    font-family: 'Estilo Montserrat', sans-serif;
+
+}
+.action_btn22 {
+  margin-left: 0.5cm;
+  display: flex;
+  align-items: center;
+  margin: 0.5cm;
+  background-color: #ffffff00;
+  color: #f5f5f5;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  border: 2px solid #f5f5f5; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+  text-align: center;
+}
+
+
+
+
+  .action_btn22:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .action_btn22:hover {
+    background-color: #012c2a;
+    border: 2px solid #012c2a;
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #f1f1f1e3; 
+  }
+
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .delete_btn:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .delete_btn:hover {
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #012c2a;
+  }
+
+
+  .update_btn {
+    font-family: 'Estilo Montserrat', sans-serif;
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0rem 1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .update_btn:active {
+    transform: scale(0.95); /* Corrected typo: changed "scale" to "transform" */
+  }
+  .update_btn:hover {
+    transform: scale(1.05); /* Corrected typo: changed "scale" to "transform" */
+    color: #012c2a;
+  }
+body {
+font-family: 'Estilo Montserrat', sans-serif;
+height: 600px;
+}
+
+footer {
+  font-family: 'Estilo Montserrat', sans-serif;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #012c2a;
+  color: #ffffff;
+}
+
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.8); /* Más oscuro */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Contenedor del modal */
+.modal-dialog {
+  position: relative;
+  margin: auto;
+  top: 15%;
+  width: 90%;
+  max-width: 800px;
+  background: rgba(30, 30, 30, 0.95); /* Fondo oscuro translúcido */
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Sombra más fuerte */
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Línea tenue */
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffffff; /* Texto blanco */
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaaaaa; /* Icono claro */
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  color: #ffffff; /* Más visible al pasar el cursor */
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  padding: 1.5rem;
+  color: #dddddd; /* Texto claro */
+}
+
+.modal-body label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff; /* Etiquetas blancas */
+}
+
+.modal-body .form-control {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(50, 50, 50, 0.9); /* Fondo oscuro */
+  color: #ffffff; /* Texto claro */
+  box-sizing: border-box;
+}
+
+.modal-body .form-control:focus {
+  border-color: #20b571;
+  outline: none;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.8); /* Verde brillante */
+}
+
+/* Botones del modal */
+button {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-primary {
+  background-color: #20b571; /* Verde brillante */
+  color: white;
+  margin-right: 0.5rem;
+}
+
+button.btn-primary:hover {
+  background-color: #39da91;
+}
+
+
+button.btn-success {
+  background-color: #00a1a7; /* Verde brillante */
+  color: white;
+  margin-right: 0.5rem;
+}
+
+button.btn-success:hover {
+  background-color: #00cdd4;
+}
+
+
+
+button.btn-secondary {
+  background-color: #333333; /* Gris oscuro */
+  color: white;
+}
+
+button.btn-secondary:hover {
+  background-color: #444444; /* Gris más claro */
+}
+
+/* Estilos para el contenedor de las columnas */
+.input-grid {
+  display: flex; /* Usa Flexbox para organizar las columnas */
+  gap: 16px; /* Espacio entre las columnas */
+}
+
+/* Estilos para cada columna */
+.input-column {
+  flex: 1; /* Cada columna ocupa el mismo espacio */
+}
+
+.responsive-div {
+  padding: 1%;       /* Aún menos padding en pantallas muy pequeñas */
+}
+
+@media (max-width: 480px) {
+
+
+  .FondoTabla {
+    font-size: 10px;
+  }
+
+  .IconEstado{
+    width: 25px;
+    height: 25px;
+  }
+
+  .responsive-div {
+      padding: 0%;       /* Aún menos padding en pantallas muy pequeñas */
+  }
+  table.dataTable tbody th,
+  table.dataTable tbody td {
+    padding: 3px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  .delete_btn {
+    background-color: #ffffff00;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.1rem; /* Corrected typo: changed "." to "-" */
+    border: none;
+    outline: none;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: scale 0.2s ease;
+  }
+  .action_btn22 {
+    margin-left: 0cm;
+    display: flex;
+    align-items: center;
+    margin-top: 0cm;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem; /* Corrected typo: changed "." to "-" */
+    text-align: center;
+  }
+}
+
+
+/* Estilos para la sección de documentos */
+.documentos-section {
+    border: 1px solid #00836f;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #2a2a2a;
+}
+
+.documentos-section h5 {
+    color: #495057;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 0.5rem;
+}
+
+.upload-section {
+    background-color: #2e2e2e;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    border: 1px dashed #dee2e6;
+}
+
+.documentos-list {
+    margin-top: 1rem;
+}
+
+.list-group-item {
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.enlace {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.list-group-item:hover {
+    background-color: #00615444;
+}
+
+/* Iconos de documentos */
+.fa-file-pdf { color: #dc3545; }
+.fa-file-word { color: #0d6efd; }
+.fa-file-excel { color: #198754; }
+.fa-file-powerpoint { color: #fd7e14; }
+.fa-file-image { color: #0dcaf0; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .documentos-section {
+        padding: 0.5rem;
+    }
+    
+    .upload-section {
+        padding: 0.5rem;
+    }
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-upload {
+  display: inline-block;
+  background: #12b97467;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-upload:hover {
+  background: #12b97349;
+}
+
+.adjuntos {
+  display: inline-block;
+  background: #12b97467;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.adjuntos:hover {
+  background: #12b97349;
+}
+
+.form-text {
+  color: #00c7c7;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+label[for="archivosHoras"] .text-danger {
+    font-weight: bold;
+}
+
+label[for="archivosHoras"] .text-success {
+    font-weight: bold;
+}
+
+.selected-files {
+    background-color: #ffffff00;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.selected-files ul {
+    padding-left: 20px;
+}

@@ -1,0 +1,67 @@
+/* Pantalla "Roles y permisos" de la consola de coordinación de enfermería. Usa los tokens de
+   CoordinacionEnfermeria.css, así que sigue el modo día/noche. */
+#permisos-content .pe-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--card-border); }
+#permisos-content .pe-tab {
+    background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 16px; cursor: pointer;
+    color: var(--text-secondary); font: inherit; font-weight: 600;
+}
+#permisos-content .pe-tab:hover { color: var(--text-primary); }
+#permisos-content .pe-tab.activa { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+
+#permisos-content .pe-layout { display: grid; grid-template-columns: minmax(220px, 280px) 1fr; gap: 16px; align-items: start; }
+#permisos-content .pe-lista ul { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+#permisos-content .pe-rol {
+    width: 100%; text-align: left; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; cursor: pointer;
+    background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--card-border); border-radius: 8px; font: inherit;
+}
+#permisos-content .pe-rol small { color: var(--text-secondary); }
+#permisos-content .pe-rol:hover { border-color: var(--accent-color); }
+#permisos-content .pe-rol.activa { border-color: var(--accent-color); box-shadow: inset 3px 0 0 var(--accent-color); }
+#permisos-content .pe-rol-nombre { font-weight: 600; }
+
+#permisos-content .pe-matriz {
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 16px; min-width: 0;
+}
+#permisos-content .pe-matriz-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+#permisos-content .pe-matriz-cab h3 { margin: 0 0 2px; }
+#permisos-content .pe-matriz-cab small, #permisos-content .pe-nota { color: var(--text-secondary); }
+#permisos-content .pe-nota { margin: 0 0 8px; font-size: 13px; }
+
+#permisos-content .pe-grupo { border: 1px solid var(--card-border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+#permisos-content .pe-grupo-cab {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 12px;
+    background: var(--table-header-bg); font-size: 14px;
+}
+#permisos-content .pe-grupo-cab a { color: var(--accent-color); text-decoration: none; }
+#permisos-content .pe-cab-cols { display: flex; gap: 12px; color: var(--text-secondary); font-size: 12px; }
+#permisos-content .pe-cab-cols span:first-child { width: 110px; text-align: center; }
+#permisos-content .pe-cab-cols span:last-child { width: 240px; }
+
+#permisos-content .pe-fila {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px;
+    border-top: 1px solid var(--card-border);
+}
+#permisos-content .pe-chk { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; flex: 1; min-width: 0; }
+#permisos-content .pe-chk input { margin-top: 4px; }
+#permisos-content .pe-chk small { display: block; color: var(--text-secondary); font-size: 12px; }
+#permisos-content .pe-alc { width: 240px; flex: 0 0 240px; }
+#permisos-content .pe-rolval { width: 110px; text-align: center; color: var(--text-secondary); font-size: 13px; flex: 0 0 110px; }
+#permisos-content .pe-rolval.si { color: var(--success-color); font-weight: 600; }
+
+#permisos-content .pe-servicios { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 16px; padding: 4px 12px 12px; }
+#permisos-content .pe-chk-srv { align-items: center; }
+#permisos-content .pe-chk-srv input { margin-top: 0; }
+
+#permisos-content .pe-busca { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+#permisos-content .pe-busca input { flex: 1; min-width: 220px; }
+#permisos-content .pe-busca select { width: 220px; }
+#permisos-content .pe-param { display: grid; grid-template-columns: 1fr 200px; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--card-border); }
+#permisos-content .pe-param small { display: block; color: var(--text-secondary); font-size: 12px; }
+
+@media (max-width: 900px) {
+    #permisos-content .pe-layout { grid-template-columns: 1fr; }
+    #permisos-content .pe-fila { flex-wrap: wrap; }
+    #permisos-content .pe-alc, #permisos-content .pe-rolval { width: 100%; flex-basis: 100%; text-align: left; }
+    #permisos-content .pe-cab-cols { display: none; }
+    #permisos-content .pe-param { grid-template-columns: 1fr; }
+}
