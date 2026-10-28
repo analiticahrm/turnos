@@ -450,6 +450,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- Include jspdf-autotable after jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js"></script>
+<!-- Lectura del JSON guardado y generación del PDF (compartido con LiquidarEspecialidad.php y LiquidarUsuario.php) -->
+<script src="js/LiquidacionPDF.js?v=1"></script>
 
 
     <script>
@@ -512,7 +514,6 @@
 
         var IdArea = null;
         var NombreArea = null;
-        var honorariobasepdf = null;
 
 /**
  * Ejecuta un conjunto de tareas asíncronas limitando cuántas corren al mismo
@@ -772,7 +773,6 @@ response.data.forEach(turno => {
         // Verificar si el sueldo base es diferente de cero y no es null
         const honorarioBaseInfo = HonorarioBase[turno.NombreMedico] || [];
         const sueldoBase = honorarioBaseInfo[0]?.SueldoBaseMedico;
-        honorariobasepdf = honorarioBaseInfo[0]?.SueldoBaseMedico;
         const shouldNullify = sueldoBase !== null && sueldoBase !== 0 && sueldoBase !== undefined;
         
         medicos[turno.NombreMedico] = {
@@ -1361,6 +1361,9 @@ response.data.forEach(turno => {
     });
 }
 async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, NombreArea) {
+    // En el histórico los valores salen del JSON guardado: formato tolerante (varias actividades
+    // separadas por "/", textos antiguos con coma decimal, valores sin dato) en vez de "$ NaN".
+    const formatCurrency = LiquidacionDatos.moneda;
     try {
         // Obtener nombre del mes
         const obtenerNombreMes = (numeroMes) => {
@@ -1477,56 +1480,20 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
                 const consultaExterna = areaData['CONSULTA EXTERNA']?.[0] || {};
                 const jornadaCX = areaData['JORNADA CX']?.[0] || {};
                 const administrativo = areaData['ADMINISTRATIVO']?.[0] || {};
-                honorariobasepdf = datosGuardados?.honorarioBase
-                // VALORES GUARDADOS - NO RECALCULAR. Tolerante a los 2 formatos de guardado:
-                // liquidación individual guarda anidado ({dhc:{promedio,descuento,ajuste}}),
-                // liquidación por especialidad completa guarda plano ({promDHC,descDHC,ajusteDHC}).
-                // interconsultas.promedio (formato anidado) ya está en horas, igual que promInterconsultas
-                // (formato plano) — ambos se scrapean de la misma celda "Prom. Resp (h)", sin conversión.
-                const promInterconsulta = datosGuardados?.promInterconsultas ?? datosGuardados?.interconsultas?.promedio ?? 0;
-                const descInterconsulta = datosGuardados?.descInterconsultas ?? datosGuardados?.interconsultas?.descuento ?? '0%';
-                const ajusteInterconsulta = parseFloat(datosGuardados?.ajusteInterconsultas ?? datosGuardados?.interconsultas?.ajuste) || 0;
+                // VALORES GUARDADOS - NO RECALCULAR. LiquidacionDatos entiende los 2 formatos de guardado
+                // (individual anidado y especialidad completa plano) y devuelve el promedio y el
+                // descuento tal como se vieron en la tabla ("-" sin dato, "0%", "1%", "1.40"...).
+                const indicadores = LiquidacionDatos.indicadores(datosGuardados);
+                const promInterconsulta = indicadores.interconsultas.valor;
+                const promGPC = indicadores.gpc.valor;
+                const promDHC = indicadores.dhc.valor;
 
-                const promGPC = datosGuardados?.promGPC ?? datosGuardados?.gpc?.promedio ?? 0;
-                const descGPC = datosGuardados?.descGPC ?? datosGuardados?.gpc?.descuento ?? '0%';
-                const ajusteGPC = parseFloat(datosGuardados?.ajusteGPC ?? datosGuardados?.gpc?.ajuste) || 0;
-
-                const promDHC = datosGuardados?.promDHC ?? datosGuardados?.dhc?.promedio ?? 0;
-                const descDHC = datosGuardados?.descDHC ?? datosGuardados?.dhc?.descuento ?? '0%';
-                const ajusteDHC = parseFloat(datosGuardados?.ajusteDHC ?? datosGuardados?.dhc?.ajuste) || 0;
-                
-                
-            function parsearValorConBarra(valor) {
-                if (!valor || valor === '0') return 0;
-                
-                const strValor = valor.toString().trim();
-                
-                // Si contiene una barra, sumar ambas partes
-                if (strValor.includes('/')) {
-                    const partes = strValor.split('/');
-                    let suma = 0;
-                    
-                    partes.forEach(parte => {
-                        // Limpiar cada parte
-                        const parteLimpia = parte.replace(/[^\d.,-]/g, '').replace(',', '.');
-                        const num = parseFloat(parteLimpia);
-                        suma += isNaN(num) ? 0 : num;
-                    });
-                    
-                    return suma;
-                }
-                
-                // Caso normal - limpiar y parsear
-                const limpio = strValor.replace(/[^\d.,-]/g, '').replace(',', '.');
-                return parseFloat(limpio) || 0;
-            }
-            
-                // Calcular totales usando la nueva función
-                const totalTurnosArea = parsearValorConBarra(turno.ValorTotal) + 
-                                      parsearValorConBarra(disponibilidad.ValorTotal) + 
-                                      parsearValorConBarra(disponibilidad.ValorTo) + 
-                                      parsearValorConBarra(consultaExterna.ValorTotal) + 
-                                      parsearValorConBarra(jornadaCX.ValorTotal);
+                // Calcular totales usando los valores guardados (puede haber varias actividades "a / b")
+                const totalTurnosArea = LiquidacionDatos.suma(turno.ValorTotal) +
+                                      LiquidacionDatos.suma(disponibilidad.ValorTotal) +
+                                      LiquidacionDatos.suma(disponibilidad.ValorTo) +
+                                      LiquidacionDatos.suma(consultaExterna.ValorTotal) +
+                                      LiquidacionDatos.suma(jornadaCX.ValorTotal);
                   
                 
                 // Total actividad usando valores guardados
@@ -1616,9 +1583,9 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
                 
                 // INTERCONSULTAS - VALORES GUARDADOS, a nivel médico (una sola vez, fila principal)
                 rowHTML += `
-                    <td>${index === 0 ? (promInterconsulta > 0 ? promInterconsulta : '-') : ''}</td>
-                    <td>${index === 0 ? descInterconsulta : ''}</td>
-                    <td>${index === 0 ? formatCurrency(ajusteInterconsulta) : ''}</td>
+                    <td>${index === 0 ? indicadores.interconsultas.promedio : ''}</td>
+                    <td>${index === 0 ? indicadores.interconsultas.descuento : ''}</td>
+                    <td>${index === 0 ? formatCurrency(indicadores.interconsultas.ajuste) : ''}</td>
                     <td>${index === 0 && promInterconsulta > 0 ? `<button class="btn btn-sm btn-outline-primary ver-detalle"
                             data-idmedico="${medico.IdMedico}"
                             title="Ver detalle (histórico)">
@@ -1627,9 +1594,9 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
 
                 // GPC - VALORES GUARDADOS, a nivel médico (una sola vez, fila principal)
                 rowHTML += `
-                    <td>${index === 0 ? (promGPC > 0 ? promGPC : '-') : ''}</td>
-                    <td>${index === 0 ? descGPC : ''}</td>
-                    <td>${index === 0 ? formatCurrency(ajusteGPC) : ''}</td>
+                    <td>${index === 0 ? indicadores.gpc.promedio : ''}</td>
+                    <td>${index === 0 ? indicadores.gpc.descuento : ''}</td>
+                    <td>${index === 0 ? formatCurrency(indicadores.gpc.ajuste) : ''}</td>
                     <td>${index === 0 && promGPC > 0 ? `<button class="btn btn-sm btn-outline-primary ver-detalle-gpc"
                             data-idmedico="${medico.IdMedico}"
                             title="Ver detalle GPC (histórico)">
@@ -1638,9 +1605,9 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
 
                 // DHC - VALORES GUARDADOS, a nivel médico (una sola vez, fila principal)
                 rowHTML += `
-                    <td>${index === 0 ? (promDHC > 0 ? promDHC : '-') : ''}</td>
-                    <td>${index === 0 ? descDHC : ''}</td>
-                    <td>${index === 0 ? formatCurrency(ajusteDHC) : ''}</td>
+                    <td>${index === 0 ? indicadores.dhc.promedio : ''}</td>
+                    <td>${index === 0 ? indicadores.dhc.descuento : ''}</td>
+                    <td>${index === 0 ? formatCurrency(indicadores.dhc.ajuste) : ''}</td>
                     <td>${index === 0 && promDHC > 0 ? `<button class="btn btn-sm btn-outline-primary ver-detalle-dhc"
                             data-idmedico="${medico.IdMedico}"
                             title="Ver detalle DHC (histórico)">
@@ -1652,8 +1619,8 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
 
                 // ADMINISTRATIVO - a nivel médico (una sola vez, fila principal)
                 rowHTML += `
-                    <td>${index === 0 ? formatCurrency(administrativo.ValorHora) : ''}</td>
-                    <td>${index === 0 ? (administrativo.CantidadTurnos || '0') : ''}</td>
+                    <td>${index === 0 && LiquidacionDatos.suma(administrativo.ValorHora) > 0 ? formatCurrency(administrativo.ValorHora) : ''}</td>
+                    <td>${index === 0 && (parseInt(administrativo.CantidadTurnos) || 0) > 0 ? administrativo.CantidadTurnos : ''}</td>
                     <td>${index === 0 ? (administrativo.HorasTotales || '0.00') : ''}</td>
                     <td>${index === 0 ? formatCurrency(totalAdministrativo) : ''}</td>
                     <td>${index === 0 && (parseInt(administrativo.CantidadTurnos) || 0) > 0 ? `<button class="btn btn-sm btn-outline-secondary1 ver-detalle-administrativo"
@@ -1666,7 +1633,7 @@ async function mostrarDatosLiquidados(medicos, mes, anio, IdEspecialidad, Nombre
 
                 // HONORARIOS - a nivel médico (una sola vez, fila principal)
                 rowHTML += `
-                    <td>${index === 0 ? formatCurrency(honorarios) : ''}</td>
+                    <td>${index === 0 && honorarios > 0 ? formatCurrency(honorarios) : ''}</td>
                     <td>${index === 0 && honorarios > 0 ? `<button class="btn btn-sm btn-outline-secondary btn-ver-medico"
                             data-id="${medico.IdMedico}"
                             title="Ver detalle honorarios (histórico)">
@@ -2262,36 +2229,16 @@ async function liquidarMedicoIndividual(idMedico, nombreMedico, $filas) {
                     mes: mes,
                     anio: anio,
                     tipo: 'individual',
+                    // Mismo formato que la liquidación de especialidad completa (la fila tal como se
+                    // ve en la tabla): los indicadores conservan el texto exacto del promedio
+                    // ("-" sin dato, "1.40") y del descuento ("-", "0%", "1%"), que el histórico y el
+                    // PDF necesitan para verse igual que los datos actuales.
                     datos: {
                         informacion: {
                             fechaLiquidacion: new Date().toISOString(),
                             usuario: '<?php echo $_SESSION["Usuario"] ?? "Sistema"; ?>'
                         },
-                        totalTurnos: extraerValorNumerico(datosFila.totalTurnos),
-                        totalActividad: extraerValorNumerico(datosFila.totalActividad),
-                        honorarios: extraerValorNumerico(datosFila.honorarios),
-                        totalLiquidar: extraerValorNumerico(datosFila.totalLiquidar),
-                        honorarioBase: extraerValorNumerico(datosFila.honorarioBase),
-                        turnos: datosFila.turnos || {},
-                        disponibilidad: datosFila.disponibilidad || {},
-                        consultaExterna: datosFila.consultaExterna || {},
-                        jornadaQX: datosFila.jornadaQX || {},
-                        administrativo: datosFila.administrativo || {},
-                        interconsultas: {
-                            promedio: extraerValorNumerico(datosFila.promInterconsultas),
-                            descuento: datosFila.descInterconsultas || '0%',
-                            ajuste: extraerValorNumerico(datosFila.ajusteInterconsultas)
-                        },
-                        gpc: {
-                            promedio: extraerValorNumerico(datosFila.promGPC),
-                            descuento: datosFila.descGPC || '0%',
-                            ajuste: extraerValorNumerico(datosFila.ajusteGPC)
-                        },
-                        dhc: {
-                            promedio: extraerValorNumerico(datosFila.promDHC),
-                            descuento: datosFila.descDHC || '0%',
-                            ajuste: extraerValorNumerico(datosFila.ajusteDHC)
-                        }
+                        ...datosFila
                     }
                 };
 
@@ -2629,7 +2576,13 @@ function obtenerDatosFila($fila) {
     // FUNCIÓN CRÍTICA: Extraer valor numérico COMPLETO de texto formateado
     const extraerValorCompleto = (texto) => {
         if (!texto || texto === '-' || texto === '') return '0';
-        
+
+        // Varias actividades en la misma celda ("$ 102.000,00 / $ 110.000,00"): limpiar cada
+        // valor por separado; limpiar la celda completa dejaba solo el primero bien formado.
+        if (typeof texto === 'string' && texto.includes('$') && texto.includes('/')) {
+            return texto.split('/').map(parte => extraerValorCompleto(parte.trim())).join(' / ');
+        }
+
         // Caso 1: Ya es un número (string o number)
         if (!isNaN(texto) && texto !== '') {
             return texto.toString();
@@ -2711,7 +2664,9 @@ function obtenerDatosFila($fila) {
         // Total Turnos está en el índice 26 FIJO (antes de Honorario Base) -> SIN offset
         totalTurnos: extraerValorCompleto(celdas.eq(26).text()),
         // Honorario Base es la celda inmediatamente posterior (índice 27, solo si existe)
-        honorarioBase: tieneHonorarioBase ? extraerValorCompleto(celdas.eq(26 + offset).text()) : '0',
+        // Numérico a propósito: como texto, "0" es verdadero en JavaScript y el histórico/PDF
+        // creerían que el médico tiene honorario base.
+        honorarioBase: tieneHonorarioBase ? (parseFloat(extraerValorCompleto(celdas.eq(26 + offset).text())) || 0) : 0,
         
         // Interconsultas
         promInterconsultas: extraerValorCompleto(celdas.eq(27 + offset).text()),
@@ -6013,593 +5968,9 @@ function cleanCurrencyValue(value) {
 }
 
 // ============================================================
+// El PDF lo genera Vista/js/LiquidacionPDF.js (compartido con LiquidarEspecialidad.php y LiquidarUsuario.php)
 async function generarPDF() {
-    // Mostrar spinner mientras se genera el PDF
-    $('#spinner-overlay').show();
-    $('#loading-spinner').show();
-
-    try {
-        // Función para obtener nombre del mes
-        const obtenerNombreMes = (numeroMes) => {
-            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            return meses[parseInt(numeroMes) - 1];
-        };
-
-        // Obtener datos del formulario
-        const mes = $('#mes').val();
-        const anio = $('#anio').val();
-        const especialidad = $('#especialidad option:selected').text();
-        const nombreMes = mes ? obtenerNombreMes(mes) : 'Todos los meses';
-
-        // -------------------------------------------------------
-        // CAMBIO 1: Se agrega margins: { bottom: 5 } igual que
-        // en la función del usuario médico
-        // -------------------------------------------------------
-        const doc = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            margins: {
-                bottom: 5
-            }
-        });
-
-        // Configuración de márgenes y diseño
-        const marginLeft = 15;
-        const marginRight = 15;
-        const pageWidth = doc.internal.pageSize.getWidth() - marginLeft - marginRight;
-        const lineHeight = 5;
-        let currentY = 4;
-
-        // Nombre fijo de quien firma por la Subgerencia Científica
-        const NOMBRE_SUBGERENCIA = 'KARIN MILENA GAMBA FERRUCHO';
-
-        // Estilos (igual que la página del usuario; se eliminaron firmaNombre
-        // y firmaCargo ya que ahora se usan styles.normal y styles.small)
-        const styles = {
-            title:     { fontSize: 16, fontStyle: 'bold',   textColor: [2, 165, 103] },
-            subtitle:  { fontSize: 12, fontStyle: 'normal', textColor: [100, 100, 100] },
-            header:    { fontSize: 10, fontStyle: 'bold',   textColor: [0, 0, 0] },
-            normal:    { fontSize: 10, fontStyle: 'normal', textColor: [0, 0, 0] },
-            small:     { fontSize:  8, fontStyle: 'normal', textColor: [100, 100, 100] },
-            highlight: { fontSize: 10, fontStyle: 'bold',   textColor: [2, 165, 103] },
-            total:     { fontSize: 11, fontStyle: 'bold',   textColor: [0, 0, 0] },
-            footer:    { fontSize:  8, fontStyle: 'normal', textColor: [100, 100, 100] },
-            areaHeader:{ fontSize:  9, fontStyle: 'bold',   textColor: [50, 50, 150] }
-        };
-
-        // Función para agregar texto con estilo
-        const addText = (text, x, y, style, align = 'left') => {
-            doc.setFontSize(style.fontSize);
-            doc.setFont('helvetica', style.fontStyle);
-            doc.setTextColor(style.textColor[0], style.textColor[1], style.textColor[2]);
-            doc.text(text, x, y, { align: align });
-        };
-
-        // Función para convertir URL a Base64 (para el logo)
-        const getBase64FromUrl = async (url) => {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = () => {
-                    resolve(reader.result);
-                }
-            });
-        };
-
-        // Precargar el logo del hospital UNA sola vez
-        let logoData = null;
-        try {
-            const logoUrl = '../Assets/ICON/hrm-black.png';
-            logoData = await getBase64FromUrl(logoUrl);
-        } catch (error) {
-            console.warn('No se pudo cargar el logo:', error);
-        }
-
-        // Encabezado del documento (logo + título + período + fecha + separador)
-        const generarEncabezadoDocumento = () => {
-            if (logoData) {
-                doc.addImage(logoData, 'PNG', marginLeft, currentY, 30, 25);
-            }
-
-            currentY += 10;
-            addText('LIQUIDACIÓN DE HONORARIOS MÉDICOS', marginLeft + (pageWidth / 2), currentY, styles.title, 'center');
-
-            currentY += lineHeight;
-            addText(`Período: ${nombreMes} ${anio}`, marginLeft + (pageWidth / 2), currentY, styles.subtitle, 'center');
-            currentY += lineHeight * 2;
-            addText(`Generado el: ${new Date().toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })}`, marginLeft + pageWidth, currentY, styles.small, 'right');
-
-            currentY += 0;
-            doc.setDrawColor(200, 200, 200);
-            doc.line(marginLeft, currentY, marginLeft + pageWidth, currentY);
-        };
-
-        // Obtener datos de la tabla DataTable
-        const tabla = $('#tblDatos').DataTable();
-        const datos = tabla.data().toArray();
-
-        // Obtener información sobre honorarios base de cada médico
-        const medicosConHonorarioBase = {};
-
-        datos.forEach(row => {
-            if (!row[0]) return;
-            const nombreMedico = row[0];
-            const tieneHonorarioBase = honorariobasepdf;
-            if (!medicosConHonorarioBase[nombreMedico]) {
-                medicosConHonorarioBase[nombreMedico] = tieneHonorarioBase;
-            }
-        });
-
-        // Función para limpiar valores monetarios
-        const cleanCurrencyValue = (value) => {
-            if (value === null || value === undefined || value === '') return 0;
-            if (typeof value === 'string') {
-                const cleaned = value.replace(/[^\d,-]/g, '').replace(',', '.');
-                return parseFloat(cleaned) || 0;
-            }
-            return Number(value) || 0;
-        };
-
-        // Formatear valores monetarios
-        const formatCurrencyPDF = (value) => {
-            if (value === null || value === undefined || value === '') return '-';
-            if (typeof value === 'string' && value.startsWith('$')) return value;
-            return '$ ' + parseFloat(value).toLocaleString('es-CO', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        };
-
-        // Procesar datos para el PDF
-        const medicos = {};
-        const areasPorMedico = {};
-
-        datos.forEach(row => {
-            if (!row[0]) return;
-
-            const nombreMedico = row[0];
-            const area = row[2];
-            const tieneHonorarioBase = medicosConHonorarioBase[nombreMedico];
-
-            const offset = tieneHonorarioBase ? 1 : 0;
-
-            if (!medicos[nombreMedico]) {
-                medicos[nombreMedico] = {
-                    areas: {},
-                    totalGeneral: {
-                        turnos: 0,
-                        disponibilidad: 0,
-                        consultaExterna: 0,
-                        jornadaQX: 0,
-                        administrativo: 0,
-                        honorarios: 0,
-                        ajustes: 0
-                    },
-                    tieneHonorarioBase: tieneHonorarioBase,
-                    honorarioBase: tieneHonorarioBase ? cleanCurrencyValue(row[28]) : 0
-                };
-                areasPorMedico[nombreMedico] = new Set();
-            }
-
-            areasPorMedico[nombreMedico].add(area);
-
-            const valorTurnos = cleanCurrencyValue(row[6]);
-            const valorDisponibilidad = cleanCurrencyValue(row[11 + offset]);
-            const valorConsulta = cleanCurrencyValue(row[19 + offset]);
-            const valorJornadaQX = cleanCurrencyValue(row[24 + offset]);
-            const valorAdmin = cleanCurrencyValue(row[43 + offset]);
-            const valorHonorarios = cleanCurrencyValue(row[45 + offset]);
-            const valorAjustes = cleanCurrencyValue(row[29 + offset]) + cleanCurrencyValue(row[33 + offset]) + cleanCurrencyValue(row[37 + offset]);
-
-            medicos[nombreMedico].totalGeneral.turnos += valorTurnos;
-            medicos[nombreMedico].totalGeneral.disponibilidad += valorDisponibilidad;
-            medicos[nombreMedico].totalGeneral.consultaExterna += valorConsulta;
-            medicos[nombreMedico].totalGeneral.jornadaQX += valorJornadaQX;
-            medicos[nombreMedico].totalGeneral.administrativo += valorAdmin;
-            medicos[nombreMedico].totalGeneral.honorarios += valorHonorarios;
-            medicos[nombreMedico].totalGeneral.ajustes += valorAjustes;
-
-            medicos[nombreMedico].areas[area] = {
-                especialidad: row[1],
-                turnos: {
-                    valorHora: formatCurrencyPDF(row[3]),
-                    cantidad: row[4] || '-',
-                    horas: row[5] || '-',
-                    total: formatCurrencyPDF(row[6])
-                },
-                disponibilidad: {
-                    valorHora: formatCurrencyPDF(row[8 + offset]),
-                    cantidad: row[9 + offset] || '-',
-                    horas: row[10 + offset] || '-',
-                    total: formatCurrencyPDF(row[11 + offset]),
-                    valorNumerico: valorDisponibilidad,
-                    horasEfectivas: row[12 + offset] || '-',
-                    valorHoraEfectiva: formatCurrencyPDF(row[13 + offset]),
-                    totalEfectivo: formatCurrencyPDF(row[14 + offset])
-                },
-                consultaExterna: {
-                    valorHora: formatCurrencyPDF(row[16 + offset]),
-                    cantidad: row[17 + offset] || '-',
-                    horas: row[18 + offset] || '-',
-                    total: formatCurrencyPDF(row[19 + offset]),
-                    valorNumerico: valorConsulta
-                },
-                jornadaQX: {
-                    valorHora: formatCurrencyPDF(row[21 + offset]),
-                    cantidad: row[22 + offset] || '-',
-                    horas: row[23 + offset] || '-',
-                    total: formatCurrencyPDF(row[24 + offset]),
-                    valorNumerico: valorJornadaQX
-                },
-                interconsultas: {
-                    promedio: row[27 + offset] || '-',
-                    descuento: row[28 + offset] || '-',
-                    ajuste: formatCurrencyPDF(row[29 + offset])
-                },
-                gpc: {
-                    promedio: row[31 + offset] || '-',
-                    descuento: row[32 + offset] || '-',
-                    ajuste: formatCurrencyPDF(row[33 + offset])
-                },
-                dhc: {
-                    promedio: row[35 + offset] || '-',
-                    descuento: row[36 + offset] || '-',
-                    ajuste: formatCurrencyPDF(row[37 + offset])
-                },
-                administrativo: {
-                    valorHora: formatCurrencyPDF(row[40 + offset]),
-                    registros: row[41 + offset] || '-',
-                    horas: row[42 + offset] || '-',
-                    total: formatCurrencyPDF(row[43 + offset]),
-                    valorNumerico: valorAdmin
-                },
-                totalActividad: formatCurrencyPDF(row[26 + offset]),
-                totalActividadDesc: formatCurrencyPDF(
-                    cleanCurrencyValue(row[29 + offset]) +
-                    cleanCurrencyValue(row[33 + offset]) +
-                    cleanCurrencyValue(row[37 + offset])
-                ),
-                honorarios: formatCurrencyPDF(row[45 + offset]),
-                totalLiquidar: formatCurrencyPDF(row[47 + offset])
-            };
-        });
-
-        // -------------------------------------------------------
-        // CAMBIO 2: marginBottom = 5 (era - 20 fijo)
-        // -------------------------------------------------------
-        const checkPageBreak = (neededSpace) => {
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const marginBottom = 2;
-            if (currentY + neededSpace > pageHeight - marginBottom) {
-                doc.addPage();
-                currentY = 15;
-                return true;
-            }
-            return false;
-        };
-
-        // Encabezado individual del médico
-        const generarHeaderMedico = (medico, nombreMedico) => {
-            const primeraArea = Object.values(medico.areas)[0];
-
-            currentY += 5;
-            addText(`Médico: ${nombreMedico}`, marginLeft, currentY, styles.header);
-            addText(`Especialidad: ${primeraArea.especialidad}`, marginLeft + 100, currentY, styles.normal);
-            const areas = Array.from(areasPorMedico[nombreMedico]).join(', ');
-
-            currentY += 5;
-            addText(
-                medico.tieneHonorarioBase ? 'Tipo: CONTRATO CON HONORARIO BASE' : 'Tipo: CONTRATO POR ACTIVIDAD',
-                marginLeft, currentY, styles.highlight
-            );
-        };
-
-        // -------------------------------------------------------
-        // CAMBIO 3: Se eliminan columnStyles y didDrawCell para
-        // que el ancho de columnas y el estilo de celda sea igual
-        // al de la función del usuario médico
-        // -------------------------------------------------------
-        const generarTablasTurnos = (medicoObj, nombreMedico) => {
-            const areas = Array.from(areasPorMedico[nombreMedico]);
-        
-            currentY += lineHeight * 0.7;
-            addText('AGENDAS POR ÁREA', marginLeft, currentY, styles.highlight);
-            currentY += lineHeight;
-        
-            const body = [];
-        
-            // Determina si un concepto no tiene actividad (cantidad/horas en 0, '-' o vacío)
-            const esVacio = (valor) => {
-                if (valor === null || valor === undefined) return true;
-                const str = String(valor).trim();
-                return str === '' || str === '-' || str === '0';
-            };
-        
-            areas.forEach(area => {
-                const areaData = medicoObj.areas[area];
-        
-                body.push([
-                    { content: area, styles: { fontStyle: 'bold', textColor: [50, 50, 150] }},
-                    '', '', '', ''
-                ]);
-        
-                if (!esVacio(areaData.turnos.cantidad)) {
-                    body.push([
-                        'Agenda regular',
-                        areaData.turnos.valorHora,
-                        areaData.turnos.cantidad,
-                        areaData.turnos.horas,
-                        areaData.turnos.total
-                    ]);
-                }
-        
-                if (!esVacio(areaData.disponibilidad.cantidad)) {
-                    body.push([
-                        'Disponibilidad',
-                        areaData.disponibilidad.valorHora,
-                        areaData.disponibilidad.cantidad,
-                        areaData.disponibilidad.horas,
-                        areaData.disponibilidad.total
-                    ]);
-                }
-        
-                if (!esVacio(areaData.disponibilidad.horasEfectivas)) {
-                    body.push([
-                        'Horas efectivas',
-                        areaData.disponibilidad.valorHoraEfectiva,
-                        '-',
-                        areaData.disponibilidad.horasEfectivas,
-                        areaData.disponibilidad.totalEfectivo
-                    ]);
-                }
-        
-                if (!esVacio(areaData.consultaExterna.cantidad)) {
-                    body.push([
-                        'Consulta externa',
-                        areaData.consultaExterna.valorHora,
-                        areaData.consultaExterna.cantidad,
-                        areaData.consultaExterna.horas,
-                        areaData.consultaExterna.total
-                    ]);
-                }
-        
-                if (!esVacio(areaData.jornadaQX.cantidad)) {
-                    body.push([
-                        'Jornada QX',
-                        areaData.jornadaQX.valorHora,
-                        areaData.jornadaQX.cantidad,
-                        areaData.jornadaQX.horas,
-                        areaData.jornadaQX.total
-                    ]);
-                }
-        
-                if (areas.indexOf(area) < areas.length - 1) {
-                    body.push([
-                        { content: '──────────', colSpan: 5, styles: { textColor: [200, 200, 200] }},
-                        '', '', '', ''
-                    ]);
-                }
-            });
-        
-            doc.autoTable({
-                startY: currentY,
-                head: [['Concepto', 'Valor Hora', 'Cantidad', 'Horas', 'Total']],
-                body: body,
-                margin: { left: marginLeft, right: marginRight },
-                styles: {
-                    fontSize: 8,
-                    cellPadding: 2,
-                    overflow: 'linebreak'
-                },
-                headStyles: {
-                    fillColor: [240, 240, 240],
-                    textColor: [0, 0, 0],
-                    fontStyle: 'bold'
-                }
-            });
-        
-            currentY = doc.lastAutoTable.finalY + 5;
-        };
-
-        // Función para generar el resumen general (lógica sin cambios)
-        const generarResumenGeneral = (medicoObj, nombreMedico) => {
-            const primeraArea = Object.values(medicoObj.areas)[0];
-            const tieneHonorarioBase = medicoObj.tieneHonorarioBase;
-
-            if (!tieneHonorarioBase) {
-                addText('AJUSTES POR INDICADORES', marginLeft, currentY, styles.highlight);
-                currentY += lineHeight;
-
-                doc.autoTable({
-                    head: [['Indicador', 'Promedio', 'Descuento/Bonif.', 'Ajuste']],
-                    body: [
-                        ['Interconsultas', primeraArea.interconsultas.promedio, primeraArea.interconsultas.descuento, primeraArea.interconsultas.ajuste],
-                        ['GPC', primeraArea.gpc.promedio, primeraArea.gpc.descuento, primeraArea.gpc.ajuste],
-                        ['DHC', primeraArea.dhc.promedio, primeraArea.dhc.descuento, primeraArea.dhc.ajuste]
-                    ],
-                    margin: { left: marginLeft, right: marginRight },
-                    styles: { fontSize: 8, cellPadding: 2, textColor: [0, 0, 0] },
-                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' },
-                    columnStyles: {
-                        0: { cellWidth: 40 },
-                        1: { cellWidth: 25 },
-                        2: { cellWidth: 30 },
-                        3: { cellWidth: 25 }
-                    },
-                    didDrawCell: (data) => {
-                        if (data.section === 'body' && data.column.index === 3) {
-                            const valor = parseFloat(data.cell.raw.replace(/[^\d.-]/g, ''));
-                            if (valor < 0) doc.setTextColor(255, 0, 0);
-                        }
-                    }
-                });
-
-                currentY = doc.lastAutoTable.finalY + 5;
-            }
-
-            if (!tieneHonorarioBase) {
-                addText('ACTIVIDADES ADMINISTRATIVAS', marginLeft, currentY, styles.highlight);
-                currentY += lineHeight;
-
-                doc.autoTable({
-                    head: [['Concepto', 'Valor Hora', 'Registros', 'Horas', 'Total']],
-                    body: [
-                        ['Administrativo',
-                         primeraArea.administrativo.valorHora,
-                         primeraArea.administrativo.registros,
-                         primeraArea.administrativo.horas,
-                         primeraArea.administrativo.total]
-                    ],
-                    margin: { left: marginLeft, right: marginRight },
-                    styles: { fontSize: 8, cellPadding: 2, textColor: [0, 0, 0] },
-                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' },
-                    columnStyles: {
-                        0: { cellWidth: 40 },
-                        1: { cellWidth: 25 },
-                        2: { cellWidth: 20 },
-                        3: { cellWidth: 20 },
-                        4: { cellWidth: 25 }
-                    }
-                });
-
-                currentY = doc.lastAutoTable.finalY + 5;
-            }
-
-            if (!tieneHonorarioBase) {
-                addText('HONORARIOS QUIRÚRGICOS', marginLeft, currentY, styles.highlight);
-                currentY += lineHeight;
-
-                doc.autoTable({
-                    head: [['Concepto', 'Valor']],
-                    body: [
-                        ['Honorarios por cirugías', primeraArea.honorarios]
-                    ],
-                    margin: { left: marginLeft, right: marginRight },
-                    styles: { fontSize: 8, cellPadding: 2, textColor: [0, 0, 0] },
-                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' },
-                    columnStyles: {
-                        0: { cellWidth: 60 },
-                        1: { cellWidth: 50 }
-                    }
-                });
-
-                currentY = doc.lastAutoTable.finalY + 5;
-            }
-
-            addText('RESUMEN FINAL', marginLeft, currentY, styles.highlight);
-            currentY += lineHeight;
-
-            let body = [];
-            if (tieneHonorarioBase) {
-                body = [
-                    ['Honorario Base', formatCurrencyPDF(tieneHonorarioBase)],
-                    ['TOTAL A LIQUIDAR', formatCurrencyPDF(tieneHonorarioBase)]
-                ];
-            } else {
-                body = [
-                    ['Total por agendas y actividades', primeraArea.totalActividad],
-                    ['Total descuento/bonificación', primeraArea.totalActividadDesc],
-                    ['Total actividades administrativas', primeraArea.administrativo.total],
-                    ['Total honorarios quirúrgicos', primeraArea.honorarios],
-                    ['TOTAL A LIQUIDAR', primeraArea.totalLiquidar]
-                ];
-            }
-
-            doc.autoTable({
-                head: [['Concepto', 'Valor']],
-                body: body,
-                margin: { left: marginLeft, right: marginRight },
-                styles: { fontSize: 8, cellPadding: 2, textColor: [0, 0, 0] },
-                headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' },
-                bodyStyles: { fontStyle: 'bold' },
-                columnStyles: {
-                    0: { cellWidth: 60 },
-                    1: { cellWidth: 50 }
-                },
-                didDrawCell: (data) => {
-                    if (data.section === 'body' && (
-                        (tieneHonorarioBase && data.row.index === 1) ||
-                        (!tieneHonorarioBase && data.row.index === 4)
-                    )) {
-                        doc.setFontSize(10);
-                        doc.setTextColor(2, 165, 103);
-                    }
-                }
-            });
-
-            currentY = doc.lastAutoTable.finalY + 8;
-        };
-
-        // -------------------------------------------------------
-        // CAMBIO 4: Firmas con guiones bajos y styles.small/normal
-        // (igual que la función del usuario médico)
-        // -------------------------------------------------------
-        const generarFirmasMedico = (nombreMedico) => {
-            checkPageBreak(35);
-
-            doc.setDrawColor(200, 200, 200);
-            currentY += 5;
-
-            // Firma izquierda — médico
-            addText('_________________________________________',
-                   marginLeft + (pageWidth / 4), currentY + 10, styles.normal, 'center');
-            addText(nombreMedico,
-                   marginLeft + (pageWidth / 4), currentY + 15, styles.small, 'center');
-            addText('Médico',
-                   marginLeft + (pageWidth / 4), currentY + 20, styles.small, 'center');
-
-            // Firma derecha — subgerencia
-            addText('_________________________________________',
-                   marginLeft + (pageWidth * 3/4), currentY + 10, styles.normal, 'center');
-            addText(NOMBRE_SUBGERENCIA,
-                   marginLeft + (pageWidth * 3/4), currentY + 15, styles.small, 'center');
-            addText('Subgerencia Científica',
-                   marginLeft + (pageWidth * 3/4), currentY + 20, styles.small, 'center');
-
-            currentY += 1;
-        };
-
-        // Generar contenido para cada médico
-        Object.keys(medicos).forEach((nombreMedico, index) => {
-            const medico = medicos[nombreMedico];
-
-            if (index > 0) {
-                doc.addPage();
-                currentY = 5;
-            }
-
-            generarEncabezadoDocumento();
-            generarHeaderMedico(medico, nombreMedico);
-            generarTablasTurnos(medico, nombreMedico);
-            generarResumenGeneral(medico, nombreMedico);
-            generarFirmasMedico(nombreMedico);
-        });
-
-        // Pie de página institucional (última página del documento)
-        checkPageBreak(15);
-        currentY += 27;
-        addText('Hospital Regional de Moniquira E.S.E',
-               marginLeft + (pageWidth / 2), currentY, styles.footer, 'center');
-
-        doc.save(`Liquidacion_Honorarios_${nombreMes}_${anio}.pdf`);
-
-    } catch (error) {
-        console.error('Error al generar PDF:', error);
-        alert('Ocurrió un error al generar el PDF: ' + error.message);
-    } finally {
-        $('#spinner-overlay').hide();
-        $('#loading-spinner').hide();
-    }
+    return generarPDFLiquidacion();
 }
 
     </script>

@@ -37,6 +37,69 @@ switch ($accion) {
         break;
 }
 
+/**
+ * Deja el DataJSON de una liquidación en un solo formato (el "plano" de la fila de la tabla) y con
+ * los tipos que el histórico y el PDF esperan, sin importar qué versión de la página lo envió:
+ *  - Totales y honorarioBase numéricos. Como texto, "0" es verdadero en JavaScript: el PDF del
+ *    histórico creía que todos los médicos tenían honorario base y desplazaba las columnas.
+ *  - Indicadores (Interconsultas/GPC/DHC): el formato anidado antiguo
+ *    ({interconsultas:{promedio,descuento,ajuste}}) se pasa al plano (promInterconsultas,
+ *    descInterconsultas, ajusteInterconsultas). El descuento se conserva tal cual ("-", "0%", "1%").
+ */
+function numeroLiquidacion($valor) {
+    if (is_int($valor) || is_float($valor)) {
+        return $valor;
+    }
+    if (is_string($valor)) {
+        // Acepta "1234.56", "1234,56" y "$ 1.234,56": el separador decimal es el último que aparece
+        $limpio = preg_replace('/[^0-9.,-]/', '', $valor);
+        $coma = strrpos($limpio, ',');
+        $punto = strrpos($limpio, '.');
+        if ($coma !== false && $punto !== false) {
+            $limpio = $coma > $punto
+                ? str_replace(',', '.', str_replace('.', '', $limpio))
+                : str_replace(',', '', $limpio);
+        } elseif ($coma !== false) {
+            $limpio = str_replace(',', '.', $limpio);
+        }
+        if ($limpio !== '' && is_numeric($limpio)) {
+            return $limpio + 0;
+        }
+    }
+    return 0;
+}
+
+function normalizarDatosLiquidacion($datos) {
+    if (!is_array($datos)) {
+        return $datos;
+    }
+
+    foreach (['totalTurnos', 'totalActividad', 'honorarios', 'totalLiquidar', 'honorarioBase'] as $campo) {
+        if (array_key_exists($campo, $datos)) {
+            $datos[$campo] = numeroLiquidacion($datos[$campo]);
+        }
+    }
+
+    foreach (['interconsultas' => 'Interconsultas', 'gpc' => 'GPC', 'dhc' => 'DHC'] as $anidado => $plano) {
+        if (!isset($datos[$anidado]) || !is_array($datos[$anidado])) {
+            continue;
+        }
+        $sub = $datos[$anidado];
+        if (!array_key_exists('prom' . $plano, $datos)) {
+            $datos['prom' . $plano] = $sub['promedio'] ?? 0;
+        }
+        if (!array_key_exists('desc' . $plano, $datos)) {
+            $datos['desc' . $plano] = $sub['descuento'] ?? '-';
+        }
+        if (!array_key_exists('ajuste' . $plano, $datos)) {
+            $datos['ajuste' . $plano] = $sub['ajuste'] ?? 0;
+        }
+        unset($datos[$anidado]);
+    }
+
+    return $datos;
+}
+
 function guardarLiquidacion($modelo, $conexion) {
     try {
         // Obtener datos JSON
@@ -83,7 +146,7 @@ function guardarLiquidacion($modelo, $conexion) {
             $input['mes'],
             $input['anio'],
             $input['tipo'] ?? 'individual',
-            json_encode($input['datos'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+            json_encode(normalizarDatosLiquidacion($input['datos']), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
         );
         
         if ($resultado) {
@@ -158,7 +221,7 @@ function guardarLiquidacionEspecialidad($modelo, $conexion) {
                         $input['mes'],
                         $input['anio'],
                         'especialidad_completa',
-                        json_encode($medico['datos'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+                        json_encode(normalizarDatosLiquidacion($medico['datos']), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
                     );
 
                     if ($resultado) {
