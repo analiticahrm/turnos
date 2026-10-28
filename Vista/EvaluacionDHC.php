@@ -112,6 +112,11 @@
                 </div>
 
                 <div id="dominiosContainer"><!-- Acordeón de dominios generado dinámicamente --></div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="inputObservacionFinal" class="form-label">Observación final (opcional)</label>
+                    <textarea id="inputObservacionFinal" class="form-control" rows="4" style="width: 100%; resize: vertical;" placeholder="Comentarios generales del auditor sobre este caso..."></textarea>
+                </div>
             </div>
 
             <div class="card summary-card">
@@ -131,6 +136,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="js/EvaluacionDHC.js?v3.0"></script>
+    <script src="js/EvaluacionDHC.js?v3.1"></script>
     </body>
 </html>

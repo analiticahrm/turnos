@@ -55,7 +55,8 @@ switch ($option) {
             $data['PacienteNombre'] ?? null,
             $data['EvaluationMonth'],
             $idAuditor,
-            $data['Detalles']
+            $data['Detalles'],
+            $data['ObservacionFinal'] ?? null
         );
 
         echo json_encode($resultado);

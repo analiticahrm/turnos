@@ -63,7 +63,11 @@ class Evaluaciondhc {
 
     // Guarda (crea o actualiza) un caso completo: cabecera + los detalles de componente calificados.
     // $detalles: [{ComponenteId, Score, Observacion}, ...]
-    function guardarCaso($idMedico, $cedula, $nombre, $mes, $idAuditor, array $detalles) {
+    // $observacionFinal: comentario general del auditor sobre el caso (opcional).
+    function guardarCaso($idMedico, $cedula, $nombre, $mes, $idAuditor, array $detalles, $observacionFinal = null) {
+        $observacionFinal = trim((string)$observacionFinal);
+        $observacionFinal = $observacionFinal !== '' ? $observacionFinal : null;
+
         foreach ($detalles as $d) {
             if ($d['Score'] === 'NA' && trim($d['Observacion'] ?? '') === '') {
                 return ['success' => false, 'error' => 'Debe justificar en observaciones cada componente marcado como "No aplica".'];
@@ -89,21 +93,24 @@ class Evaluaciondhc {
                 $evaluacionId = $existente['EvaluacionId'];
                 $upd = $this->_conexion->prepare("UPDATE dhcevaluacion SET
                         PacienteNombre = :Nombre, IdAuditor = :Auditor,
-                        PromedioPonderado = :Promedio, PorcentajeAdherencia = :Porcentaje, Clasificacion = :Clasificacion
+                        PromedioPonderado = :Promedio, PorcentajeAdherencia = :Porcentaje, Clasificacion = :Clasificacion,
+                        ObservacionFinal = :ObservacionFinal
                     WHERE EvaluacionId = :Id");
                 $upd->execute([
                     ':Nombre' => $nombre, ':Auditor' => $idAuditor,
                     ':Promedio' => $calculo['promedio'], ':Porcentaje' => $calculo['porcentaje'],
-                    ':Clasificacion' => $calculo['clasificacion'], ':Id' => $evaluacionId
+                    ':Clasificacion' => $calculo['clasificacion'], ':ObservacionFinal' => $observacionFinal,
+                    ':Id' => $evaluacionId
                 ]);
             } else {
                 $ins = $this->_conexion->prepare("INSERT INTO dhcevaluacion
-                        (IdMedico, PacienteCedula, PacienteNombre, EvaluationMonth, IdAuditor, PromedioPonderado, PorcentajeAdherencia, Clasificacion)
-                    VALUES (:IdMedico, :Cedula, :Nombre, :Mes, :Auditor, :Promedio, :Porcentaje, :Clasificacion)");
+                        (IdMedico, PacienteCedula, PacienteNombre, EvaluationMonth, IdAuditor, PromedioPonderado, PorcentajeAdherencia, Clasificacion, ObservacionFinal)
+                    VALUES (:IdMedico, :Cedula, :Nombre, :Mes, :Auditor, :Promedio, :Porcentaje, :Clasificacion, :ObservacionFinal)");
                 $ins->execute([
                     ':IdMedico' => $idMedico, ':Cedula' => $cedula, ':Nombre' => $nombre, ':Mes' => $mes,
                     ':Auditor' => $idAuditor, ':Promedio' => $calculo['promedio'],
-                    ':Porcentaje' => $calculo['porcentaje'], ':Clasificacion' => $calculo['clasificacion']
+                    ':Porcentaje' => $calculo['porcentaje'], ':Clasificacion' => $calculo['clasificacion'],
+                    ':ObservacionFinal' => $observacionFinal
                 ]);
                 $evaluacionId = $this->_conexion->lastInsertId();
             }

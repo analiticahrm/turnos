@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const formCasoTitle = document.getElementById('formCasoTitle');
     const inputCedula = document.getElementById('inputCedula');
     const inputNombrePaciente = document.getElementById('inputNombrePaciente');
+    const inputObservacionFinal = document.getElementById('inputObservacionFinal');
     const dominiosContainer = document.getElementById('dominiosContainer');
     const resumenDominios = document.getElementById('resumenDominios');
     const overallPercent = document.getElementById('overallPercent');
@@ -155,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         inputCedula.value = '';
         inputCedula.disabled = false;
         inputNombrePaciente.value = '';
+        inputObservacionFinal.value = '';
         formCasoTitle.textContent = 'Nuevo caso';
         respuestas = {};
         buildFormulario();
@@ -175,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             inputCedula.value = cedula;
             inputCedula.disabled = true;
             inputNombrePaciente.value = (data.cabecera && data.cabecera.PacienteNombre) || '';
+            inputObservacionFinal.value = (data.cabecera && data.cabecera.ObservacionFinal) || '';
             formCasoTitle.textContent = 'Editando caso: ' + cedula;
 
             respuestas = {};
@@ -427,6 +430,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     PacienteCedula: cedula,
                     PacienteNombre: inputNombrePaciente.value.trim(),
                     EvaluationMonth: currentMonthDate(),
+                    ObservacionFinal: inputObservacionFinal.value.trim(),
                     Detalles: detalles
                 })
             });
