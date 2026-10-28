@@ -11,15 +11,23 @@ class Conexion extends PDO
     }
 
     function conectar(){
-        //$host = 'mysql.hostinger.com';
-        //$dbname = 'u684548812_turnos';
-        //$usuario = 'u684548812_turnoshrm';
-        //$contrasena = 'TurnosHrm2025*';
-
+        // Credenciales: cada entorno (XAMPP local, hosting) tiene su propio config/db.php, que no se versiona.
+        // Para crearlo copia config/db.ejemplo.php. Sin ese archivo se usan los valores de XAMPP local.
         $host = 'localhost';
         $dbname = 'turnos11';
         $usuario = 'root';
         $contrasena = '';
+
+        $archivoDb = dirname(__DIR__) . '/config/db.php';
+        if (is_file($archivoDb)) {
+            $leido = require $archivoDb;
+            if (is_array($leido)) {
+                $host = $leido['host'] ?? $host;
+                $dbname = $leido['base'] ?? $dbname;
+                $usuario = $leido['usuario'] ?? $usuario;
+                $contrasena = $leido['clave'] ?? $contrasena;
+            }
+        }
 
         // Pruebas: solo en CLI o con el servidor embebido de PHP se puede apuntar a otra base con la variable
         // de entorno TURNOS_DB (p. ej. turnos11_prueba). Apache (producción) nunca lee esta variable.

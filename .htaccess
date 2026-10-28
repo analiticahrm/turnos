@@ -1,5 +1,4 @@
-0   |-
-.+++-++# BEGIN LSCACHE
+# BEGIN LSCACHE
 ## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
 <IfModule LiteSpeed>
 RewriteEngine on

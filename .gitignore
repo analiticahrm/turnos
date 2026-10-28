@@ -1,0 +1,12 @@
+# Configuración propia de cada entorno: lleva credenciales y no se versiona (ver config/*.ejemplo.php)
+/config/db.php
+/config/correo.php
+
+# Datos que genera la aplicación en cada servidor
+/uploads/
+/respaldos/
+/temp/
+/cache/
+/Controlador/logs/
+/*.log
+Controlador/*.log
