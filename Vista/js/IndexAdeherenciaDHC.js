@@ -92,6 +92,14 @@
                 $('#dashboard-content').show();
             }
 
+            // Escapa texto libre (p. ej. la observación final del caso) antes de insertarlo como HTML.
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+            }
+
             // Escala 1/3/5 del instructivo 2026: bucket y clase de badge para un promedio.
             function scoreBucket(valor) {
                 const v = parseFloat(valor);
@@ -465,7 +473,7 @@ function renderMedicosList(data) {
                     },
                     success: function(response) {
                         if (response.success) {
-                            renderMedicoDetail(response.data, response.resumen);
+                            renderMedicoDetail(response.data, response.resumen, response.observaciones);
                         } else {
                             alert(response.message);
                         }
@@ -479,7 +487,8 @@ function renderMedicosList(data) {
             // Render medico detail. `resumen` es el promedio ponderado (idéntico al que calcula y
             // guarda el formulario de calificación) — se usa para "Promedio General" en vez de
             // promediar los PromedioCriterio por componente, que da un número distinto (sin ponderar).
-            function renderMedicoDetail(data, resumen) {
+            // `observaciones` son los casos del período que tienen observación final.
+            function renderMedicoDetail(data, resumen, observaciones) {
                 if (data.length === 0) {
                     alert('No se encontraron datos para este médico');
                     return;
@@ -558,10 +567,51 @@ function renderMedicosList(data) {
                         </tr>
                     `;
                 });
-                
+
                 html += `
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <h5>Observaciones finales por caso</h5>
+                `;
+
+                if (!observaciones || observaciones.length === 0) {
+                    html += `<p class="text-muted mb-0">No hay observaciones finales registradas en el período seleccionado.</p>`;
+                } else {
+                    html += `
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Paciente</th>
+                                            <th>Mes</th>
+                                            <th>% Adherencia</th>
+                                            <th>Observación</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                    `;
+                    observaciones.forEach(caso => {
+                        const pct = caso.PorcentajeAdherencia !== null ? parseFloat(caso.PorcentajeAdherencia).toFixed(2) + '%' : '--';
+                        html += `
+                                        <tr>
+                                            <td>${escapeHtml(caso.PacienteCedula)}${caso.PacienteNombre ? `<br><small class="text-muted">${escapeHtml(caso.PacienteNombre)}</small>` : ''}</td>
+                                            <td>${escapeHtml(String(caso.EvaluationMonth).substring(0, 7))}</td>
+                                            <td>${pct}${caso.Clasificacion ? `<br><small class="text-muted">${escapeHtml(caso.Clasificacion)}</small>` : ''}</td>
+                                            <td style="white-space: pre-wrap;">${escapeHtml(caso.ObservacionFinal)}</td>
+                                        </tr>
+                        `;
+                    });
+                    html += `
+                                    </tbody>
+                                </table>
+                    `;
+                }
+
+                html += `
                             </div>
                         </div>
                     </div>

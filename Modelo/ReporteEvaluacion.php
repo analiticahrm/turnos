@@ -54,6 +54,29 @@ class Evaluacion {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Casos de un médico que tienen observación final (dhcevaluacion.ObservacionFinal), para mostrarla
+    // en el detalle "Por Médico". Los casos sin observación no se listan.
+    public function getObservacionesPorMedico($idMedico, $fechaInicio = null, $fechaFin = null) {
+        $sql = "SELECT EvaluacionId, PacienteCedula, PacienteNombre, EvaluationMonth,
+                    PorcentajeAdherencia, Clasificacion, ObservacionFinal
+                FROM dhcevaluacion
+                WHERE IdMedico = :idMedico AND ObservacionFinal IS NOT NULL AND ObservacionFinal <> ''";
+
+        $params = [':idMedico' => $idMedico];
+
+        if ($fechaInicio && $fechaFin) {
+            $sql .= " AND EvaluationMonth BETWEEN :fechaInicio AND :fechaFin";
+            $params[':fechaInicio'] = $fechaInicio;
+            $params[':fechaFin'] = $fechaFin;
+        }
+
+        $sql .= " ORDER BY EvaluationMonth DESC, FechaEvaluacion DESC";
+
+        $stmt = $this->_conexion->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Resumen por especialidad (dashboard general, y resumen de una especialidad puntual cuando
     // se pasa $idEspecialidad). Se basa en el puntaje ponderado ya persistido por caso
     // (dhcevaluacion.PromedioPonderado), no en un recálculo por componente.

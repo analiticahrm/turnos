@@ -21,7 +21,8 @@ switch ($option) {
             // Mismo promedio ponderado que calcula y persiste el formulario de calificación,
             // para que el dashboard nunca muestre un número distinto al del formulario.
             $resumen = $evaluacion->getPromedioPonderadoMedico($idMedico, $fechaInicio, $fechaFin);
-            echo json_encode(['success' => true, 'data' => $data, 'resumen' => $resumen]);
+            $observaciones = $evaluacion->getObservacionesPorMedico($idMedico, $fechaInicio, $fechaFin);
+            echo json_encode(['success' => true, 'data' => $data, 'resumen' => $resumen, 'observaciones' => $observaciones]);
         } else {
             echo json_encode(['success' => false, 'message' => 'ID de médico no proporcionado']);
         }
