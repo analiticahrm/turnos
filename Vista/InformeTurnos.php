@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="../Assets/ICON/hrm.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Productividad Médica | Horas Programadas vs Horas Ejecutadas</title>
-    <link rel="stylesheet" href="css/InformeTurnos.css?v3.1">
+    <link rel="stylesheet" href="css/InformeTurnos.css?v3.2">
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <style>
         /* Estilos adicionales para la versión mejorada */
@@ -40,6 +40,23 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent-color);
+        }
+
+        /* Celulares: las tres tarjetas no podían ser más angostas que su texto y movían la página */
+        @media (max-width: 576px) {
+            .horas-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .horas-card {
+                padding: 10px 6px;
+                min-width: 0;
+            }
+
+            .horas-value {
+                font-size: 1.4rem;
+            }
         }
         
         .cumplimiento-badge {

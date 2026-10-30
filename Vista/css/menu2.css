@@ -845,3 +845,22 @@ dl, ol, ul {
         max-width: none;
     }
 }
+
+/* Responsividad del contenido de las páginas (tablet y celular).
+   Solo actúa por debajo de 1000px: en escritorio nada cambia. Va al final para ganar en la cascada sin tocar lo anterior. */
+@media (max-width: 1000px) {
+    /* Esta hoja pone content-box a todos los elementos: los contenedores y columnas de Bootstrap (width: 100% + relleno)
+       se pasaban por su relleno y movían toda la página en horizontal. */
+    .container,
+    .container-fluid,
+    .row > *,
+    .w-100 {
+        box-sizing: border-box;
+    }
+
+    /* Las tablas de DataTables más anchas que la pantalla se desplazan dentro de su contenedor, no la página */
+    .dataTables_wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}

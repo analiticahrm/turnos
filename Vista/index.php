@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="shortcut icon" href="../Assets/ICON/hrm.png">
-  <link rel="stylesheet" type="text/css" href="../Vista/css/styles.css?v=4.7">
+  <link rel="stylesheet" type="text/css" href="../Vista/css/styles.css?v=6.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/main.min.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/locales/es.global.min.js"></script>
@@ -16,7 +16,7 @@
 </head>
 <body>
     
-<script src="js/Index.js?v=6.3"></script>
+<script src="js/Index.js?v=8.0"></script>
   <?php
 
     session_start();
@@ -31,6 +31,8 @@
     }
     $DocumentoUsuario = $_SESSION['DocumentoUsuario'];
     $IdUsuario = $_SESSION['IdUsuario']; // Suponiendo que 'documentoUsuario' es la clave correcta
+    // Solo estos roles tienen calendario de turnos propio; los demás ven únicamente la portada.
+    $conCalendario = in_array($_SESSION['TipoRol'], ['Asistencial', 'Contratista', 'Asistencial GPC', 'Asistencial DHC'], true);
 
     include_once("../Modelo/conexionPDO.php");
     $objetoConexion = new Conexion;
@@ -44,6 +46,8 @@
     $objetoUsuario = new Usuario($conexion, 0, '', '', '', '', '', '');
     $listarUsuarioAdherencia = $objetoUsuario->listarPorUsuario($IdUsuario);
 ?>
+
+<div class="pagina-inicio-contenedor">
 
 <header class="header">
     <div class="logo">
@@ -198,13 +202,22 @@
         </ul>
     </nav>
 </header>
+<main class="inicio<?php echo $conCalendario ? ' con-calendario' : ''; ?>" id="inicio">
+    <div class="inicio-cabecera">
         <h1>Sistema de Gestión Clínica</h1>
+        <svg class="inicio-ecg" viewBox="0 0 220 36" aria-hidden="true" focusable="false">
+            <path pathLength="1" d="M0 20 H62 q5 -9 10 0 H88 l4 5 l6 -23 l7 30 l5 -12 H128 q9 -13 18 0 H220"/>
+        </svg>
         <p id="hospitalName">Hospital Regional de Moniquirá E.S.E</p>
-      <?php if ($_SESSION['TipoRol'] == 'Asistencial'|| $_SESSION['TipoRol'] == 'Contratista' || $_SESSION['TipoRol'] == 'Asistencial GPC' || $_SESSION['TipoRol'] == 'Asistencial DHC'): ?>
-      <div class="calendar-container" id="calendarContainer">
+    </div>
+<?php if ($conCalendario): ?>
+    <div class="calendar-container" id="calendarContainer">
         <div id="calendar"></div>
-      </div>
+    </div>
+<?php endif; ?>
+</main>
 
+      <?php if ($conCalendario): ?>
     <div id="modal"  class="modal">
         <div class="modal-dialog">
         <div class="modal-header">
@@ -264,33 +277,10 @@
     </div>
 </div>
 
-<footer>
-    <div class="container">
-        <div class="row">
-        <div class="text-muted">Copyright &copy; Your Website
-            <?php echo "20" . date("y"); ?>
-        </div>
-        </div>
-    </div>
+<footer class="inicio-pie">
+    <p>&copy; <?php echo date("Y"); ?> Hospital Regional de Moniquirá E.S.E</p>
 </footer>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var tipoRol = "<?php echo $_SESSION['TipoRol']; ?>"; // Pasar el rol a JavaScript
-
-    if (tipoRol === 'Asistencial' || tipoRol === 'Contratista' ||  tipoRol === 'Asistencial GPC' || tipoRol === 'Asistencial DHC') {
-        setTimeout(() => {
-            document.querySelector("h1").classList.add("move-up");
-            document.getElementById("hospitalName").classList.add("move-down");
-            
-            setTimeout(() => {
-                document.getElementById("calendarContainer").classList.add("show-calendar");
-            }, 1000); // Muestra el calendario después de 1 segundo
-        }, 1000); // Inicia la animación después de 1 segundo
-    }
-});
-</script>
-
+</div>
 
 <script>
     var DocumentoUsuario = "<?php echo $DocumentoUsuario; ?>";

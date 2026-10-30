@@ -1,0 +1,510 @@
+/*
+ * Tema de Halloween del login.
+ * Todo cuelga de body.halloween: sin esa clase (Login.php con $tema_halloween = false) la página queda como el original.
+ * Solo se animan transform y opacity, para que el fondo no pese en celulares.
+ */
+
+body.halloween {
+    --noche: #04090c;
+    --calabaza: #ff7a1a;
+    --calabaza-oscura: #c2410c;
+    --brasa: #ffb454;
+    --espectro: #7df9d0;
+    --hueso: #f4ead5;
+    background-color: var(--noche);
+}
+
+/* ---------- Escena de fondo ---------- */
+.hw-sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.hw-scene {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: linear-gradient(180deg, #050d11 0%, #0a2427 48%, #0e3a38 100%);
+}
+
+.hw-stars span {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.75;
+    animation: hw-twinkle 3.6s ease-in-out infinite;
+}
+
+@keyframes hw-twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.95; }
+}
+
+.hw-moon {
+    position: absolute;
+    top: 9vh;
+    right: 9vw;
+    width: clamp(54px, 6.5vw, 100px);
+    opacity: 0.85;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 34% 38%, rgba(140, 128, 100, 0.4) 0 7%, transparent 8%),
+        radial-gradient(circle at 63% 27%, rgba(140, 128, 100, 0.32) 0 5%, transparent 6%),
+        radial-gradient(circle at 58% 67%, rgba(140, 128, 100, 0.36) 0 10%, transparent 11%),
+        radial-gradient(circle at 26% 70%, rgba(140, 128, 100, 0.28) 0 4%, transparent 5%),
+        radial-gradient(circle at 36% 30%, #fffdf2, var(--hueso) 52%, #cfc1a0 100%);
+    box-shadow: 0 0 22px 4px rgba(244, 234, 213, 0.2);
+}
+
+/* Telarañas */
+.hw-web {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+}
+
+.hw-web .web-spokes { stroke-width: 0.9; }
+.hw-web .web-rings { stroke-width: 0.65; }
+.hw-web .web-dew { fill: currentColor; stroke: none; }
+
+.hw-web-tl {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(110px, 13vw, 210px);
+    height: auto;
+    color: rgba(244, 234, 213, 0.34);
+}
+
+.hw-hills {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: clamp(100px, 20vh, 220px);
+}
+
+.hw-cluster {
+    position: absolute;
+    bottom: 0;
+    width: clamp(300px, 38vw, 640px);
+    height: auto;
+    overflow: visible;
+}
+
+.hw-cluster-l { left: 0; }
+.hw-cluster-r { right: 0; }
+
+/* Lo lejano se oscurece para dar profundidad */
+.hw-lejos { filter: brightness(0.78); }
+
+.hw-grass {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 46px;
+}
+
+/* Brasa y aura de las calabazas */
+.hw-aura {
+    opacity: 0.8;
+    animation: hw-aura 3.4s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+}
+
+.hw-brasa {
+    opacity: 0.9;
+    animation: hw-brasa 2.8s linear infinite;
+    animation-delay: var(--d, 0s);
+}
+
+@keyframes hw-aura {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+@keyframes hw-brasa {
+    0% { opacity: 0.85; }
+    8% { opacity: 1; }
+    15% { opacity: 0.68; }
+    24% { opacity: 0.95; }
+    41% { opacity: 0.78; }
+    56% { opacity: 1; }
+    71% { opacity: 0.72; }
+    100% { opacity: 0.85; }
+}
+
+/* ---------- Murciélagos ---------- */
+.hw-bats {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hw-scene .hw-bats { position: absolute; }
+.hw-bats-front { z-index: 20; }
+
+.hw-bat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+.hw-bat svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.hw-bat use,
+.hw-bat .body {
+    fill: #010304;
+    stroke: rgba(170, 245, 228, 0.55);
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+}
+
+.hw-bat .eye { fill: var(--brasa); stroke: none; }
+
+.hw-bat .wing-l {
+    transform-origin: 47px 26px;
+    animation: hw-flap-l var(--flap, 0.2s) ease-in-out infinite alternate;
+}
+
+.hw-bat .wing-r {
+    transform-origin: 53px 26px;
+    animation: hw-flap-r var(--flap, 0.2s) ease-in-out infinite alternate;
+}
+
+@keyframes hw-flap-l {
+    from { transform: rotate(-26deg) scaleY(0.8); }
+    to { transform: rotate(32deg) scaleY(1); }
+}
+
+@keyframes hw-flap-r {
+    from { transform: rotate(26deg) scaleY(0.8); }
+    to { transform: rotate(-32deg) scaleY(1); }
+}
+
+/* ---------- Tarjeta (mismo diseño, con detalles de la noche) ---------- */
+body.halloween .login-container { position: relative; }
+
+body.halloween .login-card {
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 122, 26, 0.24), 0 0 70px rgba(255, 122, 26, 0.1);
+}
+
+body.halloween .login-card:hover {
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 122, 26, 0.42), 0 0 90px rgba(255, 122, 26, 0.18);
+}
+
+body.halloween .login-header {
+    background: rgba(3, 10, 12, 0.58);
+    box-shadow: inset 0 -3px 0 var(--calabaza-oscura);
+}
+
+body.halloween .logo-img {
+    filter: drop-shadow(0 0 14px rgba(255, 122, 26, 0.5));
+}
+
+body.halloween .logo-img:hover {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+body.halloween .login-body {
+    background-color: #fffdf9;
+}
+
+body.halloween .form-title {
+    font-family: 'Grenze Gotisch', Georgia, 'Times New Roman', serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+}
+
+body.halloween .form-title::first-letter { text-transform: uppercase; }
+
+body.halloween .form-title::after {
+    bottom: -18px;
+    width: 120px;
+    background: linear-gradient(to right, transparent, var(--calabaza-oscura) 30%, var(--calabaza) 50%, var(--calabaza-oscura) 70%, transparent);
+}
+
+/* Murciélago posado sobre el trazo del título */
+body.halloween .form-title::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    width: 46px;
+    height: 23px;
+    transform: translateX(-50%);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'%3E%3Cg fill='%23c2410c'%3E%3Cpath d='M47 25C40 15 24 9 4 13C9 17 12 21 13 26C16 22 21 22 25 27C28 24 33 25 36 30C40 28 44 29 47 32Z'/%3E%3Cpath transform='translate(100 0) scale(-1 1)' d='M47 25C40 15 24 9 4 13C9 17 12 21 13 26C16 22 21 22 25 27C28 24 33 25 36 30C40 28 44 29 47 32Z'/%3E%3Ccircle cx='50' cy='15' r='4.6'/%3E%3Cellipse cx='50' cy='27.5' rx='5.2' ry='9.5'/%3E%3Cpath d='M45.6 14.2 44.6 6 49 11.4zM54.4 14.2 55.4 6 51 11.4z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+body.halloween .form-control:focus {
+    border-color: var(--calabaza);
+    box-shadow: 0 5px 15px rgba(255, 122, 26, 0.18);
+}
+
+body.halloween .form-control:focus + .form-label,
+body.halloween .form-control:not(:placeholder-shown) + .form-label {
+    color: var(--calabaza-oscura);
+}
+
+body.halloween .form-control:focus ~ .input-icon {
+    color: var(--calabaza-oscura);
+}
+
+body.halloween .custom-checkbox input:checked ~ .checkmark {
+    background-color: var(--calabaza-oscura);
+    border-color: var(--calabaza-oscura);
+}
+
+body.halloween .custom-checkbox input:focus-visible ~ .checkmark {
+    outline: 2px solid var(--calabaza);
+    outline-offset: 2px;
+}
+
+body.halloween .submit-btn {
+    background: linear-gradient(135deg, #c2410c 0%, #7c2d12 100%);
+    box-shadow: 0 6px 20px rgba(194, 65, 12, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+body.halloween .submit-btn:before {
+    background: linear-gradient(135deg, #9a3412 0%, #c2410c 100%);
+}
+
+body.halloween .submit-btn:hover {
+    box-shadow: 0 10px 26px rgba(255, 122, 26, 0.45);
+}
+
+body.halloween .submit-btn:focus-visible {
+    outline: 3px solid var(--brasa);
+    outline-offset: 3px;
+}
+
+/* ---------- Adornos dentro de la tarjeta ---------- */
+body.halloween .login-header > .hw-web {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 124px;
+    height: 124px;
+    color: rgba(255, 255, 255, 0.5);
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.halloween .login-footer {
+    position: relative;
+    overflow: hidden;
+}
+
+body.halloween .login-footer > .hw-web {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 84px;
+    height: 84px;
+    color: rgba(0, 0, 0, 0.3);
+    transform: scale(-1, -1);
+    pointer-events: none;
+}
+
+.hw-spider {
+    position: absolute;
+    top: 0;
+    left: 72px;
+    z-index: 1;
+    width: 46px;
+    pointer-events: none;
+    transform-origin: 50% -140px;
+    animation: hw-dangle 6.5s ease-in-out infinite;
+}
+
+.hw-spider::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 80%;
+    width: 1px;
+    height: 160px;
+    background: rgba(244, 234, 213, 0.6);
+}
+
+.hw-spider svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+@keyframes hw-dangle {
+    0%, 100% { transform: translateY(18px) rotate(-3deg); }
+    50% { transform: translateY(52px) rotate(3deg); }
+}
+
+/* Calabazas sentadas sobre el borde de la tarjeta */
+.hw-card-pumpkins {
+    position: absolute;
+    top: 20px;
+    right: 44px;
+    width: 150px;
+    height: auto;
+    overflow: visible;
+    z-index: 2;
+    pointer-events: none;
+    transform: translateY(calc(-100% + 14px));
+    transition: transform 0.5s ease;
+}
+
+body.halloween .login-card:hover ~ .hw-card-pumpkins {
+    transform: translateY(calc(-100% + 4px));
+}
+
+@media (max-height: 800px), (max-width: 560px) {
+    .hw-card-pumpkins { display: none; }
+}
+
+/* ---------- Animación al presionar INGRESAR ---------- */
+.hw-portal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+body.hw-casting .hw-portal { visibility: visible; }
+
+.hw-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 58%, #fff6dc 0%, #ffb454 38%, rgba(255, 122, 26, 0) 74%);
+    opacity: 0;
+}
+
+.hw-veil {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(3, 7, 9, 0.35) 0%, rgba(3, 7, 9, 0.94) 72%);
+    opacity: 0;
+}
+
+.hw-portal-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.hw-portal-pumpkin {
+    width: min(86vw, 520px);
+    height: auto;
+    overflow: visible;
+    opacity: 0;
+    transform: scale(0.1) rotate(-14deg);
+}
+
+.hw-portal-text {
+    margin: 0;
+    font-family: 'Grenze Gotisch', Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.5rem, 4.4vw, 2.3rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--brasa);
+    text-shadow: 0 0 18px rgba(255, 122, 26, 0.75);
+    opacity: 0;
+}
+
+body.hw-casting .login-container {
+    pointer-events: none;
+    animation: hw-away 0.9s ease-in 0.5s forwards;
+}
+
+body.hw-casting .login-card {
+    animation: hw-shake 0.5s linear 0.05s;
+}
+
+body.hw-casting .hw-flash { animation: hw-flash 0.75s ease-out both; }
+body.hw-casting .hw-veil { animation: hw-veil 1.2s ease-in 0.25s forwards; }
+body.hw-casting .hw-portal-pumpkin { animation: hw-pop 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s forwards; }
+body.hw-casting .hw-portal-text { animation: hw-rise 0.6s ease-out 0.85s forwards; }
+
+@keyframes hw-flash {
+    0% { opacity: 0; }
+    8% { opacity: 0.95; }
+    17% { opacity: 0.12; }
+    27% { opacity: 0.8; }
+    100% { opacity: 0; }
+}
+
+@keyframes hw-veil { to { opacity: 1; } }
+
+@keyframes hw-pop {
+    0% { opacity: 0; transform: scale(0.1) rotate(-14deg); }
+    60% { opacity: 1; transform: scale(1.12) rotate(4deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes hw-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hw-away {
+    to { opacity: 0; transform: scale(0.92); }
+}
+
+@keyframes hw-shake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-9px) rotate(-0.4deg); }
+    30% { transform: translateX(8px) rotate(0.4deg); }
+    45% { transform: translateX(-6px); }
+    60% { transform: translateX(5px); }
+    80% { transform: translateX(-2px); }
+}
+
+/* ---------- Pantallas pequeñas y táctiles: menos peso ---------- */
+@media (max-width: 768px), (pointer: coarse) {
+    body.halloween .login-header {
+        background: rgba(3, 10, 12, 0.82);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+
+    .hw-web-tl { width: clamp(90px, 24vw, 140px); }
+    .hw-cluster { width: clamp(240px, 62vw, 380px); }
+}
+
+@media (max-width: 480px) {
+    body.halloween .form-title { font-size: 1.8rem; }
+    body.halloween .login-header > .hw-web { width: 88px; height: 88px; }
+    .hw-spider { display: none; }
+}
+
+/* ---------- Movimiento reducido: escena quieta ---------- */
+@media (prefers-reduced-motion: reduce) {
+    body.halloween *,
+    body.halloween *::before,
+    body.halloween *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

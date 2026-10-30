@@ -748,3 +748,29 @@
     animation: pulse 1s ease-in-out infinite;
     display: inline-block;
 }
+
+/* Celulares: la columna única de filtros no podía ser más angosta que su contenido (fechas, listas) y movía la página;
+   las pestañas se desplazan en lugar de salirse. */
+@media (max-width: 768px) {
+    .filters {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .filter-group {
+        min-width: 0;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .tabs {
+        overflow-x: auto;
+    }
+
+    .tab {
+        flex-shrink: 0;
+    }
+}

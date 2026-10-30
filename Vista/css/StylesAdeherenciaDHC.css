@@ -582,3 +582,35 @@ table.dataTable tbody tr {
     vertical-align: top;
     border-color: var(--bs-table-border-color);
 }
+
+/* Celulares: el menú lateral (collapse de Bootstrap, sin botón para abrirlo) quedaba oculto y el contenido conservaba el
+   margen de 250px. Se muestra como un bloque encima del contenido, con las mismas opciones, y los filtros pasan a varias filas. */
+@media (max-width: 767px) {
+    .sidebar {
+        display: block !important;
+        position: static;
+        height: auto;
+        padding-bottom: 8px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .filtros {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Tablets: título, filtros y botones iban en una sola fila sin saltar de línea y se pasaban del contenido */
+@media (max-width: 1000px) {
+    .main-content .flex-md-nowrap {
+        flex-wrap: wrap !important;
+    }
+
+    .filtros {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

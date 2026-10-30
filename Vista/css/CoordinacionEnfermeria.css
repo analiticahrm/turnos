@@ -1132,3 +1132,25 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     display: flex;
     /* padding: 3px; */
 }
+
+/* Celulares y tablets: el contenido principal es un elemento flex y no se encogía por debajo de su contenido más ancho
+   (tablas, tableros), así que toda la página se movía en horizontal. */
+@media (max-width: 992px) {
+    .main-content {
+        min-width: 0;
+        max-width: 100%;
+    }
+}
+
+/* Celulares: el encabezado de la consola (título y datos del usuario en una sola fila) se pasaba del ancho de la pantalla */
+@media (max-width: 700px) {
+    .header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .user-info {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}

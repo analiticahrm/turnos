@@ -204,8 +204,12 @@ function Formulario(id, nombreArea) {
     // Espera un momento para que la redirección ocurra
 }
 
+var calendarioInicio = null;
+
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
+    // Solo los roles con calendario tienen este elemento en la página
+    if (!calendarEl) return;
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 830,
@@ -290,7 +294,38 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     calendar.render();
+    calendarioInicio = calendar;
+    iniciarEntradaCalendario();
 });
+
+// Entrada de la página para los roles con calendario: primero la portada (título, trazo y nombre del hospital) centrada;
+// luego el trazo y el nombre se desvanecen, el título sube a su lugar y aparece el calendario.
+function iniciarEntradaCalendario() {
+    var principal = document.getElementById('inicio');
+    if (!principal || !principal.classList.contains('con-calendario')) return;
+
+    setTimeout(function () {
+        principal.classList.add('saliendo');
+        setTimeout(function () {
+            var cabecera = principal.querySelector('.inicio-cabecera');
+            var antes = cabecera.getBoundingClientRect().top;
+            principal.classList.add('calendario-visible'); // composición final: el título queda arriba
+            if (calendarioInicio) calendarioInicio.updateSize();
+            var despues = cabecera.getBoundingClientRect().top;
+
+            // El título parte de donde estaba (centrado) y se desliza hasta su lugar
+            cabecera.style.transition = 'none';
+            cabecera.style.transform = 'translateY(' + (antes - despues) + 'px)';
+            void cabecera.offsetWidth;
+            cabecera.style.transition = 'transform 0.7s cubic-bezier(0.22, 0.8, 0.3, 1)';
+            cabecera.style.transform = '';
+            cabecera.addEventListener('transitionend', function limpiar() {
+                cabecera.style.transition = '';
+                cabecera.removeEventListener('transitionend', limpiar);
+            });
+        }, 350);
+    }, 1000);
+}
 
 function obtenerTurnosPorMes(FechaHoraInicio, FechaHoraFin, DocumentoUsuario, successCallback, failureCallback) {
     $.ajax({

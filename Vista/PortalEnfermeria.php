@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Mismos tokens y componentes que la Coordinación de Enfermería -->
-    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=3">
+    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=8">
     <link rel="stylesheet" href="css/AsignacionTurnos.css?v=7">
     <link rel="stylesheet" href="css/PortalEnfermeria.css?v=7">
     <link rel="stylesheet" href="css/CampanaEnfermeria.css?v=2">

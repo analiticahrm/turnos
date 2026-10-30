@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../Vista/css/StylesAdeherenciaDHC.css?v1.7">
+    <link rel="stylesheet" href="../Vista/css/StylesAdeherenciaDHC.css?v1.8">
 </head>
 <body>
         <?php

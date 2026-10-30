@@ -778,3 +778,34 @@ tr:hover {
     margin: 0 auto;
 }
 
+/* Celulares y tablets: el contenido principal es un elemento flex y no se encogía por debajo de su contenido más ancho
+   (tablas, gráficos), así que toda la página se movía en horizontal. */
+@media (max-width: 768px) {
+    .main-content {
+        min-width: 0;
+    }
+}
+
+/* Celulares: el encabezado del tablero (70px de alto fijo, título y filtros en una fila) se pasaba del ancho de la pantalla */
+@media (max-width: 768px) {
+    .main-header {
+        height: auto;
+        min-height: 70px;
+        padding: 8px 15px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .header-title {
+        min-width: 0;
+        flex-wrap: wrap;
+    }
+}
+
+/* Celulares: el filtro de fechas (dos fechas y un botón en una fila) se pasaba del ancho de la pantalla */
+@media (max-width: 768px) {
+    .date-filter {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}

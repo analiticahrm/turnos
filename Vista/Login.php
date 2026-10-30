@@ -1,3 +1,8 @@
+<?php
+// Tema de Halloween: true lo activa, false deja el login normal (la copia del original está en Login.original.php).
+// El tema vive en Vista/halloween/; al terminar la temporada basta con poner false o borrar esa carpeta y esta línea.
+$tema_halloween = true;
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -15,7 +20,10 @@
     <script src="https://kit.fontawesome.com/faf3cfd69a.js" crossorigin="anonymous"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <?php if ($tema_halloween): ?>
+    <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@700&display=swap" rel="stylesheet">
+    <?php endif; ?>
+
     <link rel="shortcut icon" href="../Assets/ICON/hrm.png">
     
     <style>
@@ -452,15 +460,26 @@
             50% { transform: translateY(-20px) translateX(10px); }
         }
     </style>
+    <?php if ($tema_halloween): ?>
+    <link rel="stylesheet" href="halloween/halloween.css?v=<?php echo filemtime(__DIR__ . '/halloween/halloween.css'); ?>">
+    <?php endif; ?>
 </head>
 
-<body>
+<body<?php echo $tema_halloween ? ' class="halloween"' : ''; ?>>
+    <?php if ($tema_halloween): ?>
+    <?php include __DIR__ . '/halloween/escena.php'; ?>
+    <?php else: ?>
     <!-- Canvas para partículas -->
     <div id="particles-js"></div>
-    
+    <?php endif; ?>
+
     <div class="login-container animate-fade-in-up">
         <div class="login-card">
             <div class="login-header">
+                <?php if ($tema_halloween): ?>
+                <svg class="hw-web" viewBox="0 0 175 175" aria-hidden="true" focusable="false"><use href="#hw-web"/></svg>
+                <span class="hw-spider" aria-hidden="true"><svg viewBox="0 0 40 48" focusable="false"><use href="#hw-spider"/></svg></span>
+                <?php endif; ?>
                 <div class="particle-effect" id="card-particles"></div>
                 <div class="logo-container">
                     <img src="../Assets/ICON/logo.png" alt="Logo Hospital Regional Moniquira" class="logo-img">
@@ -505,20 +524,31 @@
             </div>
             
             <div class="login-footer">
+                <?php if ($tema_halloween): ?>
+                <svg class="hw-web" viewBox="0 0 175 175" aria-hidden="true" focusable="false"><use href="#hw-web"/></svg>
+                <?php endif; ?>
                 <div class="copyright">
                     Copyright &copy; Hospital Regional de Moniquira E.S.E <?php echo date("Y"); ?>
                 </div>
             </div>
         </div>
+        <?php if ($tema_halloween): ?>
+        <svg class="hw-card-pumpkins" viewBox="0 0 170 100" aria-hidden="true" focusable="false">
+            <?php hw_calabaza(6, 20, 96, 0.3); ?>
+            <?php hw_calabaza(104, 48, 62, 1.2); ?>
+        </svg>
+        <?php endif; ?>
     </div>
     
     <!-- Scripts -->
+    <?php if (!$tema_halloween): ?>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <?php endif; ?>
     <script>
         // Inicializar partículas en el fondo
         document.addEventListener('DOMContentLoaded', function() {
-            // Configuración de partículas para el fondo
-            particlesJS('particles-js', {
+            // Configuración de partículas para el fondo (no se carga con el tema de Halloween)
+            if (typeof particlesJS === 'function') particlesJS('particles-js', {
                 particles: {
                     number: { value: 100, density: { enable: true, value_area: 800 } },
                     color: { value: "#2a9d8f" },
@@ -642,6 +672,9 @@
             }
         });
     </script>
+    <?php if ($tema_halloween): ?>
+    <script src="halloween/halloween.js?v=<?php echo filemtime(__DIR__ . '/halloween/halloween.js'); ?>"></script>
+    <?php endif; ?>
 </body>
 
 </html>

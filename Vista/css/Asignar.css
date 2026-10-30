@@ -279,3 +279,10 @@ th {
     color: #ffffff;
     text-align: center;
   }
+
+/* Celulares: la tabla de asignación (listas de áreas y médicos) es más ancha que la pantalla; se desplaza dentro de su contenedor */
+@media (max-width: 768px) {
+    .contenido-principal {
+        overflow-x: auto;
+    }
+}

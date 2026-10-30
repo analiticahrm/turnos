@@ -471,3 +471,10 @@ footer {
     .spinner { animation-duration: 1.6s; }
     .card { transition: none; }
 }
+
+/* Celulares y tablets: el pie medía 98.5% más su relleno y se pasaba del ancho de la pantalla */
+@media (max-width: 1000px) {
+    footer {
+        box-sizing: border-box;
+    }
+}

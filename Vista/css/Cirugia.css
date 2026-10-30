@@ -1211,3 +1211,11 @@ ol,ul {
             background-color: #b10000;
             color: white;
         }
+
+/* Celulares y tablets: el contenido principal es un elemento flex y no se encogía por debajo de su contenido más ancho
+   (tablas, gráficos), así que toda la página se movía en horizontal. */
+@media (max-width: 992px) {
+    .main-content {
+        min-width: 0;
+    }
+}

@@ -865,3 +865,10 @@
     margin-bottom: 0;
     border-radius: var(--bs-list-group-border-radius);
 }
+
+/* Celulares: las tarjetas de la vista en cuadrícula pedían 450px como mínimo y se salían de la pantalla */
+@media (max-width: 500px) {
+    .preguntas-list.grid {
+        grid-template-columns: 1fr;
+    }
+}

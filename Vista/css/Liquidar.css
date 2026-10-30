@@ -1728,3 +1728,11 @@ button.btn.btn-sm.btn-primary.btn-guardar-horas
     border-color: #00755c;
     opacity: var(--bs-btn-disabled-opacity);
 }
+
+/* Celulares: ".form-control { width: 100% !important }" ganaba sobre el ancho de 1px que Select2 da al <select> original
+   (oculto y recortado), que quedaba de pantalla completa fuera de su lugar y movía la página en horizontal. */
+@media (max-width: 768px) {
+    select.form-control.select2-hidden-accessible {
+        width: 1px !important;
+    }
+}

@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=7">
+    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=8">
     <link rel="stylesheet" href="css/AsignacionTurnos.css?v=7">
     <link rel="stylesheet" href="css/PermisosEnfermeria.css?v=1">
     <link rel="stylesheet" href="css/CuadroTurnos.css?v=1">
