@@ -73,6 +73,10 @@ switch ($option) {
         echo json_encode($objetoServicio->listarServiciosPerfiles());
         break;
 
+    case "ObtenerTodosConPerfiles":
+        echo json_encode($objetoServicio->obtenerTodosConPerfiles());
+        break;
+
     case "ListarPorEstado":
         $estado = $_GET["IdEstado"] ?? '';
         if ($estado != '') {

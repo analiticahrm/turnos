@@ -348,6 +348,45 @@ class Servicio {
         return $servicio;
     }
 
+    
+    function obtenerTodosConPerfiles() {
+        $stmt = $this->_conexion->prepare("SELECT
+            s.*,
+            e.NombreEstado
+            FROM servicio s
+            LEFT JOIN estado e ON s.IdEstado = e.IdEstado
+            ORDER BY s.NombreServicio");
+        $stmt->execute();
+        $servicios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $this->_conexion->prepare("SELECT
+                sp.IdServicio,
+                p.IdPerfil,
+                p.DescripcionPerfil,
+                sp.HorasDia,
+                sp.HorasNoche,
+                sp.PerfilesDia,
+                sp.PerfilesNoche
+            FROM servicioperfil sp
+            INNER JOIN perfil p ON sp.IdPerfil = p.IdPerfil
+            ORDER BY p.DescripcionPerfil");
+        $stmt->execute();
+
+        $perfilesPorServicio = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $fila) {
+            $idServicio = $fila['IdServicio'];
+            unset($fila['IdServicio']);
+            $perfilesPorServicio[$idServicio][] = $fila;
+        }
+
+        foreach ($servicios as &$servicio) {
+            $servicio['Perfiles'] = $perfilesPorServicio[$servicio['IdServicio']] ?? [];
+        }
+        unset($servicio);
+
+        return $servicios;
+    }
+
     function listarPorEstado($IdEstado) {
         $stmt = $this->_conexion->prepare("SELECT * FROM servicio WHERE IdEstado = :Estado");
         $stmt->bindValue(':Estado', $IdEstado);
