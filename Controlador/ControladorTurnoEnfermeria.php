@@ -118,6 +118,26 @@ switch ($option) {
         echo json_encode($objetoTurnoEnf->listarGrilla($idServicio, $desde, $hasta), JSON_INVALID_UTF8_SUBSTITUTE);
         break;
 
+    case "ListarPorMes":
+        // GET ?Accion=ListarPorMes&Mes=11&Anio=2026[&IdServicio=3] -> turnos de enfermería de ese mes, uno por fila.
+        // Exige sesión con la acción turnos.ver; un coordinador de servicio solo recibe los de sus servicios.
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
+            http_response_code(405);
+            echo json_encode(["success" => false, "message" => "Este endpoint solo acepta GET."]);
+            break;
+        }
+        $mes = $_GET["Mes"] ?? $_GET["mes"] ?? '';
+        $anio = $_GET["Anio"] ?? $_GET["anio"] ?? $_GET["Año"] ?? $_GET["año"] ?? '';
+        if (!ctype_digit((string)$mes) || !ctype_digit((string)$anio) || (int)$mes < 1 || (int)$mes > 12 || (int)$anio < 2020 || (int)$anio > 2100) {
+            http_response_code(400);
+            echo json_encode(["success" => false, "message" => "Indica el mes (1 a 12) y el año, por ejemplo: ?Accion=ListarPorMes&Mes=11&Anio=2026"]);
+            break;
+        }
+
+        $turnosMes = $objetoTurnoEnf->listarPorMes((int)$anio, (int)$mes, $serviciosMes);
+        echo json_encode(["success" => true, "mes" => (int)$mes, "anio" => (int)$anio, "total" => count($turnosMes), "turnos" => $turnosMes], JSON_INVALID_UTF8_SUBSTITUTE);
+        break;
+
     default:
         echo json_encode(["success" => false, "message" => "Acción no válida"]);
         break;

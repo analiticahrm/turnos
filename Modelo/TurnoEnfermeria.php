@@ -348,6 +348,40 @@ class TurnoEnfermeria {
         return [' AND (s.IdEstado IS NULL OR s.IdEstado <> 2)', false];
     }
 
+    // Turnos de enfermería de un mes, uno por fila (endpoint ListarPorMes). Solo turnos activos (sin los anulados ni
+    // los sellos de novedad). $servicios: null = todos; arreglo de ids = solo los turnos prestados en esos servicios
+    // (el guardado en el turno o, si no tiene, el principal del enfermero).
+    function listarPorMes($anio, $mes, $servicios = null) {
+        $desde = sprintf('%04d-%02d-01', $anio, $mes);
+        $hasta = date('Y-m-t', strtotime($desde));
+        $sql = "SELECT te.IdTurnoEnfermeria, te.FechaTurnoEnfermeria AS Fecha, te.FechaHoraInicio, te.FechaHoraFin,
+                te.IdTipoTurno, tt.Codigo AS CodigoTurno, tt.Nombre AS NombreTurno, tt.Horas,
+                m.IdMedico, m.DocumentoMedico, m.NombreMedico,
+                p.IdPerfil, p.DescripcionPerfil,
+                COALESCE(te.IdServicio, pr.IdServicio) AS IdServicio,
+                COALESCE(st.NombreServicio, spr.NombreServicio) AS NombreServicio,
+                te.EsExcepcion, te.Observaciones
+            FROM turno_enfermeria te
+            INNER JOIN perfilenfermero pe ON pe.IdEnfPer = te.IdEnfPer
+            INNER JOIN medico m ON m.IdMedico = pe.IdMedico
+            INNER JOIN perfil p ON p.IdPerfil = pe.IdPerfil
+            LEFT JOIN tipoturno tt ON tt.IdTipoTurno = te.IdTipoTurno
+            LEFT JOIN servicioenfermero pr ON pr.IdSerEnf = (SELECT MIN(x.IdSerEnf) FROM servicioenfermero x WHERE x.IdMedico = pe.IdMedico)
+            LEFT JOIN servicio st ON st.IdServicio = te.IdServicio
+            LEFT JOIN servicio spr ON spr.IdServicio = pr.IdServicio
+            WHERE te.FechaTurnoEnfermeria BETWEEN ? AND ? AND (te.IdEstado IS NULL OR te.IdEstado <> 2)";
+        $par = [$desde, $hasta];
+        if ($servicios !== null) {
+            $ids = array_values(array_unique(array_map('intval', $servicios)));
+            if (!$ids) return [];
+            $sql .= " AND COALESCE(te.IdServicio, pr.IdServicio) IN (" . implode(',', array_fill(0, count($ids), '?')) . ")";
+            $par = array_merge($par, $ids);
+        }
+        $st = $this->_conexion->prepare($sql . " ORDER BY te.FechaTurnoEnfermeria, NombreServicio, m.NombreMedico");
+        $st->execute($par);
+        return $st->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Grilla persona x día para un rango de fechas. Una fila por enfermero (con servicio y perfil
     // asignados) y, en 'dias', solo los días que tienen turno: {"2026-10-02": {IdTurnoEnfermeria,
     // IdTipoTurno, TipoTurnoEnfermeria, EsExcepcion, IdEstado, IdServicio, NombreServicioTurno}}.
