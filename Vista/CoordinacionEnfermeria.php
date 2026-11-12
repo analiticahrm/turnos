@@ -947,6 +947,12 @@
                         <option value="2">Inactivo</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="perfil-generar-turnos" checked>
+                        <label class="form-check-label" for="perfil-generar-turnos">Generar turnos automáticos</label>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="hideModal('nueva-perfil-modal')">Cancelar</button>
@@ -1363,7 +1369,7 @@
             'anular' => Permisos::tiene('nomina.anular'),
         ]); ?>;
     </script>
-    <script src="../Vista/js/CoordinacionEnfermeria.js?v=22"></script>
+    <script src="../Vista/js/CoordinacionEnfermeria.js?v=23"></script>
     <script src="../Vista/js/AsignacionTurnos.js?v=8"></script>
     <script src="../Vista/js/CuadroTurnos.js?v=1"></script>
     <script src="../Vista/js/NovedadesTurno.js?v=3"></script>

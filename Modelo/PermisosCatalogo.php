@@ -11,6 +11,7 @@ class PermisosCatalogo {
     public static function grupos() {
         return [
             'portal'   => 'Portal del enfermero',
+            'informes' => 'Informes de agendas médicas',
             'turnos'   => 'Turnos',
             'cuadro'   => 'Cuadro de turnos',
             'cambios'  => 'Cambios de turno',
@@ -27,6 +28,9 @@ class PermisosCatalogo {
             'portal.acceder'          => ['portal', 'Entrar al portal', 'Ver su calendario, sus turnos y su sueldo estimado.', false],
             'cambios.solicitar'       => ['portal', 'Solicitar cambios de turno', 'Pedir a un compañero del servicio intercambiar un turno.', false],
             'cambios.responder'       => ['portal', 'Responder cambios de turno', 'Aceptar o rechazar las solicitudes que le envían sus compañeros.', false],
+
+            'informes.diario'         => ['informes', 'Ver el informe diario', 'Consultar las agendas médicas de un día, por especialidad.', false],
+            'informes.mensual'        => ['informes', 'Ver el informe mensual', 'Consultar las agendas médicas de un mes completo, con filtros y exportación.', false],
 
             'turnos.ver'              => ['turnos', 'Ver turnos', 'Ver la asignación y el calendario de turnos.', true],
             'turnos.editar'           => ['turnos', 'Editar turnos', 'Asignar, cambiar y mover turnos en la grilla.', true],
@@ -112,8 +116,8 @@ class PermisosCatalogo {
                 ['turnos.ver', 'turnos.editar', 'turnos.generar', 'turnos.novedad', 'turnos.novedad_revertir', 'cuadro.confirmar',
                  'cambios.bandeja', 'cambios.resolver', 'cambios.revertir', 'cambios.notificar', 'bitacora.ver'],
                 'servicios'),
-            'ENFERMERO' => $todas(['portal.acceder', 'cambios.solicitar', 'cambios.responder']),
-            'AUXILIAR'  => $todas(['portal.acceder', 'cambios.solicitar', 'cambios.responder']),
+            'ENFERMERO' => $todas(['portal.acceder', 'cambios.solicitar', 'cambios.responder', 'informes.diario']),
+            'AUXILIAR'  => $todas(['portal.acceder', 'cambios.solicitar', 'cambios.responder', 'informes.diario']),
         ];
     }
 
@@ -127,8 +131,14 @@ class PermisosCatalogo {
         return isset($a[$codigo]) && $a[$codigo][3] === true;
     }
 
-    // Acciones que no son del portal: si un usuario tiene solo estas, es un usuario de portal.
+    // Acciones del portal: si un usuario tiene solo estas (y, si acaso, las de consulta), es un usuario de portal.
     public static function accionesPortal() {
         return ['portal.acceder', 'cambios.solicitar', 'cambios.responder'];
+    }
+
+    // Acciones de solo consulta que puede tener cualquier rol (también los de médicos): no convierten a nadie en
+    // usuario del portal ni le dan acceso a la consola de coordinación.
+    public static function accionesConsulta() {
+        return ['informes.diario', 'informes.mensual'];
     }
 }

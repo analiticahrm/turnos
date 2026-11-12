@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 include_once("guardia_nomina.php");
-exigirRolCoordinacionONomina();
+
 include_once("../Modelo/conexionPDO.php");
 $objetoConexion = new Conexion;
 $conexion = $objetoConexion->conectar();

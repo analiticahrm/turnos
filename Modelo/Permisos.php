@@ -81,7 +81,8 @@ class Permisos {
     public static function esSoloPortal() {
         $p = self::perm();
         if ($p === null || !empty($p['admin']) || empty($p['acciones'])) return false;
-        return count(array_diff(array_keys($p['acciones']), PermisosCatalogo::accionesPortal())) === 0;
+        $propias = array_diff(array_keys($p['acciones']), PermisosCatalogo::accionesConsulta());
+        return count($propias) > 0 && count(array_diff($propias, PermisosCatalogo::accionesPortal())) === 0;
     }
 
     // Tiene alguna acción de la consola de coordinación (cualquiera que no sea del portal).
@@ -89,7 +90,7 @@ class Permisos {
         $p = self::perm();
         if ($p === null) return false;
         if (!empty($p['admin'])) return true;
-        return count(array_diff(array_keys($p['acciones']), PermisosCatalogo::accionesPortal())) > 0;
+        return count(array_diff(array_keys($p['acciones']), PermisosCatalogo::accionesPortal(), PermisosCatalogo::accionesConsulta())) > 0;
     }
 
     // Resumen para el cliente (menús, botones). La decisión real siempre se vuelve a tomar en el servidor.

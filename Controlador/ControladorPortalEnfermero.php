@@ -66,7 +66,8 @@ function periodoSolicitado() {
 
 switch ($accion) {
     case 'Perfil':
-        responder(['success' => true, 'perfil' => $portal->perfil($idMedico), 'debeCambiarClave' => $debeCambiarClave, 'vistaPrevia' => $vistaPrevia]);
+        responder(['success' => true, 'perfil' => $portal->perfil($idMedico), 'debeCambiarClave' => $debeCambiarClave, 'vistaPrevia' => $vistaPrevia,
+            'informes' => ['diario' => Permisos::tiene('informes.diario'), 'mensual' => Permisos::tiene('informes.mensual')]]);
         break;
 
     case 'Mes':
@@ -104,6 +105,35 @@ switch ($accion) {
         $liqOficial = NominaRecargos::liquidacionActiva($conexion, $idMedico, $anio, $mes);
         responder(['success' => true, 'nomina' => $portal->nominaDelMes($idMedico, $anio, $mes),
             'estadoLiquidacion' => $liqOficial ? $liqOficial['EstadoFlujo'] : 'estimada']);
+        break;
+
+    // Agendas médicas. Un solo día: informes.diario. Un rango (hasta un año) y los filtros: informes.mensual.
+    case 'Agendas':
+        $desde = (string)($_GET['Desde'] ?? date('Y-m-d'));
+        $hasta = (string)($_GET['Hasta'] ?? $desde);
+        $fd = DateTime::createFromFormat('!Y-m-d', $desde);
+        $fh = DateTime::createFromFormat('!Y-m-d', $hasta);
+        if (!$fd || !$fh || $fd->format('Y-m-d') !== $desde || $fh->format('Y-m-d') !== $hasta || $fh < $fd) {
+            responder(['success' => false, 'message' => 'Fechas no válidas.'], 400);
+        }
+        $dias = (int)$fd->diff($fh)->days + 1;
+        if ($dias > 366) {
+            responder(['success' => false, 'message' => 'El informe admite como máximo un año.'], 400);
+        }
+        $filtros = [];
+        if ((int)($_GET['IdArea'] ?? 0) > 0) $filtros['idArea'] = (int)$_GET['IdArea'];
+        if ((int)($_GET['Tipo'] ?? 0) > 0) $filtros['tipo'] = (int)$_GET['Tipo'];
+        if (trim((string)($_GET['Medico'] ?? '')) !== '') $filtros['medico'] = trim((string)$_GET['Medico']);
+        $noms = array_filter(explode(',', (string)($_GET['Nomenclaturas'] ?? '')), 'ctype_digit');
+        if ($noms) $filtros['nomenclaturas'] = array_slice($noms, 0, 500);
+        Permisos::exigir($dias === 1 && !$filtros ? 'informes.diario' : 'informes.mensual');
+        responder(['success' => true, 'desde' => $desde, 'hasta' => $hasta, 'agendas' => $portal->agendasMedicas($desde, $hasta, $filtros)]);
+        break;
+
+    // Listas para los filtros del informe mensual (especialidades; médicos y nomenclaturas de una especialidad).
+    case 'AgendasFiltros':
+        Permisos::exigir('informes.mensual');
+        responder(['success' => true] + $portal->filtrosAgendas((int)($_GET['IdArea'] ?? 0)));
         break;
 
     case 'CambiarClave':

@@ -20,9 +20,9 @@
     }
     $formulario = 'area';
     
-    $IdRol = $_SESSION['IdRol'];
-    $rolesPermitidos = [1, 6];
-    $mostrarBotonInforme = in_array($IdRol, $rolesPermitidos);
+    // El botón del informe mensual se parametriza en Roles y permisos (acción informes.mensual); el Administrador siempre lo ve.
+    include_once("../Modelo/Permisos.php");
+    $mostrarBotonInforme = Permisos::tiene('informes.mensual');
     
     $_SESSION['Menu'] = '1';
     if (strpos('' . $_SESSION['MedicoRol'], 'R') === false) {

@@ -65,6 +65,10 @@
       titulo: "Mi sueldo",
       mes: true
     },
+    agendas: {
+      titulo: "Agendas médicas",
+      mes: false
+    },
     cambios: {
       titulo: "Cambios de turno",
       mes: false
@@ -350,6 +354,11 @@
           html = avisoCuadro(mes) + sueldoHTML(n);
           break;
         }
+        case "agendas":
+          html = window.AgendasPortal
+            ? await window.AgendasPortal.html()
+            : '<div class="at-vacio"><p>Las agendas médicas no están disponibles.</p></div>';
+          break;
         case "cambios":
           html = window.CambiosPortal
             ? await window.CambiosPortal.html()
@@ -362,6 +371,8 @@
       if (token !== P.token) return; // llegó una respuesta más nueva
       cuerpo.classList.remove("cargando");
       cuerpo.innerHTML = html;
+      if (P.seccion === "agendas" && window.AgendasPortal)
+        window.AgendasPortal.alPintar(); // el informe mensual se arma con el HTML ya en la página
       if (P.seccion === "cambios" && window.CambiosPortal) {
         const m = /^#cambios\/(\d+)/.exec(location.hash);
         if (m) window.CambiosPortal.resaltar(m[1]); // aviso de la campana: se marca la solicitud
@@ -1385,6 +1396,7 @@
       const r = await pedir("Perfil");
       P.perfil = r.perfil;
       P.forzada = !!r.debeCambiarClave;
+      if (window.AgendasPortal) window.AgendasPortal.configurar(r.informes);
     } catch (err) {
       errorCuerpo(err);
       return;

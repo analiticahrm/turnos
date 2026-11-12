@@ -659,6 +659,8 @@ function abrirModalPerfil(perfilId = null) {
                     document.getElementById('servicio-perfil').value = perfil.IdServicio ?? '';
                     document.getElementById('descripcion-perfil').value = perfil.DescripcionPerfil;
                     document.getElementById('perfil-estado').value = perfil.IdEstado;
+                    // Marcada salvo que el perfil la tenga apagada (o la columna aún no exista)
+                    document.getElementById('perfil-generar-turnos').checked = String(perfil.GenerarTurnosAutomaticos ?? 1) !== '0';
                 })
                 .catch(error => {
                     console.error('Error al cargar el perfil:', error);
@@ -677,6 +679,7 @@ function abrirModalPerfil(perfilId = null) {
             document.getElementById('servicio-perfil').value = '';
             document.getElementById('descripcion-perfil').value = '';
             document.getElementById('perfil-estado').value = '1';
+            document.getElementById('perfil-generar-turnos').checked = true;
         }
 
         showModal('nueva-perfil-modal');
@@ -696,6 +699,7 @@ function guardarPerfil() {
     formData.append('IdServicio', document.getElementById('servicio-perfil').value);
     formData.append('DescripcionPerfil', document.getElementById('descripcion-perfil').value);
     formData.append('IdEstado', document.getElementById('perfil-estado').value);
+    formData.append('GenerarTurnosAutomaticos', document.getElementById('perfil-generar-turnos').checked ? '1' : '0');
     formData.append('UsuarioCreacion', IdUsuario);
     formData.append('FechaCreacion', new Date().toISOString());
     formData.append('UsuarioModificacion', IdUsuario);

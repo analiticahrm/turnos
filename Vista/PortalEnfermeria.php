@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/PortalEnfermeria.css?v=7">
     <link rel="stylesheet" href="css/CampanaEnfermeria.css?v=2">
     <link rel="stylesheet" href="css/CambiosTurno.css?v=7">
+    <link rel="stylesheet" href="css/AgendasPortal.css?v=2">
 </head>
 <body>
     <?php
@@ -81,6 +82,11 @@
             <div class="menu-item" data-pt-ir="sueldo" role="button" tabindex="0">
                 <i class="fas fa-wallet"></i><span>Mi sueldo</span>
             </div>
+            <?php if (Permisos::tiene('informes.diario')): /* informe diario de agendas médicas (y el mensual con informes.mensual) */ ?>
+            <div class="menu-item" data-pt-ir="agendas" role="button" tabindex="0">
+                <i class="fas fa-user-md"></i><span>Agendas médicas</span>
+            </div>
+            <?php endif; ?>
             <?php if ($esEnfermeria && Permisos::tieneAlguna(['cambios.solicitar', 'cambios.responder'])): ?>
             <div class="menu-item" data-pt-ir="cambios" role="button" tabindex="0">
                 <i class="fas fa-exchange-alt"></i><span>Cambios de turno</span><span class="pt-insignia" id="pt-cambios-n" hidden>0</span>
@@ -144,6 +150,7 @@
 
     <script src="../Vista/js/CampanaEnfermeria.js?v=1"></script>
     <script src="../Vista/js/CambiosTurnoPortal.js?v=1"></script>
-    <script src="../Vista/js/PortalEnfermeria.js?v=12"></script>
+    <script src="../Vista/js/AgendasPortal.js?v=2"></script>
+    <script src="../Vista/js/PortalEnfermeria.js?v=14"></script>
 </body>
 </html>

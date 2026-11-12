@@ -99,6 +99,49 @@ class PortalEnfermero {
         return $this->_conexion->query("SELECT IdTipoTurno, Codigo, Nombre, HoraInicio, HoraFin, Horas FROM tipoturno ORDER BY IdTipoTurno")->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Agendas médicas (turnos de los médicos) entre dos fechas, ambas incluidas: lo mismo que muestran a los médicos
+    // Vista/InformeDiario.php e Informe.php, sin el documento del médico. Las fechas llegan ya validadas (AAAA-MM-DD).
+    // $filtros (informe mensual): idArea, tipo (actividad.TipoActividad), medico (nombre exacto), nomenclaturas (ids).
+    function agendasMedicas($desde, $hasta, array $filtros = []) {
+        $sql = "SELECT A.IdTurno, A.FechaHoraInicio, A.FechaHoraFin, A.EstadoTurno,
+                C.NombreMedico, E.NombreEspecialidad, B.IdNomenclatura, B.CodNomenclatura, B.Nombre AS Descripcion,
+                D.NombreActividad, D.TipoActividad, T.NombreArea
+            FROM turno A
+            INNER JOIN nomenclatura B ON A.IdNomenclatura = B.IdNomenclatura
+            INNER JOIN medico C ON A.IdMedico = C.IdMedico
+            LEFT JOIN especialidad E ON C.IdEspecialidadMedico = E.IdEspecialidad
+            INNER JOIN actividad D ON B.IdActividad = D.IdActividad
+            INNER JOIN area T ON B.IdArea = T.IdArea
+            WHERE A.FechaHoraInicio >= ? AND A.FechaHoraInicio < DATE_ADD(?, INTERVAL 1 DAY)";
+        $par = [$desde . ' 00:00:00', $hasta];
+        if (!empty($filtros['idArea'])) { $sql .= " AND T.IdArea = ?"; $par[] = (int)$filtros['idArea']; }
+        if (!empty($filtros['tipo'])) { $sql .= " AND D.TipoActividad = ?"; $par[] = (int)$filtros['tipo']; }
+        if (isset($filtros['medico']) && $filtros['medico'] !== '') { $sql .= " AND C.NombreMedico = ?"; $par[] = $filtros['medico']; }
+        if (!empty($filtros['nomenclaturas'])) {
+            $ids = array_values(array_unique(array_map('intval', $filtros['nomenclaturas'])));
+            $sql .= " AND B.IdNomenclatura IN (" . implode(',', array_fill(0, count($ids), '?')) . ")";
+            $par = array_merge($par, $ids);
+        }
+        $stmt = $this->_conexion->prepare($sql . " ORDER BY A.FechaHoraInicio, T.NombreArea, C.NombreMedico");
+        $stmt->execute($par);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Listas de los filtros del informe mensual. Sin área: las especialidades (áreas). Con área: sus médicos
+    // asignados y sus nomenclaturas activas, como en Vista/Informe.php.
+    function filtrosAgendas($idArea = 0) {
+        if (!$idArea) {
+            return ['areas' => $this->_conexion->query("SELECT IdArea, NombreArea FROM area ORDER BY NombreArea")->fetchAll(PDO::FETCH_ASSOC)];
+        }
+        $med = $this->_conexion->prepare("SELECT DISTINCT M.NombreMedico FROM medico M
+            INNER JOIN asignacionmedico S ON S.IdMedico = M.IdMedico WHERE S.IdArea = ? ORDER BY M.NombreMedico");
+        $med->execute([(int)$idArea]);
+        $nom = $this->_conexion->prepare("SELECT IdNomenclatura, CodNomenclatura, Nombre FROM nomenclatura
+            WHERE IdArea = ? AND EstadoNomenclatura = 1 ORDER BY CodNomenclatura");
+        $nom->execute([(int)$idArea]);
+        return ['medicos' => $med->fetchAll(PDO::FETCH_COLUMN), 'nomenclaturas' => $nom->fetchAll(PDO::FETCH_ASSOC)];
+    }
+
     function festivos($desde, $hasta) {
         $stmt = $this->_conexion->prepare("SELECT Fecha, Descripcion FROM festivo WHERE Fecha BETWEEN :D AND :H ORDER BY Fecha");
         $stmt->bindValue(':D', $desde);

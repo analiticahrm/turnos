@@ -7,6 +7,8 @@ class Perfil {
     private $_IdEstado;
     private $_IdEsquema;
     private $_IdEmpresa;
+    // 1 = el perfil entra en la generación automática de turnos (casilla del formulario de perfiles).
+    private $_GenerarTurnosAutomaticos = 1;
 
     function __construct($conexion, $IdPerfil, $IdServicio, $DescripcionPerfil, $IdEstado, $IdEsquema = null, $IdEmpresa = null) {
         $this->_conexion = $conexion;
@@ -26,6 +28,19 @@ class Perfil {
         $this->$k = $v;
     }
 
+    // Guarda la casilla «Generar turnos automáticos». Va aparte para que el perfil se guarde igual si la columna
+    // todavía no existe en la base (migraciones/2026-11-12_perfil_generar_turnos.sql sin aplicar).
+    private function guardarGenerarTurnos($idPerfil) {
+        try {
+            $st = $this->_conexion->prepare("UPDATE perfil SET GenerarTurnosAutomaticos = :G WHERE IdPerfil = :Id");
+            $st->bindValue(':G', (int)$this->_GenerarTurnosAutomaticos ? 1 : 0, PDO::PARAM_INT);
+            $st->bindValue(':Id', $idPerfil);
+            $st->execute();
+        } catch (PDOException $e) {
+            error_log('Perfil: falta la columna GenerarTurnosAutomaticos: ' . $e->getMessage());
+        }
+    }
+
     function insertar() {
         try {
             $insercion = $this->_conexion->prepare("INSERT INTO perfil (IdServicio, DescripcionPerfil, IdEstado, IdEsquema, IdEmpresa) VALUES
@@ -37,9 +52,11 @@ class Perfil {
             $insercion->bindValue(':IdEsquema', $this->_IdEsquema !== '' ? $this->_IdEsquema : null);
             $insercion->bindValue(':IdEmpresa', $this->_IdEmpresa !== '' ? $this->_IdEmpresa : null);
             $exito = $insercion->execute();
+            $idNuevo = $this->_conexion->lastInsertId();
+            if ($exito) $this->guardarGenerarTurnos($idNuevo);
 
             return $exito
-                ? ["success" => true, "message" => "Perfil insertado correctamente", "IdPerfil" => $this->_conexion->lastInsertId()]
+                ? ["success" => true, "message" => "Perfil insertado correctamente", "IdPerfil" => $idNuevo]
                 : ["success" => false, "message" => "No se pudo insertar el perfil"];
         } catch (PDOException $e) {
             return ["success" => false, "message" => "Error en la inserción: " . $e->getMessage()];
@@ -63,6 +80,7 @@ class Perfil {
             $modificacion->bindValue(':IdEsquema', $this->_IdEsquema !== '' ? $this->_IdEsquema : null);
             $modificacion->bindValue(':IdEmpresa', $this->_IdEmpresa !== '' ? $this->_IdEmpresa : null);
             $exito = $modificacion->execute();
+            if ($exito) $this->guardarGenerarTurnos($this->_IdPerfil);
 
             return $exito
                 ? ["success" => true, "message" => "Perfil modificado correctamente"]

@@ -74,6 +74,9 @@ switch ($option) {
         exigirRolCoordinacionONomina();
         echo json_encode($objetoMedico->listarEnfermeros());
         break;
+    case "ListarEnfermerosApi":
+        echo json_encode($objetoMedico->listarEnfermeros());
+        break;
     case "ListarEnfermeroPorId":
         include_once("guardia_nomina.php");
         exigirRolCoordinacionONomina();

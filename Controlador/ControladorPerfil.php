@@ -31,6 +31,8 @@ $IdEsquema = htmlspecialchars($IdEsquema);
 $IdEmpresa = htmlspecialchars($IdEmpresa);
 
 $objetoPerfil = new Perfil($conexion, $IdPerfil, $IdServicio, $DescripcionPerfil, $IdEstado, $IdEsquema, $IdEmpresa);
+// Casilla «Generar turnos automáticos» (marcada si no llega).
+$objetoPerfil->_set('_GenerarTurnosAutomaticos', ($_POST['GenerarTurnosAutomaticos'] ?? '1') === '0' ? 0 : 1);
 
 switch ($option) {
     case "Ingresar":
