@@ -1,7 +1,9 @@
 <?php
-// Tema de Halloween: true lo activa, false deja el login normal (la copia del original está en Login.original.php).
-// El tema vive en Vista/halloween/; al terminar la temporada basta con poner false o borrar esa carpeta y esta línea.
-$tema_halloween = true;
+// Tema de temporada del login: 'navidad', 'halloween' o '' (login normal; la copia del original está en Login.original.php).
+// Cada tema vive en su carpeta (Vista/navidad/, Vista/halloween/); al terminar la temporada basta con poner ''.
+$tema = 'navidad';
+$tema_halloween = ($tema === 'halloween');
+$tema_navidad = ($tema === 'navidad');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,6 +24,9 @@ $tema_halloween = true;
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <?php if ($tema_halloween): ?>
     <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@700&display=swap" rel="stylesheet">
+    <?php endif; ?>
+    <?php if ($tema_navidad): ?>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
     <?php endif; ?>
 
     <link rel="shortcut icon" href="../Assets/ICON/hrm.png">
@@ -463,11 +468,16 @@ $tema_halloween = true;
     <?php if ($tema_halloween): ?>
     <link rel="stylesheet" href="halloween/halloween.css?v=<?php echo filemtime(__DIR__ . '/halloween/halloween.css'); ?>">
     <?php endif; ?>
+    <?php if ($tema_navidad): ?>
+    <link rel="stylesheet" href="navidad/navidad.css?v=<?php echo filemtime(__DIR__ . '/navidad/navidad.css'); ?>">
+    <?php endif; ?>
 </head>
 
-<body<?php echo $tema_halloween ? ' class="halloween"' : ''; ?>>
+<body<?php echo $tema_halloween ? ' class="halloween"' : ($tema_navidad ? ' class="navidad"' : ''); ?>>
     <?php if ($tema_halloween): ?>
     <?php include __DIR__ . '/halloween/escena.php'; ?>
+    <?php elseif ($tema_navidad): ?>
+    <?php include __DIR__ . '/navidad/escena.php'; ?>
     <?php else: ?>
     <!-- Canvas para partículas -->
     <div id="particles-js"></div>
@@ -480,9 +490,18 @@ $tema_halloween = true;
                 <svg class="hw-web" viewBox="0 0 175 175" aria-hidden="true" focusable="false"><use href="#hw-web"/></svg>
                 <span class="hw-spider" aria-hidden="true"><svg viewBox="0 0 40 48" focusable="false"><use href="#hw-spider"/></svg></span>
                 <?php endif; ?>
+                <?php if ($tema_navidad) nv_guirnalda(); ?>
                 <div class="particle-effect" id="card-particles"></div>
                 <div class="logo-container">
                     <img src="../Assets/ICON/logo.png" alt="Logo Hospital Regional Moniquira" class="logo-img">
+                    <?php if ($tema_navidad): ?>
+                    <svg class="nv-gorro" viewBox="0 0 64 52" aria-hidden="true" focusable="false">
+                        <path d="M8 38C9 20 22 6 40 7C50 8 57 15 59 26C54 21 47 21 44 26C48 30 50 34 50 38Z" fill="url(#nv-rojo-g)"/>
+                        <path d="M14 34C18 22 28 13 40 12" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle cx="58" cy="28" r="6.5" fill="#f4fafc" stroke="rgba(0,0,0,.08)"/>
+                        <rect x="3" y="34" width="52" height="13" rx="6.5" fill="#f4fafc" stroke="rgba(0,0,0,.08)"/>
+                    </svg>
+                    <?php endif; ?>
                 </div>
                 <h1 class="hospital-name">HOSPITAL REGIONAL DE MONIQUIRÁ E.S.E</h1>
                 <p class="hospital-tagline">Crecemos para cuidar tu Salud!</p>
@@ -538,16 +557,41 @@ $tema_halloween = true;
             <?php hw_calabaza(104, 48, 62, 1.2); ?>
         </svg>
         <?php endif; ?>
+        <?php if ($tema_navidad): ?>
+        <svg class="nv-card-regalos" viewBox="0 0 170 100" aria-hidden="true" focusable="false">
+            <!-- Regalo rojo con cinta dorada -->
+            <rect x="20" y="44" width="60" height="50" rx="3" fill="url(#nv-rojo-g)"/>
+            <rect x="45" y="44" width="10" height="50" fill="url(#nv-oro-g)"/>
+            <rect x="16" y="34" width="68" height="14" rx="3" fill="#c4162f"/>
+            <rect x="45" y="34" width="10" height="14" fill="url(#nv-oro-g)"/>
+            <path d="M16 38V37Q16 34 19 34H81Q84 34 84 37V38Q78 41 72 38Q64 42 56 38Q48 42 40 38Q32 42 24 38Q20 41 16 38Z" fill="#f2f8fa"/>
+            <path d="M50 34C40 17 25 22 31 31C35 36 44 35 50 34ZM50 34C60 17 75 22 69 31C65 36 56 35 50 34Z" fill="url(#nv-oro-g)" stroke="#a87410" stroke-width=".8"/>
+            <circle cx="50" cy="33" r="4" fill="#e9b73c" stroke="#a87410" stroke-width=".8"/>
+            <!-- Regalo verde con cinta roja -->
+            <g transform="rotate(6 120 92)">
+                <rect x="98" y="60" width="44" height="34" rx="3" fill="url(#nv-verde-g)"/>
+                <rect x="116" y="60" width="8" height="34" fill="#e3233f"/>
+                <rect x="95" y="52" width="50" height="11" rx="2.5" fill="#167a52"/>
+                <rect x="116" y="52" width="8" height="11" fill="#e3233f"/>
+                <path d="M95 55.5V55Q95 52 98 52H142Q145 52 145 55V55.5Q140 58 135 55.5Q128 59 121 55.5Q114 59 107 55.5Q101 58 95 55.5Z" fill="#f2f8fa"/>
+                <path d="M120 52C113 40 102 44 106 50C109 54 115 53 120 52ZM120 52C127 40 138 44 134 50C131 54 125 53 120 52Z" fill="#e3233f" stroke="#8f0c22" stroke-width=".7"/>
+                <circle cx="120" cy="51.5" r="3" fill="#c8102e"/>
+            </g>
+            <!-- Nieve acumulada sobre la tarjeta -->
+            <path d="M0 100C6 90 22 86 38 88C54 81 76 83 90 88C110 80 138 82 152 89C162 93 168 97 170 100Z" fill="#eef6f8"/>
+            <path d="M8 93C20 89 30 90 38 91M96 90C112 85 130 86 146 92" fill="none" stroke="rgba(120,160,175,.35)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <?php endif; ?>
     </div>
     
     <!-- Scripts -->
-    <?php if (!$tema_halloween): ?>
+    <?php if (!$tema_halloween && !$tema_navidad): ?>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <?php endif; ?>
     <script>
         // Inicializar partículas en el fondo
         document.addEventListener('DOMContentLoaded', function() {
-            // Configuración de partículas para el fondo (no se carga con el tema de Halloween)
+            // Configuración de partículas para el fondo (no se carga con los temas de temporada)
             if (typeof particlesJS === 'function') particlesJS('particles-js', {
                 particles: {
                     number: { value: 100, density: { enable: true, value_area: 800 } },
@@ -674,6 +718,9 @@ $tema_halloween = true;
     </script>
     <?php if ($tema_halloween): ?>
     <script src="halloween/halloween.js?v=<?php echo filemtime(__DIR__ . '/halloween/halloween.js'); ?>"></script>
+    <?php endif; ?>
+    <?php if ($tema_navidad): ?>
+    <script src="navidad/navidad.js?v=<?php echo filemtime(__DIR__ . '/navidad/navidad.js'); ?>"></script>
     <?php endif; ?>
 </body>
 

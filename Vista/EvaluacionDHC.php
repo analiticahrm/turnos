@@ -23,7 +23,13 @@
         if(strpos($_SESSION['TipoRol'], 'Asistencial DHC') === false){
 
             if(strpos($_SESSION['TipoRol'], 'Asistencial GPC') === false){
-                header("location:../Vista/index.php?mensaje=Permisos Insuficientes");
+
+                if (strpos($_SESSION['DHCRol'], 'C') === false) {
+                    header("location:../Vista/index.php?mensaje=Permisos Insuficientes");
+                    exit();
+                }
+
+               
             }
 
         }

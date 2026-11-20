@@ -95,7 +95,7 @@ class Nomenclatura{
         FROM nomenclatura A
         INNER JOIN area B ON A.IdArea = B.IdArea
         INNER JOIN actividad C ON A.IdActividad = C.IdActividad 
-        WHERE B.IdArea = :IdArea;");
+        WHERE B.IdArea = :IdArea AND A.EstadoNomenclatura = 1;");
         $listado->bindValue(':IdArea', $IdArea);
         $listado->execute();
         return $listado;
