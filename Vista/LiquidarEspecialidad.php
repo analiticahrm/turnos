@@ -469,7 +469,7 @@ $NombreEspecialidad = urldecode($_POST['NombreEspecialidad'] ?? '');
 <!-- Include jspdf-autotable after jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js"></script>
 <!-- Lectura del JSON guardado y generación del PDF (compartido con Liquidar.php, LiquidarEspecialidad.php y LiquidarUsuario.php) -->
-<script src="js/LiquidacionPDF.js?v=1"></script>
+<script src="js/LiquidacionPDF.js?v=2"></script>
 
 
     <script>
@@ -936,11 +936,14 @@ if (medico.GPCData && medico.GPCData[0]) {
     ajusteGPC = 0;
 }
 
+                    // DHC apagado por ahora (interruptor DHC_ACTIVO en js/LiquidacionPDF.js):
+                    // no se calcula promedio ni descuento; se guarda '-' y ajuste $0.
+                    const dhcActivo = !!(window.LiquidacionDatos && LiquidacionDatos.dhcActivo);
                     let ajusteDHC = 0;
                     let promedioDHC = '-';
                     let descuentoPorcentajeDHC = '-';
                     let descuentoDHC = 0;
-                    if (medico.DHCData && medico.DHCData[0]?.ProAdedhc !== undefined) {
+                    if (dhcActivo && medico.DHCData && medico.DHCData[0]?.ProAdedhc !== undefined) {
                         promedioDHC = (medico.DHCData[0].ProAdedhc).toFixed(2);
                         if (medico.DHCData[0].ProAdedhc < 3.5) {
                             descuentoDHC = -0.03;

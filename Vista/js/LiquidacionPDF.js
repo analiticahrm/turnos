@@ -13,6 +13,14 @@
     'use strict';
 
     // ------------------------------------------------------------------
+    // Indicador DHC (interruptor único para las tres pantallas de liquidación)
+    // ------------------------------------------------------------------
+    // Por ahora DHC no se usa en las liquidaciones: las columnas DHC siguen apareciendo en la
+    // tabla y en el PDF, pero vacías (promedio "-", descuento "-", ajuste $0, sin botón Detalle)
+    // y así se guardan. Para volver a calcular el promedio y el descuento, poner en true.
+    const DHC_ACTIVO = false;
+
+    // ------------------------------------------------------------------
     // Lectura de valores guardados
     // ------------------------------------------------------------------
 
@@ -104,6 +112,7 @@
     }
 
     global.LiquidacionDatos = {
+        dhcActivo: DHC_ACTIVO,
         numero: numero,
         moneda: moneda,
         suma: suma,
