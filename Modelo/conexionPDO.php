@@ -14,7 +14,7 @@ class Conexion extends PDO
         // Credenciales: cada entorno (XAMPP local, hosting) tiene su propio config/db.php, que no se versiona.
         // Para crearlo copia config/db.ejemplo.php. Sin ese archivo se usan los valores de XAMPP local.
         $host = 'localhost';
-        $dbname = 'turnos11';
+        $dbname = 'turnos';
         $usuario = 'root';
         $contrasena = '';
 

@@ -5,6 +5,11 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 $correoUsuario = $_POST['fCorreoUsuario'];
 $contraseñaUsuario = $_POST['fContraseñaUsuario'];
+// Una contraseña vacía nunca es válida: hay cuentas que quedaron con MD5('') por un error anterior al editar usuarios.
+if (trim((string)$contraseñaUsuario) === '') {
+    header("location:../Vista/Login.php?mensaje=incorrecto");
+    exit;
+}
 include("../Modelo/conexionPDO.php");
 $objetoConexion = new conexion;
 $conexion = $objetoConexion->conectar();

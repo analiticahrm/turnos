@@ -350,4 +350,80 @@ class GeneradorTurnos {
 
         return ['success' => true, 'creados' => $creados, 'conApoyo' => $conApoyo, 'alertas' => $alertas];
     }
+
+    /**
+     * Botón "Limpiar": borra los turnos del mes cuyos cuadros siguen en borrador (sin confirmar), generados y hechos a
+     * mano. $servicios: null = todos; lista de IdServicio = solo esos. Con $confirmar = false solo cuenta.
+     * No toca: cuadros confirmados, sellos de novedad ni anulados (IdEstado 2), ni turnos con recargos de nómina
+     * (la tabla recargos no deja borrarlos).
+     */
+    function limpiarBorradores($anio, $mes, $servicios, $confirmar) {
+        if (!CuadroTurnos::tablaDisponible($this->_conexion)) {
+            return ['success' => false, 'message' => 'Falta la tabla de cuadros (migración 13): no se puede saber qué está en borrador.'];
+        }
+        $desde = sprintf('%04d-%02d-01', $anio, $mes);
+        $hasta = date('Y-m-t', strtotime($desde));
+        $servicioTurno = "COALESCE(te.IdServicio, (SELECT se.IdServicio FROM servicioenfermero se WHERE se.IdMedico = pe.IdMedico ORDER BY se.IdSerEnf LIMIT 1))";
+        $sql = "SELECT te.IdTurnoEnfermeria, te.EsExcepcion, $servicioTurno AS IdServicio
+            FROM turno_enfermeria te
+            INNER JOIN perfilenfermero pe ON pe.IdEnfPer = te.IdEnfPer
+            WHERE te.FechaTurnoEnfermeria BETWEEN ? AND ? AND (te.IdEstado IS NULL OR te.IdEstado <> 2)"
+            . CuadroTurnos::sqlSinConfirmar($this->_conexion, 'te', 'pe');
+        $par = [$desde, $hasta];
+        if ($servicios !== null) {
+            $servicios = array_values(array_unique(array_map('intval', $servicios)));
+            if (!$servicios) return ['success' => true, 'total' => 0, 'generados' => 0, 'manuales' => 0, 'conRecargos' => 0, 'servicios' => [], 'borrados' => 0];
+            $sql .= " AND $servicioTurno IN (" . implode(',', array_fill(0, count($servicios), '?')) . ")";
+            $par = array_merge($par, $servicios);
+        }
+        $st = $this->_conexion->prepare($sql);
+        $st->execute($par);
+        $filas = $st->fetchAll(PDO::FETCH_ASSOC);
+
+        // Turnos con recargos de nómina: se respetan.
+        $conRecargos = [];
+        $hayRecargos = $this->_conexion->query("SHOW TABLES LIKE 'recargos'")->fetchColumn() !== false;
+        if ($hayRecargos && $filas) {
+            foreach (array_chunk(array_column($filas, 'IdTurnoEnfermeria'), 500) as $bloque) {
+                $r = $this->_conexion->prepare("SELECT DISTINCT IdTurnoEnfermeria FROM recargos WHERE IdTurnoEnfermeria IN (" . implode(',', array_fill(0, count($bloque), '?')) . ")");
+                $r->execute(array_map('intval', $bloque));
+                foreach ($r->fetchAll(PDO::FETCH_COLUMN) as $id) $conRecargos[(int)$id] = true;
+            }
+        }
+
+        $ids = []; $generados = 0; $manuales = 0; $porServicio = [];
+        foreach ($filas as $f) {
+            if (isset($conRecargos[(int)$f['IdTurnoEnfermeria']])) continue;
+            $ids[] = (int)$f['IdTurnoEnfermeria'];
+            if ((int)$f['EsExcepcion'] === 1) $manuales++; else $generados++;
+            $porServicio[(int)$f['IdServicio']] = ($porServicio[(int)$f['IdServicio']] ?? 0) + 1;
+        }
+        $nombres = [];
+        if ($porServicio) {
+            $ph = implode(',', array_fill(0, count($porServicio), '?'));
+            $s = $this->_conexion->prepare("SELECT IdServicio, NombreServicio FROM servicio WHERE IdServicio IN ($ph)");
+            $s->execute(array_keys($porServicio));
+            $nombres = $s->fetchAll(PDO::FETCH_KEY_PAIR);
+        }
+        $resumen = [];
+        foreach ($porServicio as $id => $n) $resumen[] = ['servicio' => trim((string)($nombres[$id] ?? 'Sin servicio')), 'turnos' => $n];
+        usort($resumen, function ($a, $b) { return $b['turnos'] <=> $a['turnos']; });
+        $salida = ['success' => true, 'total' => count($ids), 'generados' => $generados, 'manuales' => $manuales,
+            'conRecargos' => count($conRecargos), 'servicios' => $resumen, 'borrados' => 0];
+        if (!$confirmar || !$ids) return $salida;
+
+        try {
+            $this->_conexion->beginTransaction();
+            foreach (array_chunk($ids, 500) as $bloque) {
+                $d = $this->_conexion->prepare("DELETE FROM turno_enfermeria WHERE IdTurnoEnfermeria IN (" . implode(',', array_fill(0, count($bloque), '?')) . ")");
+                $d->execute($bloque);
+                $salida['borrados'] += $d->rowCount();
+            }
+            $this->_conexion->commit();
+        } catch (PDOException $e) {
+            if ($this->_conexion->inTransaction()) $this->_conexion->rollBack();
+            return ['success' => false, 'message' => 'No se borraron los turnos: ' . $e->getMessage()];
+        }
+        return $salida;
+    }
 }

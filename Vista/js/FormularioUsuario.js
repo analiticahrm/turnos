@@ -23,12 +23,15 @@ function limpiar() {
 }
 function ingresar() {
     limpiar()
+    $('#fContraseñaUsuario').attr('placeholder', 'Contraseña Usuario');
     $('#exampleModalLabel').html("Agregar Usuario");
     $("#Accion").val("Ingresar");
     $("#ModalIngreso").modal('show');
 }
 function actualizar(id) {
     limpiar()
+    // Al editar, la contraseña vacía conserva la actual; solo se cambia si se escribe una nueva.
+    $('#fContraseñaUsuario').attr('placeholder', 'Dejar vacía para no cambiarla');
     $('#exampleModalLabel').html("Editar Usuario");
     $("#Accion").val("Actualizar");
     $('#fIdUsuario').val(id);

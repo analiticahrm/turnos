@@ -569,10 +569,11 @@
                         <div class="mb-3">
                             <label for="cups-codigo" class="form-label">Código CUPS <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="cups-codigo" placeholder="Ej: 510001" required>
+                            <div class="form-text" id="cups-codigo-ayuda">Código de 6 dígitos; se valida contra el catálogo de procedimientos del hospital.</div>
                         </div>
                         <div class="mb-3">
                             <label for="cups-descripcion" class="form-label">Descripción</label>
-                            <input type="text" class="form-control" id="cups-descripcion" placeholder="Descripción del procedimiento">
+                            <input type="text" class="form-control" id="cups-descripcion" placeholder="Si la deja vacía se usa la del catálogo">
                         </div>
                     </form>
                 </div>
@@ -2348,9 +2349,15 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
         
         // Renderizar tabla de CUPS por médico
         function renderCupsMedicoTable(data) {
+            // Destruir la DataTable ANTES de tocar el tbody: destroy() vuelve a poner las filas que tenía guardadas,
+            // y si se hace después tapa las nuevas (no se veía lo recién guardado ni funcionaba el filtro por médico).
+            clearTimeout(window.temporizadorTablaCupsMedico);
+            if ($.fn.DataTable.isDataTable('#table-cups-medico')) {
+                $('#table-cups-medico').DataTable().destroy();
+            }
             const tbody = $('#cups-medico-body');
             tbody.empty();
-            
+
             if (data.length === 0) {
                 tbody.html(`
                     <tr>
@@ -2360,24 +2367,22 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
                         </td>
                     </tr>
                 `);
-                
-                if ($.fn.DataTable.isDataTable('#table-cups-medico')) {
-                    $('#table-cups-medico').DataTable().destroy();
-                }
                 return;
             }
             
             data.forEach(item => {
+                // item.Cups es el OID del procedimiento; item.CupsCodigo, el código CUPS de 6 dígitos.
+                const codigo = item.CupsCodigo || `OID ${item.Cups}`;
                 const fila = `
                     <tr data-id="${item.IdCupsEvento}">
                         <td>${item.NombreMedico || 'Sin nombre'}</td>
-                        <td>${item.Cups || 'N/A'}</td>
+                        <td>${codigo}<small class="text-muted d-block">OID ${item.Cups}</small></td>
                         <td>${item.Descripcion || '-'}</td>
                         <td class="actions">
-                            <button class="btn btn-sm btn-outline-primary btn-editar-cups-medico" data-id="${item.IdCupsEvento} data-medico="${item.NombreMedico || ''}" data-cups="${item.Cups || ''}">
+                            <button class="btn btn-sm btn-outline-primary btn-editar-cups-medico" data-id="${item.IdCupsEvento}" data-medico="${item.NombreMedico || ''}" data-cups="${codigo}">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-sm btn-outline-danger btn-eliminar-cups-medico" data-id="${item.IdCupsEvento}" data-medico="${item.NombreMedico || ''}" data-cups="${item.Cups || ''}">
+                            <button class="btn btn-sm btn-outline-danger btn-eliminar-cups-medico" data-id="${item.IdCupsEvento}" data-medico="${item.NombreMedico || ''}" data-cups="${codigo}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -2386,10 +2391,10 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
                 tbody.append(fila);
             });
             
-            // Inicializar DataTable si es necesario
-            setTimeout(() => {
+            // Inicializar DataTable con las filas recién pintadas
+            window.temporizadorTablaCupsMedico = setTimeout(() => {
                 if ($.fn.DataTable.isDataTable('#table-cups-medico')) {
-                    $('#table-cups-medico').DataTable().destroy();
+                    return;
                 }
                 $('#table-cups-medico').DataTable({
                     language: {
@@ -2486,7 +2491,7 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
                         const item = response[0];
                         $('#edit-id-cups-medico').val(item.IdCupsEvento);
                         $('#medico-select').val(item.IdMedico);
-                        $('#cups-codigo').val(item.Cups);
+                        $('#cups-codigo').val(item.CupsCodigo || '');
                         $('#cups-descripcion').val(item.Descripcion || '');
                         $('#modal-cups-title').text('Editar CUPS de Médico');
                         $('#modal-cups-medico').modal('show');
@@ -2548,7 +2553,41 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
             $('#medico-select').val('');
             $('#cups-codigo').val('');
             $('#cups-descripcion').val('');
+            $('#cups-codigo-ayuda').removeClass('text-success text-danger')
+                .text('Código de 6 dígitos; se valida contra el catálogo de procedimientos del hospital.');
             $('#modal-cups-title').text('Agregar CUPS a Médico');
+        }
+
+        // Muestra el procedimiento del código escrito (o avisa que no existe) antes de guardar.
+        function validarCodigoCupsMedico() {
+            const codigo = $('#cups-codigo').val().trim();
+            const ayuda = $('#cups-codigo-ayuda');
+            if (!codigo) {
+                return;
+            }
+            ayuda.removeClass('text-success text-danger').text('Buscando en el catálogo...');
+            $.ajax({
+                url: API_CUPS_MEDICO + '?Accion=BuscarCodigo',
+                method: 'POST',
+                data: { Cups: codigo },
+                dataType: 'json',
+                success: function(response) {
+                    if ($('#cups-codigo').val().trim() !== codigo) {
+                        return; // el usuario ya cambió el código
+                    }
+                    if (response && response.success) {
+                        ayuda.addClass('text-success').text(`${response.Cups} — ${response.Procedimiento}`);
+                        if (!$('#cups-descripcion').val().trim()) {
+                            $('#cups-descripcion').val(response.Procedimiento);
+                        }
+                    } else {
+                        ayuda.addClass('text-danger').text((response && response.message) || 'Código no encontrado');
+                    }
+                },
+                error: function() {
+                    ayuda.addClass('text-danger').text('No se pudo consultar el catálogo');
+                }
+            });
         }
         
         // Filtrar tabla de CUPS por médico
@@ -2561,14 +2600,18 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
             if (searchTerm) {
                 filteredData = filteredData.filter(item => {
                     const medico = (item.NombreMedico || '').toLowerCase();
-                    const cups = (item.Cups || '').toLowerCase();
+                    const cups = `${item.CupsCodigo || ''} ${item.Cups || ''}`.toLowerCase();
                     const descripcion = (item.Descripcion || '').toLowerCase();
                     return medico.includes(searchTerm) || cups.includes(searchTerm) || descripcion.includes(searchTerm);
                 });
             }
-            
+
             if (filterMedico) {
-                filteredData = filteredData.filter(item => item.IdMedico == filterMedico);
+                // Se compara por documento: un mismo médico puede tener varias filas (IdMedico) en medico.
+                const elegido = medicosList.find(m => m.IdMedico == filterMedico);
+                const documento = elegido ? String(elegido.DocumentoMedico) : null;
+                filteredData = filteredData.filter(item =>
+                    documento ? String(item.DocumentoMedico) === documento : item.IdMedico == filterMedico);
             }
             
             renderCupsMedicoTable(filteredData);
@@ -2581,6 +2624,7 @@ function eliminarParametrizacion(idParametrizacion, nombreEspecialidad) {
         function configurarEventosCupsMedico() {
             // Botón guardar CUPS médico
             $('#btn-guardar-cups-medico').off('click').on('click', guardarCupsMedico);
+            $('#cups-codigo').off('change').on('change', validarCodigoCupsMedico);
             
             // Eventos para botones dinámicos (usando event delegation)
             $(document).on('click', '.btn-editar-cups-medico', function() {

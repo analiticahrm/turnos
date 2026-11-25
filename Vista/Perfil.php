@@ -93,7 +93,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="block text-gray-600 text-sm mb-1">Nueva Contraseña</label>
-                    <input type="password" id="editContrasena"  autocomplete="new-password" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+                    <input type="password" id="editContrasena"  autocomplete="new-password" placeholder="Dejar vacía para no cambiarla" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
                 </div>
             </form>
 

@@ -46,19 +46,25 @@ class Usuario{
         return $insercion;
     }
     function modificar(){
-        $modificacion = $this->_conexion->prepare("UPDATE usuario SET 
+        // La contraseña solo se cambia cuando llega una nueva; si el campo viene vacío se conserva la actual
+        // (antes se guardaba MD5('') y el usuario quedaba sin poder entrar).
+        $cambiaClave = trim((string)$this->_ContraseñaUsuario) !== '';
+        $modificacion = $this->_conexion->prepare("UPDATE usuario SET
             NombreUsuario = :NombreUsuario,
             DocumentoUsuario = :DocumentoUsuario,
             TelefonoUsuario = :TelefonoUsuario,
-            CorreoUsuario = :CorreoUsuario,
-            ContraseñaUsuario = MD5(:ContrasenaUsuario),
+            CorreoUsuario = :CorreoUsuario,"
+            . ($cambiaClave ? "
+            ContraseñaUsuario = MD5(:ContrasenaUsuario)," : "") . "
             IdRolUsuario = :IdRolUsuario
         WHERE IdUsuario = :IdUsuario");
         $modificacion->bindValue(':NombreUsuario', $this->_NombreUsuario);
         $modificacion->bindValue(':DocumentoUsuario', $this->_DocumentoUsuario);
         $modificacion->bindValue(':TelefonoUsuario',$this->_TelefonoUsuario);
         $modificacion->bindValue(':CorreoUsuario',$this->_CorreoUsuario);
-        $modificacion->bindValue(':ContrasenaUsuario',$this->_ContraseñaUsuario);
+        if ($cambiaClave) {
+            $modificacion->bindValue(':ContrasenaUsuario',$this->_ContraseñaUsuario);
+        }
         $modificacion->bindValue(':IdRolUsuario',$this->_IdRolUsuario);
         $modificacion->bindValue(':IdUsuario', $this->_IdUsuario);
         $modificacion->execute();

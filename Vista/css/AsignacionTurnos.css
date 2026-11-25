@@ -1317,3 +1317,147 @@ body.dark-mode .at-chip.at-sello {
   line-height: 1.2;
   cursor: pointer;
 }
+
+/* Resultado del optimizador (Generar automáticamente, todos los servicios): totales, tabla por servicio y avisos */
+.op-popup .swal2-html-container {
+  margin: 0.8em 1em 0;
+  text-align: left;
+}
+.op-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.op-resumen > div {
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.op-resumen b {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+}
+.op-resumen span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.op-mal,
+.op-resumen .op-mal b {
+  color: var(--danger-color);
+}
+.op-nota {
+  margin: 4px 0 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.op-avisos {
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+.op-avisos summary {
+  cursor: pointer;
+  color: var(--warning-color, #b45309);
+}
+.op-lista {
+  margin: 6px 0 0;
+  padding-left: 20px;
+  text-align: left;
+  font-size: 0.85rem;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.op-tabla-wrap {
+  max-height: 45vh;
+  overflow: auto;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+}
+.op-tabla {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  width: 100%;
+}
+.op-tabla th,
+.op-tabla td {
+  border-bottom: 1px solid var(--card-border);
+  padding: 5px 8px;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+.op-tabla thead th {
+  position: sticky;
+  top: 0;
+  background: var(--modal-bg, #fff);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.op-tabla .op-nombre {
+  text-align: left;
+  white-space: normal;
+}
+.op-tabla td.op-mal {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+/* Botón "Limpiar" (borra los turnos en borrador del mes), junto a "Generar automáticamente": secundario y en rojo */
+#asignacion-turnos-content .action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#at-limpiar {
+  background: transparent;
+  color: var(--danger-color, #d32f2f);
+  border: 1px solid var(--danger-color, #d32f2f);
+  box-shadow: none;
+}
+#at-limpiar:hover {
+  background: rgba(211, 47, 47, 0.08);
+  box-shadow: none;
+}
+#at-limpiar:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+.swal2-popup .swal2-confirm.op-peligro {
+  background-color: var(--danger-color, #d32f2f) !important;
+}
+
+/* Columna "Horas" (total del mes por persona y, en el pie, por tipo y del mes): fija a la derecha como el nombre a la izquierda */
+#asignacion-turnos-content .grilla-turnos th.at-horas,
+#asignacion-turnos-content .grilla-turnos td.at-horas {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  min-width: 56px;
+  padding: 3px 8px;
+  font-weight: 700;
+  background: var(--modal-bg);
+  border-left: 2px solid var(--card-border);
+}
+#asignacion-turnos-content .grilla-turnos thead th.at-horas {
+  z-index: 4;
+  background:
+    linear-gradient(var(--table-header-bg), var(--table-header-bg)),
+    var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos tr.at-pie-horas th,
+#asignacion-turnos-content .grilla-turnos tr.at-pie-horas td {
+  border-top: 2px solid var(--card-border);
+  color: var(--accent-color);
+}
+#asignacion-turnos-content .grilla-turnos tr.at-pie-horas td.at-cero {
+  color: var(--text-secondary);
+}
+
+/* #main-content es hijo de un contenedor flex y crecía con la tabla: toda la página se desplazaba de lado y la columna
+   "Horas" quedaba fuera de vista. Mientras esta sección está visible, el desplazamiento queda dentro de .at-tabla-wrap
+   (nombre fijo a la izquierda, "Horas" fijo a la derecha). No afecta a las demás secciones de la página. */
+.main-content:has(> #asignacion-turnos-content:not([style*="none"])) {
+  min-width: 0;
+}

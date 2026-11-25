@@ -22,9 +22,16 @@
     session_start();
     if (!isset($_SESSION['TipoRol'])) {
         header("location:../Vista/Login.php?mensaje=incorrecto");
+        echo '<script>location.replace("../Vista/Login.php?mensaje=incorrecto");</script>';
+        exit;
     }
-    // Enfermeros y auxiliares no usan el index de médicos: van a su portal.
-    if (in_array($_SESSION['TipoRol'] ?? '', ['Enfermero', 'Auxiliar'], true)) {
+    // Enfermeros y auxiliares no entran al index (inicio): van a su portal. Se reconocen por el nombre del rol, por su
+    // codigo (ENFERMERO / AUXILIAR, aunque el rol se renombre) o porque solo tienen acciones del portal (misma regla del login).
+    // Al inicio solo llegan, desde la consola de coordinacion, administradores y coordinadores (logo del menu).
+    include_once("../Modelo/Permisos.php");
+    if (in_array($_SESSION['TipoRol'] ?? '', ['Enfermero', 'Auxiliar'], true)
+        || in_array(Permisos::codigoRol(), ['ENFERMERO', 'AUXILIAR'], true)
+        || Permisos::esSoloPortal()) {
         header("location:../Vista/PortalEnfermeria.php");
         echo '<script>location.replace("../Vista/PortalEnfermeria.php");</script>';
         exit;

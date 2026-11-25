@@ -1,10 +1,21 @@
 <?php
 header('Content-Type: application/json');
 session_start();
-include_once("guardia_coordinacion.php");
+
+
+
+
+
+
 include_once("../Modelo/conexionPDO.php");
 
 $option = $_GET["Accion"] ?? '';
+
+
+if($option != 'ListarPorMesApi'){
+    include_once("guardia_coordinacion.php");
+}
+
 
 // Ingresar / Actualizar / Eliminar / ObtenerPorId no tienen ningún cliente (la pantalla solo usa Asignar y
 // ListarGrilla) y se saltaban todas las reglas de servicio, cruce y cuadro confirmado: se retiran.
@@ -118,7 +129,7 @@ switch ($option) {
         echo json_encode($objetoTurnoEnf->listarGrilla($idServicio, $desde, $hasta), JSON_INVALID_UTF8_SUBSTITUTE);
         break;
 
-    case "ListarPorMes":
+    case "ListarPorMesApi":
         // GET ?Accion=ListarPorMes&Mes=11&Anio=2026[&IdServicio=3] -> turnos de enfermería de ese mes, uno por fila.
         // Exige sesión con la acción turnos.ver; un coordinador de servicio solo recibe los de sus servicios.
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {

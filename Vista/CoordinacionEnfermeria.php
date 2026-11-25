@@ -18,8 +18,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=8">
-    <link rel="stylesheet" href="css/AsignacionTurnos.css?v=7">
+    <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=9">
+    <link rel="stylesheet" href="css/AsignacionTurnos.css?v=12">
     <link rel="stylesheet" href="css/PermisosEnfermeria.css?v=1">
     <link rel="stylesheet" href="css/CuadroTurnos.css?v=1">
     <link rel="stylesheet" href="css/NovedadesTurno.css?v=1">
@@ -72,6 +72,10 @@
     $puedeSeccionPermisos = $puedePermisos || $puedeParametros;
     $DocumentoUsuario = $_SESSION['DocumentoUsuario'] ?? '';
     $IdUsuario = $_SESSION['IdUsuario'] ?? '';
+    // El logo del menu lleva al inicio (index.php) solo a administradores y coordinadores. Enfermeros y auxiliares
+    // no entran al index (index.php los manda a su portal), asi que para ellos el logo no es un enlace.
+    $puedeIrInicio = !in_array($tipoRol, ['Enfermero', 'Auxiliar'], true)
+        && (Permisos::esAdmin() || in_array(Permisos::codigoRol(), ['COORD_ENFERMERIA', 'COORD_SERVICIO'], true));
 
     include_once("../Modelo/conexionPDO.php");
     $objetoConexion = new Conexion;
@@ -89,8 +93,15 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
+            <?php if ($puedeIrInicio): ?>
+            <a class="sidebar-logo-enlace" href="../Vista/index.php" title="Ir al inicio">
+                <img src="../Assets/ICON/hrm.png" alt="Hospital Logo">
+                <h3>Hospital HRM</h3>
+            </a>
+            <?php else: ?>
             <img src="../Assets/ICON/hrm.png" alt="Hospital Logo">
             <h3>Hospital HRM</h3>
+            <?php endif; ?>
         </div>
         <div class="sidebar-menu">
             <?php if (!$soloNomina): ?>
@@ -530,6 +541,7 @@
                 <div class="section-header">
                     <div class="section-title" id="at-titulo">Asignación de Turnos de Enfermería</div>
                     <div class="action-buttons">
+                        <button type="button" id="at-limpiar" data-at-act="limpiar"><i class="fas fa-eraser"></i> Limpiar</button>
                         <button type="button" id="at-generar" data-at-act="generar"><i class="fas fa-magic"></i> Generar automáticamente</button>
                     </div>
                 </div>
@@ -1370,7 +1382,7 @@
         ]); ?>;
     </script>
     <script src="../Vista/js/CoordinacionEnfermeria.js?v=23"></script>
-    <script src="../Vista/js/AsignacionTurnos.js?v=8"></script>
+    <script src="../Vista/js/AsignacionTurnos.js?v=12"></script>
     <script src="../Vista/js/CuadroTurnos.js?v=1"></script>
     <script src="../Vista/js/NovedadesTurno.js?v=3"></script>
     <script src="../Vista/js/BitacoraTurnos.js?v=1"></script>

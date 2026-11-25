@@ -1,6 +1,7 @@
 # Configuración propia de cada entorno: lleva credenciales y no se versiona (ver config/*.ejemplo.php)
 /config/db.php
 /config/correo.php
+/config/optimizador.php
 
 # Datos que genera la aplicación en cada servidor
 /uploads/

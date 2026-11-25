@@ -526,7 +526,7 @@
     <script src="js/Cirugia.js?v=1.9"></script>
     <script src="js/utils.js?v=1.2"></script>
     <script src="js/chart.js?v=1.2"></script>
-    <script src="js/cups.js?v=1.3"></script>
+    <script src="js/cups.js?v=1.4"></script>
 
 
 </body>

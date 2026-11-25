@@ -109,7 +109,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.NombreMedico || ''}</td>
-                    <td>${item.Cups || ''}</td>
+                    <td>${item.CupsCodigo || ('OID ' + (item.Cups || ''))}</td>
                     <td>${item.Descripcion || ''}</td>
                     <td class="actions">
                         <button class="action-btn edit-btn" data-id="${item.IdCupsEvento}">
@@ -150,7 +150,8 @@
                     const item = response[0];
                     document.getElementById('editId').value = item.IdCupsEvento;
                     document.getElementById('editMedico').value = item.IdMedico;
-                    document.getElementById('editCups').value = item.Cups;
+                    // item.Cups es el OID del procedimiento; se edita el código CUPS de 6 dígitos.
+                    document.getElementById('editCups').value = item.CupsCodigo || '';
                     document.getElementById('editDescripcion').value = item.Descripcion || '';
                     editModal.style.display = 'flex';
                 } else {
@@ -197,12 +198,12 @@
                     Descripcion: descripcion
                 });
                 
-                if (response) {
+                if (response && response.success === true) {
                     showNotification('CUPS agregado correctamente', 'success');
                     cupsForm.reset();
                     loadCupsData(); // Recargar datos
                 } else {
-                    showNotification('Error al agregar CUPS', 'error');
+                    showNotification((response && response.message) || 'Error al agregar CUPS', 'error');
                 }
             } catch (error) {
                 console.error('Error al agregar CUPS:', error);
@@ -231,13 +232,12 @@
                     Descripcion: descripcion,
                     IdMedico: IdMedico
                 });
-                alert(JSON.stringify(response))
-                if (response) {
+                if (response && response.success === true) {
                     showNotification('CUPS actualizado correctamente', 'success');
                     editModal.style.display = 'none';
                     loadCupsData(); // Recargar datos
                 } else {
-                    showNotification('Error al actualizar CUPS', 'error');
+                    showNotification((response && response.message) || 'Error al actualizar CUPS', 'error');
                 }
             } catch (error) {
                 console.error('Error al actualizar CUPS:', error);
@@ -256,11 +256,11 @@
                         IdCupsEvento: id
                     });
                     
-                    if (response) {
+                    if (response && response.success === true) {
                         showNotification('CUPS eliminado correctamente', 'success');
                         loadCupsData(); // Recargar datos
                     } else {
-                        showNotification('Error al eliminar CUPS', 'error');
+                        showNotification((response && response.message) || 'Error al eliminar CUPS', 'error');
                     }
                 } catch (error) {
                     console.error('Error al eliminar CUPS:', error);
@@ -274,11 +274,11 @@
             const searchTerm = searchInput.value.toLowerCase();
             if (searchTerm) {
                 const filteredData = cupsData.filter(item => {
-                    const medico = medicosData.find(m => m.IdMedico == item.IdMedico) || {};
-                    const medicoNombre = `${medico.NombreMedico || ''} ${medico.ApellidoMedico || ''}`.toLowerCase();
-                    
-                    return medicoNombre.includes(searchTerm) || 
-                           (item.Cups && item.Cups.toLowerCase().includes(searchTerm)) ||
+                    const medicoNombre = (item.NombreMedico || '').toLowerCase();
+                    const codigos = `${item.CupsCodigo || ''} ${item.Cups || ''}`.toLowerCase();
+
+                    return medicoNombre.includes(searchTerm) ||
+                           codigos.includes(searchTerm) ||
                            (item.Descripcion && item.Descripcion.toLowerCase().includes(searchTerm));
                 });
                 renderTableData(filteredData);

@@ -30,7 +30,7 @@ $NombreUsuario = htmlspecialchars($NombreUsuario);
 $DocumentoUsuario = htmlspecialchars($DocumentoUsuario);
 $TelefonoUsuario = htmlspecialchars($TelefonoUsuario);
 $CorreoUsuario = htmlspecialchars($CorreoUsuario);
-$ContraseñaUsuario = htmlspecialchars($ContraseñaUsuario);
+// La contraseña no se escapa: se guarda como MD5 y el login la compara tal cual la escribe el usuario.
 $IdRolUsuario = htmlspecialchars($IdRolUsuario);
 
 
@@ -57,6 +57,11 @@ switch ($option) {
         if ($id != '') {
             $objetoUsuario->_set('_IdUsuario', $id);
             $resultado = $objetoUsuario->ListarPorId();
+            // El hash de la contraseña no se envía al navegador.
+            foreach ($resultado as &$fila) {
+                unset($fila['ContraseñaUsuario']);
+            }
+            unset($fila);
             echo json_encode($resultado);
         } else {
             echo 'Error en Id';

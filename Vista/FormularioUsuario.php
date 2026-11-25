@@ -89,7 +89,7 @@
                 
                 <div class="password-container">
                     <label>Contraseña Usuario:</label>
-                    <input required class="form-control" type="password" id="fContraseñaUsuario" placeholder="Contraseña Usuario">
+                    <input required class="form-control" type="password" id="fContraseñaUsuario" placeholder="Contraseña Usuario" autocomplete="new-password">
                     <i id="togglePasswordClosed" class="fas fa-eye eye-icon open"></i>
                     <i id="togglePassword" class="fas fa-eye-slash eye-icon closed"></i>
                 </div>
@@ -212,7 +212,7 @@
 
     <?php
     include "../Vista/footer.php";?>
-    <script src="js/FormularioUsuario.js?v=1.9"></script>
+    <script src="js/FormularioUsuario.js?v=2.0"></script>
 </body>
 
 </html>

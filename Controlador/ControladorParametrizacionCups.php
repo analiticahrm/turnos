@@ -170,23 +170,9 @@ try {
             
         case "ListarCupsExternos":
             // Endpoint para obtener la lista de cups desde el API externo
-            $apiUrl = "http://186.117.157.246:8080/ApiTurnos/Honorarios/api_cups.php";
-            $api_key = "6xp79W#=gb";
-            
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $apiUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'X-API-Key: ' . $api_key,
-                'Content-Type: application/json'
-            ]);
-            
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $curlError = curl_error($ch);
-            curl_close($ch);
+            // La URL y la clave del API viven en Modelo/CatalogoCups.php (también las usa CUPS Evento).
+            include_once("../Modelo/CatalogoCups.php");
+            list($httpCode, $response) = CatalogoCups::descargar(30);
             
             if ($httpCode == 200 && $response) {
                 $data = json_decode($response, true);
