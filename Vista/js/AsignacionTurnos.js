@@ -1542,10 +1542,13 @@
     if (despues) await despues();
   }
 
-  // ¿El cuadro del servicio desde el que se edita está confirmado para esa fecha? Solo se sabe aquí para el mes que
-  // muestra la barra del cuadro; para otras fechas (semanas que cruzan de mes) decide el servidor.
+  // ¿El cuadro del servicio desde el que se edita, para el perfil de esa persona, está confirmado para esa fecha? Solo se
+  // sabe aquí para el mes que muestra la barra del cuadro; para otras fechas (semanas que cruzan de mes) decide el servidor.
   function cuadroConfirmadoPara(e, fecha) {
-    if (!window.CuadroTurnosUI || !window.CuadroTurnosUI.confirmado())
+    if (
+      !window.CuadroTurnosUI ||
+      !window.CuadroTurnosUI.confirmadoPerfil(e.IdPerfil)
+    )
       return false;
     const est = window.CuadroTurnosUI.estado();
     return (
@@ -2986,6 +2989,7 @@
         E.perfil = el.dataset.perfil;
         guardarPrefs();
         render();
+        avisarCuadro(); // el cuadro es por perfil: la barra muestra el del perfil elegido
         break;
       case "plegar":
         E.plegados[el.dataset.g] = !E.plegados[el.dataset.g];
@@ -3252,11 +3256,16 @@
   window.AsignacionTurnosAPI = {
     contexto: function () {
       const s = E.servicio !== "" ? E.servicioPorId[E.servicio] : null;
+      const conPerfil = E.perfil && E.data
+        ? E.data.enfermeros.find((e) => String(e.IdPerfil) === E.perfil)
+        : null;
       return {
         servicio: E.servicio,
         servicioNombre: s ? s.NombreServicio : "",
         anio: E.ref.getFullYear(),
-        mes: E.ref.getMonth() + 1
+        mes: E.ref.getMonth() + 1,
+        perfil: E.perfil, // '' = todos los perfiles
+        perfilNombre: conPerfil ? conPerfil.DescripcionPerfil : ""
       };
     },
     recargar: function () {

@@ -178,12 +178,13 @@ class OptimizadorTurnos {
             $nombre = trim((string)$s['NombreServicio']);
             if ($error) { $incompletos[] = "$nombre ($error)"; continue; }
             if ($permitidos !== null && !in_array($idServicio, array_map('intval', $permitidos), true)) { $sinPermiso[] = $nombre; continue; }
-            if ($cuadros && $cuadros->estado($idServicio, $anio, $mes)['confirmado']) { $confirmados[] = $nombre; continue; }
+            // Basta un perfil confirmado: el optimizador programa el servicio completo y no debe tocar lo ya avisado.
+            if ($cuadros && $cuadros->algunoConfirmado($idServicio, $anio, $mes)) { $confirmados[] = $nombre; continue; }
             $programables[$idServicio] = $nombre;
             $perfilesFuente[$idServicio] = $filasPerfil;
             $pares += $paresServicio;
         }
-        if ($confirmados) $avisos[] = 'Cuadro confirmado, no se tocó: ' . implode(', ', $confirmados) . '.';
+        if ($confirmados) $avisos[] = 'Cuadro confirmado (en uno o más perfiles), no se tocó: ' . implode(', ', $confirmados) . '.';
         if ($sinPermiso) $avisos[] = 'Sin permiso para generar, no se tocó: ' . implode(', ', $sinPermiso) . '.';
         if ($incompletos) $avisos[] = 'Necesidad incompleta, no se programó: ' . implode('; ', $incompletos) . '. Complétala en Servicios > Áreas de Servicio > Editar.';
         if (!$programables) {
@@ -404,12 +405,68 @@ class OptimizadorTurnos {
         }
         if ($conAjuste) $avisos[] = "A $conAjuste persona(s) con ausencias se les amplió MaxTrilibres en la solicitud (el script cuenta las ausencias como días libres).";
 
-        // --- mínimo de horas del mes
+        // --- mínimo de horas del mes: proporcional a la jornada (HorSemanales × días disponibles ÷ 7)…
         $minimos = [];
         foreach ($personas as $id => $p) {
             $semanales = $p['tipo'] === 'principal' ? ($generalidades[$p['IdEmpresa']]['HorSemanales'] ?: 44) : 0;
             $minimos[(string)$id] = (int)floor($semanales * max(0, $libres[$id]) / 7);
         }
+
+        // …y recortado a lo que su servicio y perfil pueden absorber. Desde la v2.2 el script prohíbe personal de más
+        // y los mínimos son obligatorios: si el personal de un servicio suma más horas que su necesidad, no hay plan
+        // posible (Triage: 4 jefes × 188 h = 752 h para 720 h). Capacidad de cada servicio-perfil = persona-horas de
+        // necesidad dentro del mes que pueden cubrir turnos del mes (franjas del script: día 07–19, noche 19–24 y 00–07;
+        // la madrugada del día 1 solo la cubre una noche del mes anterior), menos lo que ya cubren turnos guardados de
+        // quien no es del grupo. Si los mínimos del grupo no caben, se bajan en la misma proporción y se redondean hacia
+        // abajo a turnos enteros del turno más largo enviado, para que el optimizador pueda cumplirlos.
+        $paso = 0;
+        foreach ($idsTipos as $idTipo) $paso = max($paso, (float)$tipos[$idTipo]['Horas']);
+        if ($paso <= 0) $paso = 12;
+        $capacidad = [];
+        foreach ($programables as $idServicio => $_) {
+            $nocheServicio = self::enteroONull($servicios[$idServicio]['PerfilesNocheServicio']);
+            foreach ($necesidad[$idServicio] as $n) {
+                $clave = $idServicio . '-' . (int)$n['IdPerfil'];
+                if (empty($pares[$clave])) continue;
+                $noche = self::enteroONull($n['PerfilesNoche']);
+                $noche = ($noche === null && $nocheServicio === 0) ? 0 : (int)$noche;
+                $capacidad[$clave] = (int)$n['PerfilesDia'] * 12 * $diasMes + $noche * (12 * $diasMes - 7);
+            }
+        }
+        $grupos = [];
+        foreach ($personas as $id => $p) {
+            if ($p['tipo'] === 'principal') $grupos[$p['IdServicio'] . '-' . $p['IdPerfil']][] = $id;
+        }
+        $inicioTs = strtotime($desde . ' 00:00:00');
+        $finTs = strtotime($hasta . ' 00:00:00 +1 day');
+        foreach ($fijosMes as $f) {
+            $clave = $f['IdServicio'] . '-' . $f['IdPerfil'];
+            $p = $personas[$f['IdMedico']] ?? null;
+            if (!isset($capacidad[$clave]) || ($p && $p['tipo'] === 'principal' && $p['IdServicio'] . '-' . $p['IdPerfil'] === $clave)) continue;
+            $capacidad[$clave] -= max(0, min($finTs, strtotime($f['FechaHoraFin'])) - max($inicioTs, strtotime($f['FechaHoraInicio']))) / 3600;
+        }
+        $recortadas = 0; $ejemplos = [];
+        foreach ($grupos as $clave => $ids) {
+            if (!isset($capacidad[$clave])) continue;
+            $cap = max(0, $capacidad[$clave]);
+            $requerido = 0;
+            foreach ($ids as $id) $requerido += ceil($minimos[(string)$id] / $paso) * $paso;
+            if ($requerido <= $cap) continue;
+            $factor = $cap / $requerido;
+            $antes = max(array_map(function ($id) use ($minimos) { return $minimos[(string)$id]; }, $ids));
+            foreach ($ids as $id) {
+                $nuevo = (int)(floor($minimos[(string)$id] * $factor / $paso) * $paso);
+                if ($nuevo < $minimos[(string)$id]) { $minimos[(string)$id] = $nuevo; $recortadas++; }
+            }
+            $despues = max(array_map(function ($id) use ($minimos) { return $minimos[(string)$id]; }, $ids));
+            [$idServicio, $idPerfil] = array_map('intval', explode('-', $clave));
+            $ejemplos[] = trim((string)$servicios[$idServicio]['NombreServicio']) . ' · ' . $perfilesCat[$idPerfil]['DescripcionPerfil'] . ": $antes → $despues h";
+        }
+        if ($recortadas) {
+            $avisos[] = "Se bajó el mínimo de horas de $recortadas persona(s) en " . count($ejemplos) . ' grupo(s), porque su personal suma más horas de las que el servicio necesita: '
+                . implode('; ', array_slice($ejemplos, 0, 6)) . (count($ejemplos) > 6 ? ' y ' . (count($ejemplos) - 6) . ' más' : '') . '.';
+        }
+        foreach ($personas as $id => $p) $personas[$id]['minimo'] = $minimos[(string)$id];
 
         $solicitud = [
             'anio' => $anio,
@@ -559,7 +616,7 @@ class OptimizadorTurnos {
         $hasta = date('Y-m-t', strtotime($desde));
         if (CuadroTurnos::tablaDisponible($this->_c)) {
             $cuadros = new CuadroTurnos($this->_c);
-            $servicios = array_values(array_filter($servicios, function ($id) use ($cuadros, $anio, $mes) { return !$cuadros->estado($id, $anio, $mes)['confirmado']; }));
+            $servicios = array_values(array_filter($servicios, function ($id) use ($cuadros, $anio, $mes) { return !$cuadros->algunoConfirmado($id, $anio, $mes); }));
         }
         $abiertos = array_flip($servicios);
         $creados = 0; $borrados = 0; $alertas = []; $porServicio = [];

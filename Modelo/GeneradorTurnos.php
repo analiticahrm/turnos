@@ -157,12 +157,12 @@ class GeneradorTurnos {
         $servicio = $this->obtenerServicio($idServicio);
         if (!$servicio) return ['success' => false, 'message' => 'Servicio no encontrado'];
 
-        // Un cuadro confirmado ya lo recibieron los enfermeros: no se regenera ni se sobrescribe sin reabrirlo antes.
+        // Un cuadro confirmado ya lo recibieron los enfermeros: no se regenera ni se sobrescribe sin reabrirlo antes. El
+        // generador trabaja con el servicio completo, así que basta con que un perfil esté confirmado.
         if (CuadroTurnos::tablaDisponible($this->_conexion)) {
             $cuadros = new CuadroTurnos($this->_conexion);
-            $estadoCuadro = $cuadros->estado($idServicio, $anio, $mes);
-            if ($estadoCuadro['confirmado']) {
-                return ['success' => false, 'message' => 'El cuadro de este servicio y mes ya está confirmado. Reábrelo (con su motivo) para volver a generar turnos.'];
+            if ($cuadros->algunoConfirmado($idServicio, $anio, $mes)) {
+                return ['success' => false, 'message' => 'El cuadro de este servicio y mes ya está confirmado (en uno o más perfiles). Reábrelo (con su motivo) para volver a generar turnos.'];
             }
         }
 

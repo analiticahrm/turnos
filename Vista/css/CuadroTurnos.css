@@ -12,6 +12,10 @@
 .cu-borrador > i { color: var(--warning-color); }
 .cu-confirmado { border-left: 4px solid var(--success-color); }
 .cu-confirmado > i { color: var(--success-color); }
+/* Con "Todos": unos perfiles confirmados y otros en borrador. */
+.cu-mixto { border-left: 4px solid var(--accent-color); }
+.cu-mixto > i { color: var(--accent-color); }
+.cu-otros { display: block; margin-top: 2px; }
 .cu-neutro { color: var(--text-secondary); }
 .cu-boton {
     padding: 7px 12px; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px;

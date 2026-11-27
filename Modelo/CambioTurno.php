@@ -130,7 +130,7 @@ class CambioTurno {
         if (new DateTime($t['FechaHoraInicio'], self::tz()) <= $limite) {
             return $horas > 0 ? 'El turno empieza en menos de ' . $horas . ' horas: ya no se puede cambiar.' : 'El turno ya empezó o ya pasó.';
         }
-        if ($t['IdServicio'] === null || !(new CuadroTurnos($this->_c))->estaConfirmado((int)$t['IdServicio'], $t['FechaTurnoEnfermeria'])) {
+        if ($t['IdServicio'] === null || !(new CuadroTurnos($this->_c))->estaConfirmado((int)$t['IdServicio'], $t['FechaTurnoEnfermeria'], (int)$t['IdEnfPer'])) {
             return 'El cuadro de turnos de ese mes todavía no está confirmado.';
         }
         $st = $this->_c->prepare("SELECT 1 FROM cambio_turno_solicitud
@@ -712,15 +712,24 @@ class CambioTurno {
         return self::cancelarSolicitudes($pdo, $st->fetchAll(PDO::FETCH_ASSOC), $motivo);
     }
 
-    // Cancela las solicitudes en trámite del servicio cuyo turno cae en ese mes (al reabrir el cuadro).
-    public static function cancelarPorCuadro($pdo, $idServicio, $anio, $mes, $motivo) {
+    // Cancela las solicitudes en trámite del servicio cuyo turno cae en ese mes (al reabrir el cuadro). Con $idPerfil, solo
+    // las que tocan un turno de ese perfil (el cuadro se reabre por perfil).
+    public static function cancelarPorCuadro($pdo, $idServicio, $anio, $mes, $motivo, $idPerfil = null) {
         if (!self::tablaDisponible($pdo)) return 0;
         $desde = sprintf('%04d-%02d-01', (int)$anio, (int)$mes);
         $hasta = date('Y-m-t', strtotime($desde));
+        $par = [':s' => (int)$idServicio, ':d' => $desde, ':h' => $hasta, ':d2' => $desde, ':h2' => $hasta];
+        $porPerfil = '';
+        if ($idPerfil !== null) {
+            $porPerfil = " AND EXISTS (SELECT 1 FROM turno_enfermeria tx INNER JOIN perfilenfermero px ON px.IdEnfPer = tx.IdEnfPer
+                WHERE tx.IdTurnoEnfermeria IN (cambio_turno_solicitud.IdTurnoSolicitante, cambio_turno_solicitud.IdTurnoCompanero)
+                  AND px.IdPerfil = :p)";
+            $par[':p'] = (int)$idPerfil;
+        }
         $st = $pdo->prepare("SELECT IdSolicitud, IdServicio, IdMedicoSolicitante, IdMedicoCompanero FROM cambio_turno_solicitud
             WHERE Estado IN ('pendiente_companero','aceptada_companero','pendiente_coordinacion') AND IdServicio = :s
-              AND (FechaTurnoSolicitante BETWEEN :d AND :h OR FechaTurnoCompanero BETWEEN :d2 AND :h2)");
-        $st->execute([':s' => (int)$idServicio, ':d' => $desde, ':h' => $hasta, ':d2' => $desde, ':h2' => $hasta]);
+              AND (FechaTurnoSolicitante BETWEEN :d AND :h OR FechaTurnoCompanero BETWEEN :d2 AND :h2)" . $porPerfil);
+        $st->execute($par);
         return self::cancelarSolicitudes($pdo, $st->fetchAll(PDO::FETCH_ASSOC), $motivo);
     }
 

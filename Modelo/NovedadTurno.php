@@ -120,7 +120,7 @@ class NovedadTurno {
                 return ['success' => false, 'message' => 'Ese turno fue intercambiado entre dos enfermeros: deshaz el cambio (Cambios de turno) antes de modificarlo.'];
             }
             $cuadros = new CuadroTurnos($this->_c);
-            if (!$cuadros->estaConfirmado((int)$t['IdServicio'], $t['FechaTurnoEnfermeria'])) {
+            if (!$cuadros->estaConfirmado((int)$t['IdServicio'], $t['FechaTurnoEnfermeria'], (int)$t['IdEnfPer'])) {
                 $this->_c->rollBack();
                 return ['success' => false, 'message' => 'El cuadro todavía no está confirmado: el turno se puede quitar directamente.'];
             }
@@ -231,8 +231,9 @@ class NovedadTurno {
             }
 
             $cuadros = new CuadroTurnos($this->_c);
-            $origenConfirmado = $cuadros->estaConfirmado($servicio, $t['FechaTurnoEnfermeria']);
-            $destinoConfirmado = $cuadros->estaConfirmado($servicio, $fechaDestino);
+            // Cada lado con el cuadro del perfil de su persona (origen: quien trabaja el turno; destino: quien lo recibe).
+            $origenConfirmado = $cuadros->estaConfirmado($servicio, $t['FechaTurnoEnfermeria'], (int)$t['IdEnfPer']);
+            $destinoConfirmado = $cuadros->estaConfirmado($servicio, $fechaDestino, (int)$dest['IdEnfPer']);
             $base = ['idServicio' => $servicio, 'fechaTurno' => $t['FechaTurnoEnfermeria'], 'idUsuario' => $actor['id'], 'usuarioNombre' => $actor['nombre'],
                 'fase' => $origenConfirmado ? 'confirmado' : 'borrador'];
             $descripcion = function ($persona, $fecha) use ($t) { return ['persona' => $persona, 'fecha' => $fecha, 'tipo' => $t['CodigoTipo']]; };

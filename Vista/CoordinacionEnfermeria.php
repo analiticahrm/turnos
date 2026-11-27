@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="css/AsignacionTurnos.css?v=14">
     <link rel="stylesheet" href="css/MenuLateral.css?v=1">
     <link rel="stylesheet" href="css/PermisosEnfermeria.css?v=1">
-    <link rel="stylesheet" href="css/CuadroTurnos.css?v=1">
+    <link rel="stylesheet" href="css/CuadroTurnos.css?v=2">
     <link rel="stylesheet" href="css/NovedadesTurno.css?v=1">
     <link rel="stylesheet" href="css/BitacoraTurnos.css?v=1">
     <link rel="stylesheet" href="css/CampanaEnfermeria.css?v=2">
@@ -1390,8 +1390,8 @@
     </script>
     <script src="../Vista/js/CoordinacionEnfermeria.js?v=24"></script>
     <script src="../Vista/js/MenuLateral.js?v=1"></script>
-    <script src="../Vista/js/AsignacionTurnos.js?v=14"></script>
-    <script src="../Vista/js/CuadroTurnos.js?v=1"></script>
+    <script src="../Vista/js/AsignacionTurnos.js?v=15"></script>
+    <script src="../Vista/js/CuadroTurnos.js?v=2"></script>
     <script src="../Vista/js/NovedadesTurno.js?v=3"></script>
     <script src="../Vista/js/BitacoraTurnos.js?v=1"></script>
     <script src="../Vista/js/CampanaEnfermeria.js?v=1"></script>

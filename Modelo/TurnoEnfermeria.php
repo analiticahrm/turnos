@@ -651,7 +651,7 @@ class TurnoEnfermeria {
             // --- Reglas del cuadro de turnos (migraciones 13 y 14) ------------------------------------------------------
             $cuadroConfirmado = false;
             if ($servicioContexto !== null && CuadroTurnos::tablaDisponible($this->_conexion)) {
-                $cuadroConfirmado = (new CuadroTurnos($this->_conexion))->estaConfirmado($servicioContexto, $fecha);
+                $cuadroConfirmado = (new CuadroTurnos($this->_conexion))->estaConfirmado($servicioContexto, $fecha, $idEnfPer);
             }
             $fase = $cuadroConfirmado ? 'confirmado' : 'borrador';
             foreach ($existentes as $e) {

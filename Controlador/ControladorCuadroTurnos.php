@@ -1,7 +1,8 @@
 <?php
-// Cuadro de turnos de enfermería por servicio y mes: estado, resumen previo, confirmación (con el envío de correos a
-// los enfermeros) y reapertura. Identidad y permisos salen de la sesión; el servicio se valida en el servidor contra
-// el alcance del usuario (un coordinador de servicio solo trabaja con los suyos). Las acciones que cambian algo son POST.
+// Cuadro de turnos de enfermería por servicio, mes y perfil: estado, resumen previo, confirmación (con el envío de correos
+// a los enfermeros) y reapertura. IdPerfil vacío o 0 = todos los perfiles del servicio. Identidad y permisos salen de la
+// sesión; el servicio se valida en el servidor contra el alcance del usuario (un coordinador de servicio solo trabaja con
+// los suyos). Las acciones que cambian algo son POST.
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 include_once("../Modelo/conexionPDO.php");
@@ -44,34 +45,36 @@ function servicioYPeriodo($entrada) {
     if (!CuadroTurnos::periodoValido($anio, $mes)) responder(['success' => false, 'message' => 'Período no válido.'], 400);
     return [$idServicio, $anio, $mes];
 }
+// Perfil de la petición: null = todos.
+function perfilPedido($entrada) {
+    $idPerfil = entradaEntera($entrada['IdPerfil'] ?? '');
+    return $idPerfil > 0 ? $idPerfil : null;
+}
 
 try {
     switch ($accion) {
         case 'Estado':
             list($idServicio, $anio, $mes) = servicioYPeriodo($entrada);
             Permisos::exigir('turnos.ver', $idServicio);
-            $estado = $cuadros->estado($idServicio, $anio, $mes);
+            $estado = $cuadros->estadoVista($idServicio, $anio, $mes, perfilPedido($entrada));
             $estado['puede'] = [
                 'confirmar' => Permisos::tiene('cuadro.confirmar', $idServicio),
                 'reabrir'   => Permisos::tiene('cuadro.reabrir', $idServicio),
             ];
-            if ($estado['IdCuadro'] !== null && $estado['confirmado']) {
-                $estado['correos'] = $cuadros->estadoCorreos($estado['IdCuadro']);
-            }
             responder(['success' => true, 'cuadro' => $estado]);
             break;
 
         case 'Resumen':
             list($idServicio, $anio, $mes) = servicioYPeriodo($entrada);
             Permisos::exigir('cuadro.confirmar', $idServicio);
-            responder(['success' => true, 'resumen' => $cuadros->resumenPrevio($idServicio, $anio, $mes)]);
+            responder(['success' => true, 'resumen' => $cuadros->resumenPrevio($idServicio, $anio, $mes, perfilPedido($entrada))]);
             break;
 
         case 'Confirmar':
             exigirPost();
             list($idServicio, $anio, $mes) = servicioYPeriodo($entrada);
             Permisos::exigir('cuadro.confirmar', $idServicio);
-            $r = $cuadros->confirmar($idServicio, $anio, $mes, $actor);
+            $r = $cuadros->confirmar($idServicio, $anio, $mes, perfilPedido($entrada), $actor);
             responder($r, $r['success'] ? 200 : 409);
             break;
 
@@ -79,7 +82,7 @@ try {
             exigirPost();
             list($idServicio, $anio, $mes) = servicioYPeriodo($entrada);
             Permisos::exigir('cuadro.reabrir', $idServicio);
-            $r = $cuadros->reabrir($idServicio, $anio, $mes, $entrada['Motivo'] ?? '', $actor);
+            $r = $cuadros->reabrir($idServicio, $anio, $mes, perfilPedido($entrada), $entrada['Motivo'] ?? '', $actor);
             responder($r, $r['success'] ? 200 : 409);
             break;
 
