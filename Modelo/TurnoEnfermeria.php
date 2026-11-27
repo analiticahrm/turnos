@@ -527,8 +527,25 @@ class TurnoEnfermeria {
             }
         }
 
+        // Empresa de cada persona (para distinguirla por color en la tabla). Si tuviera varias filas en empresaenfermero
+        // gana la más reciente, como en la liquidación (LiquidadorNomina::datosPersona).
+        $empresaPorMedico = [];
+        if (!empty($personas)) {
+            $idsMedico = array_values(array_unique(array_map('intval', array_column($personas, 'IdMedico'))));
+            $marcasMed = implode(',', array_fill(0, count($idsMedico), '?'));
+            $emp = $this->_conexion->prepare("SELECT ee.IdMedico, ee.IdEmpresa, ee.TipoContrato, e.NombreEmpresa
+                FROM empresaenfermero ee INNER JOIN empresa e ON e.IdEmpresa = ee.IdEmpresa
+                WHERE ee.IdMedico IN ($marcasMed)
+                ORDER BY ee.IdEmpEnf");
+            $emp->execute($idsMedico);
+            foreach ($emp->fetchAll(PDO::FETCH_ASSOC) as $x) {
+                $empresaPorMedico[(int)$x['IdMedico']] = $x;
+            }
+        }
+
         $grilla = [];
         foreach ($personas as $f) {
+            $empresa = $empresaPorMedico[(int)$f['IdMedico']] ?? null;
             $grilla[] = [
                 'IdMedico' => $f['IdMedico'],
                 'IdEnfPer' => $f['IdEnfPer'],
@@ -540,6 +557,10 @@ class TurnoEnfermeria {
                 'EsApoyo' => $f['EsApoyo'],
                 'IdServicioPrincipal' => $f['IdServicioPrincipal'],
                 'NombreServicioPrincipal' => $f['NombreServicioPrincipal'],
+                'IdEmpresa' => $empresa ? (int)$empresa['IdEmpresa'] : null,
+                // El nombre se guarda escapado para HTML (p. ej. S&amp;A); la pantalla lo escapa al pintarlo.
+                'NombreEmpresa' => $empresa ? html_entity_decode($empresa['NombreEmpresa'], ENT_QUOTES, 'UTF-8') : null,
+                'TipoContrato' => $empresa ? (int)$empresa['TipoContrato'] : null,
                 // objeto vacio (no []) cuando no hay turnos, para que el JSON siempre sea un diccionario
                 'dias' => $turnosPorEnfPerFecha[$f['IdEnfPer']] ?? new stdClass(),
                 // Lo mismo agrupado por quien cobra el turno original (vista "reales"); igual a 'dias' sin intercambios.

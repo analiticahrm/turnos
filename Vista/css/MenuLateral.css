@@ -1,0 +1,180 @@
+/* Menú lateral de la consola de enfermería (comportamiento en Vista/js/MenuLateral.js).
+   Solo lo carga Vista/CoordinacionEnfermeria.php: el portal de enfermería comparte CoordinacionEnfermeria.css y no cambia.
+   - Botón ☰ del encabezado: en escritorio contrae el menú a iconos + logo; en celular y tablet (≤992px) lo abre encima.
+   - Contraído, el submenú sale flotante junto a su icono y el nombre de cada opción aparece al pasar el mouse. */
+
+:root {
+  --ml-ancho: 260px;
+  --ml-mini: 76px;
+}
+
+/* El menú se desplaza por dentro cuando no cabe en la pantalla (antes las últimas opciones quedaban fuera de vista). */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 0.25s ease, transform 0.25s ease, background-color 0.3s, color 0.3s;
+}
+.sidebar-header {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.sidebar-menu {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.sidebar-menu::-webkit-scrollbar {
+  width: 5px;
+}
+/* Mientras el menú cambia de ancho, los nombres no se parten en varias líneas (MenuLateral.js pone ml-animando). */
+body.ml-animando .menu-item span,
+body.ml-animando .submenu-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.menu-item > .icon {
+  transition: transform 0.2s;
+}
+.menu-item.abierto > .icon {
+  transform: rotate(180deg);
+}
+.main-content {
+  transition: margin-left 0.25s ease, background-color 0.3s, color 0.3s;
+}
+
+/* Botón ☰ a la izquierda del título de la sección */
+.header-titulo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.menu-lateral-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.menu-lateral-toggle:hover {
+  border-color: var(--accent-color);
+  background: rgba(0, 131, 113, 0.1);
+  color: var(--accent-color);
+}
+.menu-lateral-toggle:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 2px;
+}
+
+/* Nombre de la opción al pasar el mouse con el menú contraído */
+.ml-tip {
+  position: fixed;
+  z-index: 1200;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.ml-tip[hidden],
+.ml-fondo[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- escritorio: menú contraído (iconos + logo) */
+@media (min-width: 993px) {
+  body.sidebar-mini .sidebar {
+    width: var(--ml-mini);
+  }
+  body.sidebar-mini .main-content {
+    margin-left: var(--ml-mini);
+  }
+  body.sidebar-mini .sidebar-header {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body.sidebar-mini .sidebar-header img {
+    margin-right: 0;
+  }
+  body.sidebar-mini .sidebar-header h3,
+  body.sidebar-mini .menu-item span,
+  body.sidebar-mini .menu-item > .icon {
+    display: none;
+  }
+  body.sidebar-mini .menu-item {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  body.sidebar-mini .menu-item i {
+    margin-right: 0;
+    font-size: 1.2rem;
+  }
+  /* La sección abierta está dentro de un submenú que no se ve: se marca su icono. */
+  body.sidebar-mini .menu-item.con-activo {
+    background-color: rgba(0, 131, 113, 0.2);
+    border-left-color: var(--accent-color);
+  }
+  body.sidebar-mini .menu-item.abierto {
+    background-color: rgba(0, 131, 113, 0.15);
+  }
+  /* Submenú flotante junto a su icono (top y left los pone MenuLateral.js) */
+  body.sidebar-mini .submenu {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    width: 230px;
+    max-height: none;
+    padding: 4px 0 8px;
+    overflow: visible;
+    background: var(--sidebar-bg);
+    border-radius: 0 10px 10px 0;
+    box-shadow: 6px 8px 24px rgba(0, 0, 0, 0.35);
+    transition: none;
+  }
+  body.sidebar-mini .submenu.show {
+    display: block;
+  }
+  body.sidebar-mini .submenu::before {
+    content: attr(data-titulo);
+    display: block;
+    padding: 10px 18px 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+  }
+  body.sidebar-mini .submenu-item {
+    padding: 9px 18px;
+  }
+}
+
+/* ---------------------------------------------------------------- celular y tablet: menú encima del contenido */
+@media (max-width: 992px) {
+  .sidebar.show {
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.4);
+  }
+  .ml-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.45);
+  }
+}

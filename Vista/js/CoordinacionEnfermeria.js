@@ -1,5 +1,7 @@
-        // Función para alternar submenús
+        // Función para alternar submenús. Vista/js/MenuLateral.js deja uno solo abierto a la vez y, con el menú
+        // contraído, lo muestra flotante junto a su icono.
         function toggleSubmenu(menu) {
+            if (window.MenuLateral) return window.MenuLateral.alternar(menu);
             const submenu = document.getElementById(`${menu}-submenu`);
             submenu.classList.toggle('show');
         }
@@ -139,6 +141,8 @@
             if (typeof event !== 'undefined' && event && event.currentTarget && event.currentTarget.classList) {
                 event.currentTarget.classList.add('active');
             }
+            // Menú lateral: marca el icono del submenú de la sección y cierra el flotante o el menú del celular.
+            if (window.MenuLateral) window.MenuLateral.alCambiarSeccion();
         }
 
         // Función para cargar el dashboard por defecto

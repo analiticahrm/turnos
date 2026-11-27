@@ -19,7 +19,8 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="css/CoordinacionEnfermeria.css?v=9">
-    <link rel="stylesheet" href="css/AsignacionTurnos.css?v=12">
+    <link rel="stylesheet" href="css/AsignacionTurnos.css?v=14">
+    <link rel="stylesheet" href="css/MenuLateral.css?v=1">
     <link rel="stylesheet" href="css/PermisosEnfermeria.css?v=1">
     <link rel="stylesheet" href="css/CuadroTurnos.css?v=1">
     <link rel="stylesheet" href="css/NovedadesTurno.css?v=1">
@@ -89,6 +90,9 @@
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
+
+    <!-- Menú contraído (iconos + logo) si así lo dejó la persona: se aplica antes de pintar para que no salte (Vista/js/MenuLateral.js) -->
+    <script>try { if (localStorage.getItem('menuLateral.contraido') === '1') document.body.classList.add('sidebar-mini'); } catch (e) {}</script>
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -207,9 +211,12 @@
     <!-- Main Content -->
     <div class="main-content" id="main-content">
         <div class="header">
-            <div>
-                <h1 id="page-title"><?php echo $soloNomina ? 'Nómina de Recargos' : 'Dashboard'; ?></h1>
-                <small id="page-description"><?php echo $soloNomina ? 'Cálculo y liquidación de recargos, horas extra y festivos' : 'Resumen general del sistema'; ?></small>
+            <div class="header-titulo">
+                <button type="button" class="menu-lateral-toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="true" aria-label="Contraer el menú" title="Contraer el menú"><i class="fas fa-bars"></i></button>
+                <div>
+                    <h1 id="page-title"><?php echo $soloNomina ? 'Nómina de Recargos' : 'Dashboard'; ?></h1>
+                    <small id="page-description"><?php echo $soloNomina ? 'Cálculo y liquidación de recargos, horas extra y festivos' : 'Resumen general del sistema'; ?></small>
+                </div>
             </div>
             <div class="user-info">
                 <?php if (!Permisos::esAdmin() && Permisos::tiene('portal.acceder')): ?>
@@ -1381,8 +1388,9 @@
             'anular' => Permisos::tiene('nomina.anular'),
         ]); ?>;
     </script>
-    <script src="../Vista/js/CoordinacionEnfermeria.js?v=23"></script>
-    <script src="../Vista/js/AsignacionTurnos.js?v=12"></script>
+    <script src="../Vista/js/CoordinacionEnfermeria.js?v=24"></script>
+    <script src="../Vista/js/MenuLateral.js?v=1"></script>
+    <script src="../Vista/js/AsignacionTurnos.js?v=14"></script>
     <script src="../Vista/js/CuadroTurnos.js?v=1"></script>
     <script src="../Vista/js/NovedadesTurno.js?v=3"></script>
     <script src="../Vista/js/BitacoraTurnos.js?v=1"></script>
@@ -1391,7 +1399,7 @@
     <script>
     window.PE_PUEDE = { permisos: <?php echo $puedePermisos ? 'true' : 'false'; ?>, parametros: <?php echo $puedeParametros ? 'true' : 'false'; ?> };
     </script>
-    <script src="../Vista/js/PermisosEnfermeria.js?v=1"></script>
+    <script src="../Vista/js/PermisosEnfermeria.js?v=2"></script>
     <script>
     var DocumentoUsuario = "<?php echo htmlspecialchars($DocumentoUsuario); ?>";
     var IdUsuario = "<?php echo htmlspecialchars($IdUsuario); ?>";

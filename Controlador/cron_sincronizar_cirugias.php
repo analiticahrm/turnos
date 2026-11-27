@@ -228,6 +228,19 @@ class SincronizadorCirugias
 
         $filasNormalizadas = array_map(fn($f) => $this->normalizarFila($f), $filasApi);
 
+        // La API puede mandar varias filas con la misma clave (OIDCirugia, OIDProcedimiento), p. ej. un folio por
+        // cada nota quirúrgica. Antes se insertaban todas y el mismo procedimiento se pagaba dos o más veces. Se deja
+        // una por clave: la ÚLTIMA que llega, que es la que ya quedaba guardada al aplicar las actualizaciones en orden.
+        $porClave = [];
+        foreach ($filasNormalizadas as $registro) {
+            $porClave[$registro['OIDCirugia'] . '|' . $registro['OIDProcedimiento']] = $registro;
+        }
+        $repetidasApi = count($filasNormalizadas) - count($porClave);
+        if ($repetidasApi > 0) {
+            $this->log("Filas repetidas en la API (misma OIDCirugia+OIDProcedimiento), se deja la última: {$repetidasApi}", 'WARN');
+        }
+        $filasNormalizadas = array_values($porClave);
+
         $claves = array_map(fn($f) => [$f['OIDCirugia'], $f['OIDProcedimiento']], $filasNormalizadas);
         try {
             $existentes = $this->ejecutarConReintentos(
@@ -317,6 +330,7 @@ class SincronizadorCirugias
             'nuevos' => $nuevos,
             'actualizados' => $actualizados,
             'omitidos_por_corte' => $omitidosPorCorte,
+            'repetidas_api' => $repetidasApi,
             'dry_run' => $this->dryRun,
             'ventana_api' => ['inicio' => $fechaInicio, 'fin' => $fechaFin],
             'rango_corte' => $rangoCorte,

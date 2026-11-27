@@ -102,7 +102,8 @@
     arrastre: null, // { idEnfPer, fecha } del turno que se está arrastrando
     destinoMarcado: null, // celda resaltada como posible destino
     moviendo: null, // modo "Mover…": { idEnfPer, fecha } del turno que espera su celda destino
-    real: false // true = "Turnos reales" (quién cobra cada turno, sin intercambios); false = "Con cambios" (quién lo trabaja)
+    real: false, // true = "Turnos reales" (quién cobra cada turno, sin intercambios); false = "Con cambios" (quién lo trabaja)
+    pieOculto: false // conteo por día (pie de la tabla) plegado
   };
 
   // ---------------------------------------------------------------- utilidades
@@ -228,6 +229,59 @@
     );
   }
 
+  // Empresa de cada persona: color fijo por IdEmpresa (no cambia al pasar de mes o de servicio) y sigla corta
+  // ("Hospital Regional de Moniquirá" -> HRM). Los colores evitan los de los tipos de turno (COLOR_CODIGO).
+  const COLOR_EMPRESA = [
+    "#2563eb",
+    "#db2777",
+    "#9333ea",
+    "#ca8a04",
+    "#0891b2",
+    "#dc2626",
+    "#65a30d",
+    "#475569"
+  ];
+  const COLOR_SIN_EMPRESA = "#9ca3af";
+  const TEXTO_CONTRATO = { 1: "Planta", 2: "Temporal", 3: "OPS", 4: "Otro" };
+  function colorEmpresa(idEmpresa) {
+    const n = Number(idEmpresa);
+    return n > 0
+      ? COLOR_EMPRESA[(n - 1) % COLOR_EMPRESA.length]
+      : COLOR_SIN_EMPRESA;
+  }
+  function siglaEmpresa(nombre) {
+    const n = String(nombre || "").trim();
+    if (!n) return "—";
+    if (n.length <= 5) return n.toUpperCase();
+    const sigla = n
+      .split(/\s+/)
+      .filter((p) => !/^(de|del|la|las|los|el|y|e)$/i.test(p))
+      .map((p) => p.charAt(0))
+      .join("")
+      .toUpperCase()
+      .substring(0, 4);
+    return sigla.length > 1 ? sigla : n.substring(0, 4).toUpperCase();
+  }
+  // Sigla de color que acompaña el perfil de la persona (tabla, calendario y panel del día).
+  function empresaHTML(e) {
+    const titulo = e.NombreEmpresa
+      ? "Empresa: " +
+        e.NombreEmpresa +
+        (TEXTO_CONTRATO[e.TipoContrato]
+          ? " · " + TEXTO_CONTRATO[e.TipoContrato]
+          : "")
+      : "Sin empresa asignada";
+    return (
+      '<span class="at-emp" style="--ec:' +
+      colorEmpresa(e.IdEmpresa) +
+      '" title="' +
+      esc(titulo) +
+      '">' +
+      esc(e.NombreEmpresa ? siglaEmpresa(e.NombreEmpresa) : "Sin emp.") +
+      "</span>"
+    );
+  }
+
   function porNombre(a, b) {
     return a.NombreMedico.localeCompare(b.NombreMedico, "es");
   }
@@ -251,7 +305,12 @@
     try {
       localStorage.setItem(
         LS_PREFS,
-        JSON.stringify({ servicio: E.servicio, perfil: E.perfil, sub: E.sub })
+        JSON.stringify({
+          servicio: E.servicio,
+          perfil: E.perfil,
+          sub: E.sub,
+          pieOculto: E.pieOculto
+        })
       );
     } catch (e) {
       /* sin almacenamiento: no pasa nada */
@@ -264,6 +323,7 @@
       if (typeof p.perfil === "string") E.perfil = p.perfil;
       if (p.sub === "mes" || p.sub === "semana" || p.sub === "dia")
         E.sub = p.sub;
+      E.pieOculto = p.pieOculto === true;
     } catch (e) {
       /* prefs corruptas: se ignoran */
     }
@@ -652,8 +712,9 @@
     limpiarBtn.disabled = E.real;
     limpiarBtn.title = E.real
       ? "En «Turnos reales» no se puede editar"
-      : "Borrar los turnos del mes en borrador de " +
-        (E.servicio === "" ? "todos los servicios" : "este servicio");
+      : E.servicio === ""
+        ? "Borrar los turnos en borrador del mes de todos los servicios"
+        : "Borrar los turnos en borrador del mes: de este servicio o de todos";
 
     $("at-ayuda").textContent =
       (E.vista === "tabla"
@@ -698,7 +759,53 @@
     cont.innerHTML =
       '<span class="at-perfiles-tit">Perfil</span>' +
       chip("", "Todos", lista.length) +
-      ids.map((id) => chip(id, cuenta[id].desc, cuenta[id].n)).join("");
+      ids.map((id) => chip(id, cuenta[id].desc, cuenta[id].n)).join("") +
+      leyendaEmpresasHTML(lista);
+  }
+
+  // Leyenda de colores por empresa (a la derecha de los perfiles): qué empresa es cada color y cuántas personas tiene.
+  function leyendaEmpresasHTML(lista) {
+    const cuenta = {};
+    lista.forEach((e) => {
+      const k = e.IdEmpresa ? String(e.IdEmpresa) : "";
+      if (!cuenta[k]) cuenta[k] = { e: e, n: 0 };
+      cuenta[k].n++;
+    });
+    const claves = Object.keys(cuenta).sort(
+      (a, b) =>
+        (a === "") - (b === "") ||
+        String(cuenta[a].e.NombreEmpresa).localeCompare(
+          String(cuenta[b].e.NombreEmpresa),
+          "es"
+        )
+    );
+    if (!claves.length) return "";
+    return (
+      '<span class="at-empresas" aria-label="Colores por empresa"><span class="at-perfiles-tit">Empresa</span>' +
+      claves
+        .map((k) => {
+          const e = cuenta[k].e;
+          const nombre = e.NombreEmpresa || "Sin empresa";
+          // Sin repetir el nombre cuando ya es la sigla (S&A).
+          const sigla = k ? siglaEmpresa(nombre) : "";
+          return (
+            '<span class="at-emp-ley" title="' +
+            esc(nombre + ": " + cuenta[k].n + " persona(s) en esta vista") +
+            '">' +
+            empresaHTML(
+              k
+                ? { IdEmpresa: e.IdEmpresa, NombreEmpresa: e.NombreEmpresa }
+                : { IdEmpresa: null }
+            ) +
+            (!k || sigla === nombre.toUpperCase() ? "" : esc(nombre)) +
+            ' <span class="at-cuenta">' +
+            cuenta[k].n +
+            "</span></span>"
+          );
+        })
+        .join("") +
+      "</span>"
+    );
   }
 
   function renderAviso() {
@@ -929,9 +1036,24 @@
     return !!x && !x.CodigoNovedad && !(E.servicio !== "" && esAjeno(e, x));
   }
 
+  // Primera fila del pie: plegar o desplegar el conteo de turnos y horas por día (se recuerda en este navegador).
+  function pieTituloHTML(colspan) {
+    return (
+      '<tr class="at-pie-tit"><th class="nombre"><button type="button" class="at-pie-btn" data-at-act="pie" aria-expanded="' +
+      !E.pieOculto +
+      '" title="' +
+      (E.pieOculto ? "Mostrar" : "Ocultar") +
+      ' el conteo por día"><i class="fas fa-chevron-down"></i> Conteo por día <small>' +
+      (E.pieOculto ? "mostrar" : "ocultar") +
+      '</small></button></th><td colspan="' +
+      colspan +
+      '"></td></tr>'
+    );
+  }
+
   function pieInterior(filas, dias) {
     const servicio = servicioParaCobertura();
-    let html = "";
+    let html = pieTituloHTML(dias.length + 1);
     E.tipos.forEach((t) => {
       const req = servicio ? requeridoPara(servicio, t) : null;
       html +=
@@ -1092,9 +1214,12 @@
         gs +
         '" data-gp="' +
         gp +
-        '"><td class="nombre"><strong>' +
+        '"><td class="nombre at-emp-franja" style="--ec:' +
+        colorEmpresa(e.IdEmpresa) +
+        '"><strong>' +
         esc(e.NombreMedico) +
         "</strong><small>" +
+        empresaHTML(e) +
         esc(e.DescripcionPerfil) +
         (e.EsApoyo
           ? " · Principal: " + esc(e.NombreServicioPrincipal || "sin servicio")
@@ -1106,7 +1231,11 @@
       html += celdaHorasHTML(e, dias) + "</tr>";
     });
     html +=
-      "</tbody><tfoot>" + pieInterior(filas, dias) + "</tfoot></table></div>";
+      "</tbody><tfoot" +
+      (E.pieOculto ? ' class="at-pie-oculto"' : "") +
+      ">" +
+      pieInterior(filas, dias) +
+      "</tfoot></table></div>";
     return html;
   }
 
@@ -1753,6 +1882,7 @@
         '<span class="at-ley-nom">' +
         esc(it.e.NombreMedico) +
         "</span><small>" +
+        empresaHTML(it.e) +
         esc(resumen) +
         "</small></button>";
     });
@@ -1788,6 +1918,7 @@
         '<div class="cal-info"><strong>' +
         esc(e.NombreMedico) +
         "</strong><small>" +
+        empresaHTML(e) +
         esc(e.DescripcionPerfil) +
         " · " +
         esc(motivo ? motivo.Nombre : t.CodigoNovedad) +
@@ -1816,6 +1947,7 @@
         '<div class="cal-info"><strong>' +
         esc(e.NombreMedico) +
         "</strong><small>" +
+        empresaHTML(e) +
         esc(e.DescripcionPerfil) +
         "</small></div>" +
         '<div class="cal-chips">' +
@@ -1838,6 +1970,7 @@
         '<div class="cal-info"><strong>' +
         esc(e.NombreMedico) +
         "</strong><small>" +
+        empresaHTML(e) +
         esc(e.DescripcionPerfil) +
         "</small></div>" +
         '<div class="cal-chips">' +
@@ -1888,6 +2021,7 @@
       '<div class="cal-info"><strong>' +
       esc(e.NombreMedico) +
       "</strong><small>" +
+      empresaHTML(e) +
       esc(e.DescripcionPerfil) +
       (E.servicio === "" ? " · " + esc(e.NombreServicio) : "") +
       "</small></div>" +
@@ -2507,97 +2641,143 @@
     });
   }
 
-  // Botón "Limpiar": borra los turnos del mes que están en cuadros sin confirmar, del servicio elegido o, con "Todos
-  // los servicios", de todos los que el usuario puede generar. Primero pide el conteo para mostrarlo en el aviso.
+  // Botón "Limpiar": borra los turnos del mes que están en cuadros sin confirmar. Con un servicio elegido deja escoger
+  // entre ese servicio y todos los servicios del mes (los que el usuario puede generar); con "Todos los servicios"
+  // borra los de todos. Primero pide los conteos para mostrarlos en el aviso.
   async function limpiar() {
     const anio = E.ref.getFullYear(),
       mes = E.ref.getMonth() + 1;
+    const periodo = MESES[mes - 1] + " de " + anio;
     const servicio = E.servicio !== "" ? E.servicioPorId[E.servicio] : null;
-    const alcance = servicio
-      ? esc(servicio.NombreServicio)
-      : "todos los servicios";
-    const fd = (confirmar) => {
+    // Un coordinador con un solo servicio no tiene un "todos" distinto de su servicio.
+    const puedeTodos =
+      !servicio ||
+      E.serviciosPermitidos === null ||
+      E.serviciosPermitidos.length > 1;
+    const fd = (idServicio, confirmar) => {
       const d = new FormData();
       d.append("Anio", anio);
       d.append("Mes", mes);
-      d.append("IdServicio", E.servicio);
+      d.append("IdServicio", idServicio);
       d.append("Confirmar", confirmar ? "1" : "0");
       return d;
     };
-    let conteo;
-    try {
-      conteo = await pedirJSON(API_GENERADOR + "?Accion=Limpiar", {
+    const contar = (idServicio) =>
+      pedirJSON(API_GENERADOR + "?Accion=Limpiar", {
         method: "POST",
-        body: fd(false)
+        body: fd(idServicio, false)
       });
+
+    let deServicio = null,
+      deTodos = null;
+    try {
+      [deServicio, deTodos] = await Promise.all([
+        servicio ? contar(E.servicio) : Promise.resolve(null),
+        puedeTodos ? contar("") : Promise.resolve(null)
+      ]);
     } catch (err) {
       Swal.fire("Error", err.message, "error");
       return;
     }
-    if (!conteo.success) {
-      Swal.fire("Error", conteo.message || "No se pudo consultar.", "error");
+    const fallo = [deServicio, deTodos].find((c) => c && !c.success);
+    if (fallo) {
+      Swal.fire("Error", fallo.message || "No se pudo consultar.", "error");
       return;
     }
-    const extra =
-      conteo.conRecargos > 0
-        ? "<br>" +
-          conteo.conRecargos +
-          " turno(s) con recargos de nómina no se pueden borrar y se conservan."
-        : "";
-    if (conteo.total === 0) {
+
+    const opciones = [];
+    if (deServicio)
+      opciones.push({ id: E.servicio, titulo: "Solo " + servicio.NombreServicio, conteo: deServicio });
+    if (deTodos)
+      opciones.push({ id: "", titulo: "Todos los servicios", conteo: deTodos });
+    const conTurnos = opciones.filter((o) => o.conteo.total > 0);
+    if (!conTurnos.length) {
       Swal.fire({
         title: "Nada que limpiar",
         icon: "info",
         html:
-          "No hay turnos en borrador de <b>" +
-          alcance +
-          "</b> en " +
-          MESES[mes - 1] +
-          " de " +
-          anio +
-          "." +
-          extra
+          "No hay turnos en borrador " +
+          (servicio && !deTodos ? "de <b>" + esc(servicio.NombreServicio) + "</b> " : "") +
+          "en " +
+          periodo +
+          "."
       });
       return;
     }
-    const lista =
-      (conteo.servicios || []).length > 1
-        ? '<ul class="op-lista">' +
-          conteo.servicios
-            .map((s) => "<li>" + esc(s.servicio) + ": " + s.turnos + "</li>")
-            .join("") +
-          "</ul>"
+
+    const detalle = (c) =>
+      c.total +
+      " turnos (" +
+      c.generados +
+      " generados y " +
+      c.manuales +
+      " editados a mano" +
+      (c.conRecargos > 0 ? "; " + c.conRecargos + " con recargos de nómina se conservan" : "") +
+      ")";
+    const porServicio = (c) =>
+      (c.servicios || []).length > 1
+        ? '<details class="op-avisos"><summary>Turnos por servicio</summary><ul class="op-lista">' +
+          c.servicios.map((s) => "<li>" + esc(s.servicio) + ": " + s.turnos + "</li>").join("") +
+          "</ul></details>"
         : "";
+    let cuerpo;
+    if (opciones.length === 2) {
+      // Marcada por defecto: el servicio elegido, salvo que no tenga turnos para borrar.
+      const marcada = opciones.indexOf(conTurnos[0]);
+      cuerpo =
+        '<div class="op-alcance">' +
+        opciones
+          .map(
+            (o, i) =>
+              '<label><input type="radio" name="op-alcance" value="' +
+              i +
+              '"' +
+              (i === marcada ? " checked" : "") +
+              (o.conteo.total === 0 ? " disabled" : "") +
+              "> <span><b>" +
+              esc(o.titulo) +
+              "</b><small>" +
+              detalle(o.conteo) +
+              "</small></span></label>"
+          )
+          .join("") +
+        "</div>" +
+        porServicio(deTodos);
+    } else {
+      const o = conTurnos[0];
+      cuerpo =
+        "Se borrarán los turnos en borrador de <b>" +
+        (o.id === "" ? "todos los servicios" : esc(servicio.NombreServicio)) +
+        "</b>: " +
+        detalle(o.conteo) +
+        "." +
+        porServicio(o.conteo);
+    }
+
     const r = await Swal.fire({
-      title: "¿Borrar " + conteo.total + " turnos?",
+      title: "¿Borrar los turnos en borrador de " + periodo + "?",
       icon: "warning",
       html:
-        "Se borrarán los turnos en borrador de <b>" +
-        alcance +
-        "</b> en <b>" +
-        MESES[mes - 1] +
-        " de " +
-        anio +
-        "</b>: " +
-        conteo.generados +
-        " generados automáticamente y " +
-        conteo.manuales +
-        " editados a mano." +
-        lista +
-        "<br>Los cuadros confirmados y las novedades no se tocan." +
-        extra +
-        " <b>No se puede deshacer.</b>",
+        cuerpo +
+        "<p class=\"op-nota\">Solo se borran turnos de este mes. Los cuadros confirmados y las novedades no se tocan. <b>No se puede deshacer.</b></p>",
       showCancelButton: true,
       confirmButtonText: "Sí, borrar",
       cancelButtonText: "Cancelar",
-      customClass: { confirmButton: "op-peligro" }
+      customClass: { confirmButton: "op-peligro" },
+      // Devuelve un objeto: si devolviera false, SweetAlert no cerraría el diálogo.
+      preConfirm: () => {
+        const sel = document.querySelector('input[name="op-alcance"]:checked');
+        return { indice: sel ? Number(sel.value) : opciones.indexOf(conTurnos[0]) };
+      }
     });
     if (!r.isConfirmed) return;
+    const elegida = opciones[r.value.indice] || conTurnos[0];
+
     let resp;
     try {
       resp = await pedirJSON(API_GENERADOR + "?Accion=Limpiar", {
         method: "POST",
-        body: fd(true)
+        body: fd(elegida.id, true)
       });
     } catch (err) {
       Swal.fire("Error", err.message, "error");
@@ -2607,7 +2787,16 @@
       Swal.fire("Error", resp.message || "No se borraron los turnos.", "error");
       return;
     }
-    toast("ok", "Se borraron " + resp.borrados + " turnos en borrador.");
+    toast(
+      "ok",
+      "Se borraron " +
+        resp.borrados +
+        " turnos en borrador de " +
+        (elegida.id === "" ? "todos los servicios" : servicio.NombreServicio) +
+        " (" +
+        periodo +
+        ")."
+    );
     cargar();
   }
 
@@ -2802,6 +2991,17 @@
         E.plegados[el.dataset.g] = !E.plegados[el.dataset.g];
         aplicarPlegado();
         break;
+      case "pie": {
+        E.pieOculto = !E.pieOculto;
+        guardarPrefs();
+        const tfoot = el.closest("tfoot");
+        if (tfoot) {
+          tfoot.classList.toggle("at-pie-oculto", E.pieOculto);
+          const tit = tfoot.querySelector("tr.at-pie-tit");
+          if (tit) tit.outerHTML = pieTituloHTML(diasDelMes().length + 1);
+        }
+        break;
+      }
       case "abrir-dia":
         if (E.vista === "calendario" && E.sub === "dia") break;
         abrirDia(el.dataset.fecha);

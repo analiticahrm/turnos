@@ -1461,3 +1461,117 @@ body.dark-mode .at-chip.at-sello {
 .main-content:has(> #asignacion-turnos-content:not([style*="none"])) {
   min-width: 0;
 }
+
+/* Diálogo de "Limpiar" con un servicio elegido: escoger entre ese servicio y todos los servicios del mes */
+.op-alcance {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  margin: 4px 0 8px;
+}
+.op-alcance label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 12px;
+  border: 1px solid var(--card-border, #d0d7de);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.op-alcance label:has(input:checked) {
+  border-color: var(--danger-color, #d32f2f);
+  background: rgba(211, 47, 47, 0.06);
+}
+.op-alcance label:has(input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.op-alcance input {
+  margin-top: 4px;
+}
+.op-alcance small {
+  display: block;
+  color: var(--text-secondary, #666);
+  font-size: 0.82rem;
+}
+
+/* Empresa de cada persona: franja de color a la izquierda del nombre, sigla junto al perfil y leyenda junto a los perfiles.
+   El color sale de colorEmpresa() en AsignacionTurnos.js (variable --ec). */
+#asignacion-turnos-content .grilla-turnos td.nombre.at-emp-franja {
+  box-shadow: inset 4px 0 0 var(--ec, #9ca3af);
+  padding-left: 12px;
+}
+.at-emp {
+  display: inline-block;
+  vertical-align: 1px;
+  margin-right: 5px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--ec, #9ca3af);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.at-empresas {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-left: auto;
+}
+.at-emp-ley {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+.at-emp-ley .at-cuenta {
+  margin-left: 4px;
+}
+.at-ley-item small .at-emp,
+.cal-info small .at-emp {
+  font-size: 0.6rem;
+}
+
+/* Conteo por día (pie de la tabla): se puede plegar; queda solo la fila con el botón. */
+#asignacion-turnos-content .grilla-turnos tr.at-pie-tit th,
+#asignacion-turnos-content .grilla-turnos tr.at-pie-tit td {
+  padding: 4px 6px;
+  border-top: 2px solid var(--card-border);
+  background:
+    linear-gradient(var(--table-header-bg), var(--table-header-bg)),
+    var(--modal-bg);
+}
+#asignacion-turnos-content .grilla-turnos tfoot.at-pie-oculto tr.at-pie {
+  display: none;
+}
+.at-pie-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.at-pie-btn:hover {
+  background: rgba(120, 130, 140, 0.18);
+}
+.at-pie-btn small {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.at-pie-btn i {
+  transition: transform 0.15s;
+}
+tfoot.at-pie-oculto .at-pie-btn i {
+  transform: rotate(-90deg);
+}
